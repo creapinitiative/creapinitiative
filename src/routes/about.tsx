@@ -35,7 +35,7 @@ function About() {
 
       {/* Our Story */}
       <section className="py-24 lg:py-32 bg-bg">
-        <div className="mx-auto max-w-[1300px] px-6 lg:px-10 grid lg:grid-cols-5 gap-16 items-start">
+        <div className="mx-auto max-w-[1300px] px-16 lg:px-28 grid lg:grid-cols-5 gap-16 items-start">
           <div className="lg:col-span-2">
             <p className="eyebrow-dark mb-4">Our Story</p>
             <h2 className="display-lg">
@@ -55,7 +55,7 @@ function About() {
 
       {/* Vision & Mission Dark Panel */}
       <section className="bg-g700 text-white py-24 lg:py-28">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 grid md:grid-cols-2 gap-12">
+        <div className="mx-auto max-w-[1400px] px-16 lg:px-28 grid md:grid-cols-2 gap-12">
           <div className="border-l-2 border-gold pl-8">
             <p className="eyebrow mb-4">Vision</p>
             <h3 className="display-md text-white mb-5">
@@ -79,7 +79,7 @@ function About() {
 
       {/* Key Drivers */}
       <section className="bg-g50 py-24 lg:py-32">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[1400px] px-16 lg:px-28">
           <div className="max-w-2xl mb-14">
             <p className="eyebrow-dark mb-4">What Drives Us</p>
             <h2 className="display-lg">
@@ -100,7 +100,7 @@ function About() {
 
       {/* CTA */}
       <section className="bg-bg py-20 border-t border-rule">
-        <div className="mx-auto max-w-[1100px] px-6 lg:px-10 text-center">
+        <div className="mx-auto max-w-[1100px] px-16 lg:px-28 text-center">
           <h3 className="display-md mb-6">Ready to learn how we work?</h3>
           <div className="inline-flex flex-wrap gap-3 justify-center">
             <Link to="/programs" className="bg-g600 hover:bg-g700 text-white uppercase tracking-wider text-xs font-semibold px-7 py-3.5 rounded-sm transition">Explore Programs</Link>

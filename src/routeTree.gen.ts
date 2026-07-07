@@ -18,6 +18,15 @@ import { Route as DonateRouteImport } from './routes/donate'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResourcesPolicyBriefsRouteImport } from './routes/resources.policy-briefs'
+import { Route as ResourcesGalleryRouteImport } from './routes/resources.gallery'
+import { Route as ResourcesBlogsRouteImport } from './routes/resources.blogs'
+import { Route as ProgramsUpcomingProgramsRouteImport } from './routes/programs.upcoming-programs'
+import { Route as ProgramsSpecialProgramsRouteImport } from './routes/programs.special-programs'
+import { Route as ProgramsOurKeyProgramsRouteImport } from './routes/programs.our-key-programs'
+import { Route as ProgramsCommunityDialogueProgramsRouteImport } from './routes/programs.community-dialogue-programs'
+import { Route as ResourcesBlogsSlugRouteImport } from './routes/resources.blogs.$slug'
+import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
 
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
@@ -64,6 +73,54 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResourcesPolicyBriefsRoute = ResourcesPolicyBriefsRouteImport.update({
+  id: '/policy-briefs',
+  path: '/policy-briefs',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const ResourcesGalleryRoute = ResourcesGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const ResourcesBlogsRoute = ResourcesBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const ProgramsUpcomingProgramsRoute =
+  ProgramsUpcomingProgramsRouteImport.update({
+    id: '/upcoming-programs',
+    path: '/upcoming-programs',
+    getParentRoute: () => ProgramsRoute,
+  } as any)
+const ProgramsSpecialProgramsRoute = ProgramsSpecialProgramsRouteImport.update({
+  id: '/special-programs',
+  path: '/special-programs',
+  getParentRoute: () => ProgramsRoute,
+} as any)
+const ProgramsOurKeyProgramsRoute = ProgramsOurKeyProgramsRouteImport.update({
+  id: '/our-key-programs',
+  path: '/our-key-programs',
+  getParentRoute: () => ProgramsRoute,
+} as any)
+const ProgramsCommunityDialogueProgramsRoute =
+  ProgramsCommunityDialogueProgramsRouteImport.update({
+    id: '/community-dialogue-programs',
+    path: '/community-dialogue-programs',
+    getParentRoute: () => ProgramsRoute,
+  } as any)
+const ResourcesBlogsSlugRoute = ResourcesBlogsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ResourcesBlogsRoute,
+} as any)
+const ProgramsUpcomingProgramsSlugRoute =
+  ProgramsUpcomingProgramsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => ProgramsUpcomingProgramsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,8 +130,17 @@ export interface FileRoutesByFullPath {
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
-  '/programs': typeof ProgramsRoute
-  '/resources': typeof ResourcesRoute
+  '/programs': typeof ProgramsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
+  '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
+  '/resources/gallery': typeof ResourcesGalleryRoute
+  '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
+  '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,8 +150,17 @@ export interface FileRoutesByTo {
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
-  '/programs': typeof ProgramsRoute
-  '/resources': typeof ResourcesRoute
+  '/programs': typeof ProgramsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
+  '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
+  '/resources/gallery': typeof ResourcesGalleryRoute
+  '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
+  '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,8 +171,17 @@ export interface FileRoutesById {
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
-  '/programs': typeof ProgramsRoute
-  '/resources': typeof ResourcesRoute
+  '/programs': typeof ProgramsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
+  '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
+  '/resources/gallery': typeof ResourcesGalleryRoute
+  '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
+  '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +195,15 @@ export interface FileRouteTypes {
     | '/opportunities'
     | '/programs'
     | '/resources'
+    | '/programs/community-dialogue-programs'
+    | '/programs/our-key-programs'
+    | '/programs/special-programs'
+    | '/programs/upcoming-programs'
+    | '/resources/blogs'
+    | '/resources/gallery'
+    | '/resources/policy-briefs'
+    | '/programs/upcoming-programs/$slug'
+    | '/resources/blogs/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +215,15 @@ export interface FileRouteTypes {
     | '/opportunities'
     | '/programs'
     | '/resources'
+    | '/programs/community-dialogue-programs'
+    | '/programs/our-key-programs'
+    | '/programs/special-programs'
+    | '/programs/upcoming-programs'
+    | '/resources/blogs'
+    | '/resources/gallery'
+    | '/resources/policy-briefs'
+    | '/programs/upcoming-programs/$slug'
+    | '/resources/blogs/$slug'
   id:
     | '__root__'
     | '/'
@@ -133,6 +235,15 @@ export interface FileRouteTypes {
     | '/opportunities'
     | '/programs'
     | '/resources'
+    | '/programs/community-dialogue-programs'
+    | '/programs/our-key-programs'
+    | '/programs/special-programs'
+    | '/programs/upcoming-programs'
+    | '/resources/blogs'
+    | '/resources/gallery'
+    | '/resources/policy-briefs'
+    | '/programs/upcoming-programs/$slug'
+    | '/resources/blogs/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,8 +254,8 @@ export interface RootRouteChildren {
   GetInvolvedRoute: typeof GetInvolvedRoute
   LeadershipRoute: typeof LeadershipRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
-  ProgramsRoute: typeof ProgramsRoute
-  ResourcesRoute: typeof ResourcesRoute
+  ProgramsRoute: typeof ProgramsRouteWithChildren
+  ResourcesRoute: typeof ResourcesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -212,8 +323,132 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resources/policy-briefs': {
+      id: '/resources/policy-briefs'
+      path: '/policy-briefs'
+      fullPath: '/resources/policy-briefs'
+      preLoaderRoute: typeof ResourcesPolicyBriefsRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
+    '/resources/gallery': {
+      id: '/resources/gallery'
+      path: '/gallery'
+      fullPath: '/resources/gallery'
+      preLoaderRoute: typeof ResourcesGalleryRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
+    '/resources/blogs': {
+      id: '/resources/blogs'
+      path: '/blogs'
+      fullPath: '/resources/blogs'
+      preLoaderRoute: typeof ResourcesBlogsRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
+    '/programs/upcoming-programs': {
+      id: '/programs/upcoming-programs'
+      path: '/upcoming-programs'
+      fullPath: '/programs/upcoming-programs'
+      preLoaderRoute: typeof ProgramsUpcomingProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/special-programs': {
+      id: '/programs/special-programs'
+      path: '/special-programs'
+      fullPath: '/programs/special-programs'
+      preLoaderRoute: typeof ProgramsSpecialProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/our-key-programs': {
+      id: '/programs/our-key-programs'
+      path: '/our-key-programs'
+      fullPath: '/programs/our-key-programs'
+      preLoaderRoute: typeof ProgramsOurKeyProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/community-dialogue-programs': {
+      id: '/programs/community-dialogue-programs'
+      path: '/community-dialogue-programs'
+      fullPath: '/programs/community-dialogue-programs'
+      preLoaderRoute: typeof ProgramsCommunityDialogueProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/resources/blogs/$slug': {
+      id: '/resources/blogs/$slug'
+      path: '/$slug'
+      fullPath: '/resources/blogs/$slug'
+      preLoaderRoute: typeof ResourcesBlogsSlugRouteImport
+      parentRoute: typeof ResourcesBlogsRoute
+    }
+    '/programs/upcoming-programs/$slug': {
+      id: '/programs/upcoming-programs/$slug'
+      path: '/$slug'
+      fullPath: '/programs/upcoming-programs/$slug'
+      preLoaderRoute: typeof ProgramsUpcomingProgramsSlugRouteImport
+      parentRoute: typeof ProgramsUpcomingProgramsRoute
+    }
   }
 }
+
+interface ProgramsUpcomingProgramsRouteChildren {
+  ProgramsUpcomingProgramsSlugRoute: typeof ProgramsUpcomingProgramsSlugRoute
+}
+
+const ProgramsUpcomingProgramsRouteChildren: ProgramsUpcomingProgramsRouteChildren =
+  {
+    ProgramsUpcomingProgramsSlugRoute: ProgramsUpcomingProgramsSlugRoute,
+  }
+
+const ProgramsUpcomingProgramsRouteWithChildren =
+  ProgramsUpcomingProgramsRoute._addFileChildren(
+    ProgramsUpcomingProgramsRouteChildren,
+  )
+
+interface ProgramsRouteChildren {
+  ProgramsCommunityDialogueProgramsRoute: typeof ProgramsCommunityDialogueProgramsRoute
+  ProgramsOurKeyProgramsRoute: typeof ProgramsOurKeyProgramsRoute
+  ProgramsSpecialProgramsRoute: typeof ProgramsSpecialProgramsRoute
+  ProgramsUpcomingProgramsRoute: typeof ProgramsUpcomingProgramsRouteWithChildren
+}
+
+const ProgramsRouteChildren: ProgramsRouteChildren = {
+  ProgramsCommunityDialogueProgramsRoute:
+    ProgramsCommunityDialogueProgramsRoute,
+  ProgramsOurKeyProgramsRoute: ProgramsOurKeyProgramsRoute,
+  ProgramsSpecialProgramsRoute: ProgramsSpecialProgramsRoute,
+  ProgramsUpcomingProgramsRoute: ProgramsUpcomingProgramsRouteWithChildren,
+}
+
+const ProgramsRouteWithChildren = ProgramsRoute._addFileChildren(
+  ProgramsRouteChildren,
+)
+
+interface ResourcesBlogsRouteChildren {
+  ResourcesBlogsSlugRoute: typeof ResourcesBlogsSlugRoute
+}
+
+const ResourcesBlogsRouteChildren: ResourcesBlogsRouteChildren = {
+  ResourcesBlogsSlugRoute: ResourcesBlogsSlugRoute,
+}
+
+const ResourcesBlogsRouteWithChildren = ResourcesBlogsRoute._addFileChildren(
+  ResourcesBlogsRouteChildren,
+)
+
+interface ResourcesRouteChildren {
+  ResourcesBlogsRoute: typeof ResourcesBlogsRouteWithChildren
+  ResourcesGalleryRoute: typeof ResourcesGalleryRoute
+  ResourcesPolicyBriefsRoute: typeof ResourcesPolicyBriefsRoute
+}
+
+const ResourcesRouteChildren: ResourcesRouteChildren = {
+  ResourcesBlogsRoute: ResourcesBlogsRouteWithChildren,
+  ResourcesGalleryRoute: ResourcesGalleryRoute,
+  ResourcesPolicyBriefsRoute: ResourcesPolicyBriefsRoute,
+}
+
+const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
+  ResourcesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -223,9 +458,19 @@ const rootRouteChildren: RootRouteChildren = {
   GetInvolvedRoute: GetInvolvedRoute,
   LeadershipRoute: LeadershipRoute,
   OpportunitiesRoute: OpportunitiesRoute,
-  ProgramsRoute: ProgramsRoute,
-  ResourcesRoute: ResourcesRoute,
+  ProgramsRoute: ProgramsRouteWithChildren,
+  ResourcesRoute: ResourcesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

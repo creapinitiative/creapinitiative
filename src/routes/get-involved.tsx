@@ -34,7 +34,7 @@ function GetInvolved() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1300px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
           <div className="grid md:grid-cols-3 gap-7">
             {WAYS.map(({ icon: Icon, title, body }) => (
               <div key={title} className="bg-white border border-rule rounded-sm p-9 hover:border-gold hover:shadow-md transition">
@@ -50,7 +50,7 @@ function GetInvolved() {
       </section>
 
       <section className="py-20 bg-g50 border-t border-rule">
-        <div className="mx-auto max-w-[1300px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
           <p className="eyebrow-dark mb-4">Upcoming Events</p>
           <h2 className="display-lg mb-12">Mark your <em className="text-gold italic">calendar</em></h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -67,7 +67,7 @@ function GetInvolved() {
 
       {/* Coordinator form */}
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[900px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[900px] px-16 lg:px-28">
           <div className="text-center mb-12">
             <p className="eyebrow-dark mb-4">State Coordinator Application</p>
             <h2 className="display-lg">Lead CREAP in <em className="text-gold italic">your state</em></h2>

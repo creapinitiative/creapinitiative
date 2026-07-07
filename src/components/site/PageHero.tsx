@@ -19,7 +19,7 @@ export function PageHero({
         }}
       />
       <div className="absolute bottom-0 inset-x-0 h-px" style={{ background: "linear-gradient(90deg, transparent, var(--gold), transparent)" }} />
-      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-10">
+      <div className="relative mx-auto max-w-[1400px] px-16 lg:px-28">
         <p className="eyebrow mb-5">{eyebrow}</p>
         <h1 className="display-xl text-white max-w-4xl">{title}</h1>
         {body && <p className="mt-7 max-w-2xl text-lg text-white/70 leading-relaxed">{body}</p>}

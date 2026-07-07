@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/creap-logo-light.png.asset.json";
+import logo from "@/assets/creap-logo-alt-small.png";
 import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin } from "lucide-react";
 
 export function SiteFooter() {
@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="bg-g900 text-white/75">
       {/* Newsletter band */}
       <section className="bg-g700">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-10 py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="mx-auto max-w-[1200px] px-16 lg:px-28 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <p className="eyebrow text-gold3 mb-4">Stay Connected</p>
             <h2 className="display-lg text-white">
@@ -54,12 +54,13 @@ export function SiteFooter() {
       </section>
 
       {/* Main footer */}
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-20 grid lg:grid-cols-4 gap-12">
+      <div className="mx-auto max-w-[1400px] px-16 lg:px-28 py-20 grid lg:grid-cols-5 gap-8 lg:gap-10">
         <div className="lg:col-span-2">
-          <img src={logo.url} alt="CREAP" className="h-12 w-auto mb-6" />
+          <img src={logo} alt="CREAP" className="h-12 w-auto mb-6" />
           <p className="max-w-md text-sm text-white/65 leading-relaxed">
-            CREAP Africa Initiative champions innovative platforms, tools, and community-driven approaches that advance bold advocacy, empowerment, and leadership strategies across Nigeria and Africa.
+            Community Rights Education Advancement Pathway Initiative - a nonprofit empowering marginalized communities through people-centered, rights-based, and sustainable development solutions.
           </p>
+          <p className="mt-3 text-sm text-white/60">Abuja, Nigeria.</p>
           <div className="flex items-center gap-3 mt-6">
             {[
               { Icon: Facebook, href: "https://www.facebook.com/share/1ESwRFSCuT/" },
@@ -82,7 +83,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <p className="eyebrow text-gold3 mb-5">Explore</p>
+          <p className="eyebrow text-gold3 mb-5">Organisation</p>
           <ul className="space-y-3 text-sm">
             {[
               ["About", "/about"],
@@ -101,19 +102,28 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow text-gold3 mb-5">Engage</p>
           <ul className="space-y-3 text-sm">
-            <li><Link to="/get-involved" className="text-white/65 hover:text-gold3">Volunteer</Link></li>
+            <li><Link to="/get-involved" className="text-white/65 hover:text-gold3">Get Involved</Link></li>
+            <li><Link to="/get-involved" className="text-white/65 hover:text-gold3">Partner with Us</Link></li>
             <li><Link to="/donate" className="text-white/65 hover:text-gold3">Donate</Link></li>
-            <li><Link to="/contact" className="text-white/65 hover:text-gold3">Contact</Link></li>
+            <li><Link to="/opportunities" className="text-white/65 hover:text-gold3">Opportunities</Link></li>
           </ul>
-          <div className="mt-6 space-y-3 text-sm text-white/60">
-            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> info@creapinitiative.org</p>
-            <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> Abuja, Nigeria</p>
+        </div>
+
+        <div>
+          <p className="eyebrow text-gold3 mb-5">Contact</p>
+          <div className="space-y-3 text-sm text-white/60 lg:mt-0">
+            <p>+234 8057193855</p>
+            <p>+234 7067926823</p>
+            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> contact@creapinitiative.org</p>
+            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> partnership@creapinitiative.org</p>
+            <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> 8, Ebighi Anwang Road, Uquo, Esit Eket LGA, Akwa Ibom State</p>
+            <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> 9 Yola Street, Garki Area 7 Abuja, Federal Capital Territory, Nigeria</p>
           </div>
         </div>
       </div>
 
       <div className="border-t border-white/8">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/45">
+        <div className="mx-auto max-w-[1400px] px-16 lg:px-28 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/45">
           <p>© {new Date().getFullYear()} CREAP Africa Initiative. All rights reserved.</p>
           <p>Registered under the Companies and Allied Matters Act, 2020.</p>
         </div>

@@ -135,6 +135,10 @@
     color: inherit;
   }
 
+  p {
+    font-size: 16px !important;
+  }
+
   em {
     font-style: italic;
   }
@@ -170,7 +174,7 @@
 
 @utility display-lg {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-size: clamp(2rem, 3.1vw, 43px);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -276,3 +280,26 @@
 .animate-kenburns { animation: kenburns 8s linear forwards; }
 .animate-fade-up { animation: fadeUp 0.9s var(--ease-out) both; }
 .animate-fade-in { animation: fadeIn 0.9s var(--ease-out) both; }
+
+/* Smooth top border reveal for cards */
+.slide-border-top-smooth {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-border-top-smooth::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #5a9e6e;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.slide-border-top-smooth:hover::after {
+  transform: scaleX(1);
+}

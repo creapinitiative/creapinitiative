@@ -24,7 +24,7 @@ function Donate() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-10 grid lg:grid-cols-2 gap-12">
+        <div className="mx-auto max-w-[1200px] px-16 lg:px-28 grid lg:grid-cols-2 gap-12">
           <div className="bg-white border border-rule rounded-sm p-9 lg:p-12">
             <div className="w-14 h-14 grid place-items-center bg-g100 text-gold rounded-sm mb-6"><Heart size={26} /></div>
             <h2 className="display-md mb-4">Give Online</h2>

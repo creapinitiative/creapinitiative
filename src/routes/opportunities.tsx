@@ -28,7 +28,7 @@ function Opportunities() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1100px] px-6 lg:px-10 space-y-4">
+        <div className="mx-auto max-w-[1100px] px-16 lg:px-28 space-y-4">
           {OPENINGS.map(({ icon: Icon, type, title, location, deadline }) => (
             <article key={title} className="bg-white border border-rule rounded-sm p-7 lg:p-8 grid md:grid-cols-12 gap-6 items-center hover:border-gold transition">
               <div className="md:col-span-1"><Icon size={28} strokeWidth={1.5} className="text-gold" /></div>

@@ -54,7 +54,7 @@ function Leadership() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1300px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
           <p className="eyebrow-dark mb-4">Board of Trustees</p>
           <h2 className="display-lg mb-12">Governance & <em className="text-gold italic">stewardship</em></h2>
           <div className="grid md:grid-cols-3 gap-7">
@@ -64,7 +64,7 @@ function Leadership() {
       </section>
 
       <section className="py-24 bg-g50 border-t border-rule">
-        <div className="mx-auto max-w-[1300px] px-6 lg:px-10">
+        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
           <p className="eyebrow-dark mb-4">Management Team</p>
           <h2 className="display-lg mb-12">Day-to-day <em className="text-gold italic">leadership</em></h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -74,7 +74,7 @@ function Leadership() {
       </section>
 
       <section className="bg-g700 text-white py-20">
-        <div className="mx-auto max-w-[1100px] px-6 lg:px-10 text-center">
+        <div className="mx-auto max-w-[1100px] px-16 lg:px-28 text-center">
           <p className="eyebrow mb-4">State Teams</p>
           <h2 className="display-md text-white mb-5">
             Become a <em className="italic text-goldf">State Coordinator</em>

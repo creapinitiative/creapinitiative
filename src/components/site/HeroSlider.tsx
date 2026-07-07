@@ -1,43 +1,70 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import slide1 from "@/assets/hero-civic.jpg";
-import slide2 from "@/assets/hero-health.jpg";
-import slide3 from "@/assets/hero-community.jpg";
-import slide4 from "@/assets/hero-climate.jpg";
+import slideEvidence from "@/assets/Evidence Driven Policy.jpg";
+import slideEquity from "@/assets/Equity for Marginalized.jpg";
+import slideGovernance from "@/assets/Civic Participation.jpg";
+import slideClimate from "@/assets/Greening futures.jpeg";
+import slidePeace from "@/assets/championing Peace.jpg";
+import slideCapacity from "@/assets/Empowering people through....jpg";
+import slidePartnership from "@/assets/Stronger together through....jpg";
 
 const SLIDES = [
   {
-    img: slide1,
-    eyebrow: "Peace & Democracy",
-    title: <>Civic Education & <em className="text-goldf italic">Democratic Awareness</em></>,
-    body: "Mobilising citizens, youth, and communities to understand their rights and actively shape democratic processes across Nigeria.",
-    cta1: { label: "Discover CREAP", to: "/about" },
-    cta2: { label: "Our Programs", to: "/programs" },
-  },
-  {
-    img: slide2,
-    eyebrow: "Health & Wellbeing",
-    title: <>Oral Health in Schools <em className="text-goldf italic">Campaign</em></>,
-    body: "Empowering learners with knowledge and tools to build lifelong oral hygiene habits — through awareness, education, and community outreach.",
-    cta1: { label: "View Programs", to: "/programs" },
-    cta2: { label: "Read Report", to: "/resources" },
-  },
-  {
-    img: slide3,
-    eyebrow: "Community Outreach",
-    title: <>Reaching Communities, <em className="text-goldf italic">Transforming Lives</em></>,
-    body: "Through grassroots school outreaches and community engagement, CREAP is building a generation of informed, empowered, and resilient citizens.",
+    img: slideEvidence,
+    eyebrow: "Evidence & Research",
+    title: <>Evidence-Driven Policy, <em className="text-goldf italic">Lasting Impact</em></>,
+    body: "We use research, data and community-generated evidence to inform policies and programs that create real, measurable change.",
     cta1: { label: "About CREAP", to: "/about" },
+    cta2: { label: "Our Publications", to: "/resources/policy-briefs" },
+  },
+  {
+    img: slideEquity,
+    eyebrow: "Equity & Inclusion",
+    title: <>Equity for the Marginalized, <em className="text-goldf italic">Access for All</em></>,
+    body: "We pursue policies and systems that ensure access to opportunities, resources, and services for the marginalized and underserved.",
+    cta1: { label: "Discover CREAP", to: "/about" },
     cta2: { label: "Get Involved", to: "/get-involved" },
   },
   {
-    img: slide4,
-    eyebrow: "Climate & Sustainability",
-    title: <>Greening Communities for a <em className="text-goldf italic">Sustainable Future</em></>,
-    body: "CREAP youth volunteers lead environmental clean-up and sustainability actions, turning climate justice into visible, community-level change.",
-    cta1: { label: "Our Programs", to: "/programs" },
-    cta2: { label: "View Reports", to: "/resources" },
+    img: slideGovernance,
+    eyebrow: "Governance & Democracy",
+    title: <>Civic Participation, <em className="text-goldf italic">Accountable Governance</em></>,
+    body: "We promote civic participation and public accountability so communities can influence decisions that shape their lives.",
+    cta1: { label: "Our Programs", to: "/programs/our-key-programs" },
+    cta2: { label: "Read Reports", to: "/resources/policy-briefs" },
+  },
+  {
+    img: slideClimate,
+    eyebrow: "Climate & Environment",
+    title: <>Greening Futures, <em className="text-goldf italic">Building Climate Resilience</em></>,
+    body: "We advance environmentally responsible development, climate adaptation, and sustainable livelihoods that protect ecosystems and communities.",
+    cta1: { label: "Our Programs", to: "/programs/our-key-programs" },
+    cta2: { label: "Get Involved", to: "/get-involved" },
+  },
+  {
+    img: slidePeace,
+    eyebrow: "Peace & Youth Empowerment",
+    title: <>Championing Peace, <em className="text-goldf italic">Youth Empowerment & Civic Life</em></>,
+    body: "We work constantly to promote Peace, Civic Education and Youth Empowerment, recognizing that development cannot thrive without social cohesion.",
+    cta1: { label: "About CREAP", to: "/about" },
+    cta2: { label: "View Programs", to: "/programs/our-key-programs" },
+  },
+  {
+    img: slideCapacity,
+    eyebrow: "Capacity & Empowerment",
+    title: <>Empowering People Through <em className="text-goldf italic">Knowledge & Skills</em></>,
+    body: "We invest in digital skills, leadership training, and capacity development - building a generation equipped to drive sustainable change.",
+    cta1: { label: "Get Involved", to: "/get-involved" },
+    cta2: { label: "Our Programs", to: "/programs/our-key-programs" },
+  },
+  {
+    img: slidePartnership,
+    eyebrow: "Partnerships & Collaboration",
+    title: <>Stronger Together Through <em className="text-goldf italic">Strategic Collaboration</em></>,
+    body: "Our work is powered by collaboration with strategic public and private institutions - building synergies that amplify community impact.",
+    cta1: { label: "Partner With Us", to: "/get-involved" },
+    cta2: { label: "About CREAP", to: "/about" },
   },
 ];
 
