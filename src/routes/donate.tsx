@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { CreditCard, Building2, Heart } from "lucide-react";
+import { useFormSubmit } from "@/lib/use-form-submit";
+import { CreditCard, Building2, Heart, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/donate")({
   head: () => ({
@@ -16,6 +18,9 @@ export const Route = createFileRoute("/donate")({
 const AMOUNTS = ["₦5,000", "₦20,000", "₦50,000", "Custom"];
 
 function Donate() {
+  const { status, error, handleSubmit } = useFormSubmit();
+  const [amount, setAmount] = useState<string>("");
+
   return (
     <>
       <PageHero
@@ -30,19 +35,49 @@ function Donate() {
             <div className="w-14 h-14 grid place-items-center bg-g100 text-gold rounded-sm mb-6"><Heart size={26} /></div>
             <h2 className="display-md mb-4">Give Online</h2>
             <p className="text-ink3 mb-7">Choose an amount or enter your own — one-time or monthly.</p>
-            <form onSubmit={(e) => { e.preventDefault(); alert("Thank you!"); }}>
+            <form
+              onSubmit={(e) =>
+                handleSubmit(e, (fd) => ({
+                  formType: "donate_interest",
+                  fullName: fd.get("fullName"),
+                  email: fd.get("email"),
+                  amount,
+                }))
+              }
+            >
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
                 {AMOUNTS.map((a) => (
-                  <button key={a} type="button" className="border border-rule hover:border-gold hover:bg-goldb text-sm font-semibold py-3 rounded-sm transition">
+                  <button
+                    key={a}
+                    type="button"
+                    onClick={() => setAmount(a)}
+                    className={[
+                      "border hover:border-gold hover:bg-goldb text-sm font-semibold py-3 rounded-sm transition",
+                      amount === a ? "border-gold bg-goldb" : "border-rule",
+                    ].join(" ")}
+                  >
                     {a}
                   </button>
                 ))}
               </div>
-              <input type="email" required placeholder="Email address" className="w-full border border-rule rounded-sm px-4 py-3 text-sm mb-3 focus:outline-none focus:border-gold transition" />
-              <input type="text" required placeholder="Full name" className="w-full border border-rule rounded-sm px-4 py-3 text-sm mb-5 focus:outline-none focus:border-gold transition" />
-              <button className="w-full bg-gold hover:bg-gold2 text-g900 uppercase tracking-wider text-xs font-semibold py-4 rounded-sm transition flex items-center justify-center gap-2">
-                <CreditCard size={15} /> Donate Securely
+              <input name="email" type="email" required placeholder="Email address" className="w-full border border-rule rounded-sm px-4 py-3 text-sm mb-3 focus:outline-none focus:border-gold transition" />
+              <input name="fullName" type="text" required placeholder="Full name" className="w-full border border-rule rounded-sm px-4 py-3 text-sm mb-5 focus:outline-none focus:border-gold transition" />
+              <button
+                disabled={status === "submitting"}
+                className="w-full bg-gold hover:bg-gold2 disabled:opacity-60 text-g900 uppercase tracking-wider text-xs font-semibold py-4 rounded-sm transition flex items-center justify-center gap-2"
+              >
+                <CreditCard size={15} /> {status === "submitting" ? "Sending…" : "Donate Securely"}
               </button>
+              {status === "success" && (
+                <p className="mt-4 flex items-center gap-2 text-g600 text-sm">
+                  <CheckCircle2 size={16} /> Thank you — we'll follow up shortly.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="mt-4 flex items-center gap-2 text-red-600 text-sm">
+                  <AlertCircle size={16} /> {error}
+                </p>
+              )}
             </form>
           </div>
 

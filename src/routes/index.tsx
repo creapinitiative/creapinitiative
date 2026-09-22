@@ -3,7 +3,7 @@ import { ArrowRight, Leaf, Scale, Users, FileText, Download, CalendarDays, MapPi
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { AnimatedStat } from "@/components/site/AnimatedStat";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { UPCOMING_PROGRAMS } from "@/lib/upcoming-programs";
+import { upcomingProgramsApi } from "@/api/collections-api";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Championing equity, access, and sustainability across Nigeria and Africa." },
     ],
   }),
+  loader: () => upcomingProgramsApi.list(),
   component: Home,
 });
 
@@ -70,6 +71,8 @@ const PUBS = [
 ];
 
 function Home() {
+  const UPCOMING_PROGRAMS = Route.useLoaderData();
+
   return (
     <>
       {/* 1. Hero Slider */}
@@ -220,6 +223,9 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {UPCOMING_PROGRAMS.length === 0 && (
+              <p className="text-ink3 md:col-span-2 xl:col-span-3">No upcoming programs right now — check back soon.</p>
+            )}
             {UPCOMING_PROGRAMS.map((program, idx) => (
               <RevealItem
                 key={program.slug}
@@ -229,10 +235,10 @@ function Home() {
               >
                 <div className="relative overflow-hidden">
                   <img
-                    src={program.image}
+                    src={program.image_url ?? undefined}
                     alt={program.subtitle}
                     loading="lazy"
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-64 object-cover bg-g100 group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 to-transparent" />
                   <span className="absolute top-4 left-4 bg-gold text-g900 text-[11px] font-semibold tracking-[0.1em] uppercase px-2.5 py-1 rounded-sm">

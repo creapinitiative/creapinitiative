@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { BLOG_POSTS_BY_SLUG } from "@/lib/blog-posts";
+import { getBlogPostBySlug } from "@/api/collections-api";
 
 export const Route = createFileRoute("/resources/blogs/$slug")({
+  loader: ({ params }) => getBlogPostBySlug({ data: { slug: params.slug } }),
   component: BlogPostPage,
 });
 
 function BlogPostPage() {
-  const { slug } = Route.useParams();
-  const post = BLOG_POSTS_BY_SLUG[slug];
+  const post = Route.useLoaderData();
 
   if (!post) {
     return (
@@ -43,17 +43,19 @@ function BlogPostPage() {
         <p className="eyebrow-dark mb-4">{post.category}</p>
         <h1 className="display-lg mb-4">{post.title}</h1>
         <p className="text-sm text-ink4 tracking-wide mb-8">
-          {post.date} · {post.author} · {post.readMinutes}
+          {post.date} · {post.author} · {post.read_minutes}
         </p>
 
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-[360px] md:h-[460px] object-cover rounded-sm border border-rule mb-10"
-        />
+        {post.image_url && (
+          <img
+            src={post.image_url}
+            alt={post.title}
+            className="w-full h-[360px] md:h-[460px] object-cover rounded-sm border border-rule mb-10"
+          />
+        )}
 
         <div className="space-y-6 text-lg text-ink2 leading-relaxed">
-          {post.content.map((paragraph) => (
+          {(post.content ?? []).map((paragraph: string) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>

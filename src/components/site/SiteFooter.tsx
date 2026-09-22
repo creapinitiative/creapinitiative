@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import logo from "@/assets/creap-logo-alt-small.png";
 import { Reveal } from "@/components/site/Reveal";
-import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin } from "lucide-react";
+import { useFormSubmit } from "@/lib/use-form-submit";
+import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin, CheckCircle2, AlertCircle } from "lucide-react";
 import { TikTokIcon, ThreadsIcon } from "@/components/site/SocialIcons";
 
 export function SiteFooter() {
+  const { status, error, handleSubmit } = useFormSubmit();
+
   return (
     <footer className="bg-g900 text-white/75">
       {/* Newsletter band */}
@@ -21,22 +24,32 @@ export function SiteFooter() {
             </p>
           </div>
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) =>
+              handleSubmit(e, (fd) => ({
+                formType: "newsletter",
+                firstName: fd.get("firstName"),
+                lastName: fd.get("lastName"),
+                email: fd.get("email"),
+              }))
+            }
             className="grid sm:grid-cols-2 gap-4"
           >
             <input
+              name="firstName"
               type="text"
               placeholder="First name"
               className="bg-white/5 border border-white/15 rounded-sm px-4 py-3.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition"
               required
             />
             <input
+              name="lastName"
               type="text"
               placeholder="Last name"
               className="bg-white/5 border border-white/15 rounded-sm px-4 py-3.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition"
               required
             />
             <input
+              name="email"
               type="email"
               placeholder="Email address"
               className="sm:col-span-2 bg-white/5 border border-white/15 rounded-sm px-4 py-3.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition"
@@ -44,13 +57,24 @@ export function SiteFooter() {
             />
             <button
               type="submit"
-              className="sm:col-span-2 bg-gold hover:bg-gold2 text-g900 font-semibold uppercase tracking-wider text-xs py-4 rounded-sm transition hover:-translate-y-px"
+              disabled={status === "submitting"}
+              className="sm:col-span-2 bg-gold hover:bg-gold2 disabled:opacity-60 text-g900 font-semibold uppercase tracking-wider text-xs py-4 rounded-sm transition hover:-translate-y-px"
             >
-              Subscribe to Community Pulse
+              {status === "submitting" ? "Subscribing…" : "Subscribe to Community Pulse"}
             </button>
-            <p className="sm:col-span-2 text-[11px] text-white/40 tracking-wide">
-              We respect your privacy. Unsubscribe at any time.
-            </p>
+            {status === "success" ? (
+              <p className="sm:col-span-2 flex items-center gap-2 text-gold3 text-[11px] tracking-wide">
+                <CheckCircle2 size={14} /> You're subscribed — welcome aboard!
+              </p>
+            ) : status === "error" ? (
+              <p className="sm:col-span-2 flex items-center gap-2 text-red-300 text-[11px] tracking-wide">
+                <AlertCircle size={14} /> {error}
+              </p>
+            ) : (
+              <p className="sm:col-span-2 text-[11px] text-white/40 tracking-wide">
+                We respect your privacy. Unsubscribe at any time.
+              </p>
+            )}
           </form>
         </Reveal>
       </section>

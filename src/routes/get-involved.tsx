@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { HandHeart, Briefcase, Megaphone, Calendar } from "lucide-react";
+import { useFormSubmit } from "@/lib/use-form-submit";
+import { HandHeart, Briefcase, Megaphone, Calendar, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/get-involved")({
   head: () => ({
@@ -26,6 +27,8 @@ const EVENTS = [
 ];
 
 function GetInvolved() {
+  const { status, error, handleSubmit } = useFormSubmit();
+
   return (
     <>
       <PageHero
@@ -74,27 +77,49 @@ function GetInvolved() {
             <h2 className="display-lg">Lead CREAP in <em className="text-gold italic">your state</em></h2>
           </div>
           <form
-            onSubmit={(e) => { e.preventDefault(); alert("Thanks — we'll be in touch."); }}
+            onSubmit={(e) =>
+              handleSubmit(e, (fd) => ({
+                formType: "coordinator",
+                fullName: fd.get("fullName"),
+                email: fd.get("email"),
+                phone: fd.get("phone"),
+                state: fd.get("state"),
+                reason: fd.get("reason"),
+              }))
+            }
             className="bg-white border border-rule rounded-sm p-8 lg:p-10 grid sm:grid-cols-2 gap-5"
           >
             {[
-              ["Full name", "text", false],
-              ["Email", "email", false],
-              ["Phone", "tel", false],
-              ["State of residence", "text", false],
-            ].map(([label, type]) => (
-              <label key={label as string} className="flex flex-col gap-2 text-sm">
-                <span className="text-ink3 font-medium">{label as string} *</span>
-                <input type={type as string} required className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
+              ["Full name", "fullName", "text"],
+              ["Email", "email", "email"],
+              ["Phone", "phone", "tel"],
+              ["State of residence", "state", "text"],
+            ].map(([label, name, type]) => (
+              <label key={name} className="flex flex-col gap-2 text-sm">
+                <span className="text-ink3 font-medium">{label} *</span>
+                <input name={name} type={type} required className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
               </label>
             ))}
             <label className="sm:col-span-2 flex flex-col gap-2 text-sm">
               <span className="text-ink3 font-medium">Why do you want to coordinate CREAP in your state? *</span>
-              <textarea required rows={5} className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
+              <textarea name="reason" required rows={5} className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
             </label>
-            <button className="sm:col-span-2 bg-g600 hover:bg-g700 text-white uppercase tracking-wider text-xs font-semibold py-4 rounded-sm transition">
-              Submit Application
+            <button
+              disabled={status === "submitting"}
+              className="sm:col-span-2 bg-g600 hover:bg-g700 disabled:opacity-60 text-white uppercase tracking-wider text-xs font-semibold py-4 rounded-sm transition"
+            >
+              {status === "submitting" ? "Submitting…" : "Submit Application"}
             </button>
+            {status === "success" && (
+              <p className="sm:col-span-2 flex items-center gap-2 text-g600 text-sm">
+                <CheckCircle2 size={16} /> Thanks — we'll be in touch.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="sm:col-span-2 flex items-center gap-2 text-red-600 text-sm">
+                <AlertCircle size={16} /> {error}
+              </p>
+            )}
           </form>
         </Reveal>
       </section>

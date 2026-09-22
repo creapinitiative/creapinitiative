@@ -16,9 +16,11 @@ import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as GetInvolvedRouteImport } from './routes/get-involved'
 import { Route as DonateRouteImport } from './routes/donate'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as ResourcesPolicyBriefsRouteImport } from './routes/resources.policy-briefs'
 import { Route as ResourcesGalleryRouteImport } from './routes/resources.gallery'
 import { Route as ResourcesBlogsRouteImport } from './routes/resources.blogs'
@@ -29,6 +31,13 @@ import { Route as ProgramsUpcomingProgramsRouteImport } from './routes/programs.
 import { Route as ProgramsSpecialProgramsRouteImport } from './routes/programs.special-programs'
 import { Route as ProgramsOurKeyProgramsRouteImport } from './routes/programs.our-key-programs'
 import { Route as ProgramsCommunityDialogueProgramsRouteImport } from './routes/programs.community-dialogue-programs'
+import { Route as DashboardSubmissionsRouteImport } from './routes/dashboard.submissions'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardProgramsRouteImport } from './routes/dashboard.programs'
+import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.policy-briefs'
+import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
+import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
+import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
 import { Route as ResourcesBlogsSlugRouteImport } from './routes/resources.blogs.$slug'
 import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
 
@@ -67,6 +76,11 @@ const DonateRoute = DonateRouteImport.update({
   path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -81,6 +95,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const ResourcesPolicyBriefsRoute = ResourcesPolicyBriefsRouteImport.update({
   id: '/policy-briefs',
@@ -134,6 +153,41 @@ const ProgramsCommunityDialogueProgramsRoute =
     path: '/community-dialogue-programs',
     getParentRoute: () => ProgramsRoute,
   } as any)
+const DashboardSubmissionsRoute = DashboardSubmissionsRouteImport.update({
+  id: '/submissions',
+  path: '/submissions',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardProgramsRoute = DashboardProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardPolicyBriefsRoute = DashboardPolicyBriefsRouteImport.update({
+  id: '/policy-briefs',
+  path: '/policy-briefs',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLeadershipRoute = DashboardLeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardBlogsRoute = DashboardBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const ResourcesBlogsSlugRoute = ResourcesBlogsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -150,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
@@ -157,6 +212,13 @@ export interface FileRoutesByFullPath {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
+  '/dashboard/programs': typeof DashboardProgramsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
@@ -167,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -181,6 +244,13 @@ export interface FileRoutesByTo {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
+  '/dashboard/programs': typeof DashboardProgramsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
@@ -191,6 +261,7 @@ export interface FileRoutesByTo {
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -199,6 +270,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
@@ -206,6 +278,13 @@ export interface FileRoutesById {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
+  '/dashboard/programs': typeof DashboardProgramsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
@@ -216,6 +295,7 @@ export interface FileRoutesById {
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -225,6 +305,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/dashboard'
     | '/donate'
     | '/get-involved'
     | '/leadership'
@@ -232,6 +313,13 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/dashboard/blogs'
+    | '/dashboard/gallery'
+    | '/dashboard/leadership'
+    | '/dashboard/policy-briefs'
+    | '/dashboard/programs'
+    | '/dashboard/reports'
+    | '/dashboard/submissions'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
@@ -242,6 +330,7 @@ export interface FileRouteTypes {
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
+    | '/dashboard/'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -256,6 +345,13 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/dashboard/blogs'
+    | '/dashboard/gallery'
+    | '/dashboard/leadership'
+    | '/dashboard/policy-briefs'
+    | '/dashboard/programs'
+    | '/dashboard/reports'
+    | '/dashboard/submissions'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
@@ -266,6 +362,7 @@ export interface FileRouteTypes {
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
+    | '/dashboard'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   id:
@@ -273,6 +370,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/dashboard'
     | '/donate'
     | '/get-involved'
     | '/leadership'
@@ -280,6 +378,13 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/dashboard/blogs'
+    | '/dashboard/gallery'
+    | '/dashboard/leadership'
+    | '/dashboard/policy-briefs'
+    | '/dashboard/programs'
+    | '/dashboard/reports'
+    | '/dashboard/submissions'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
@@ -290,6 +395,7 @@ export interface FileRouteTypes {
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
+    | '/dashboard/'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   fileRoutesById: FileRoutesById
@@ -298,6 +404,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   DonateRoute: typeof DonateRoute
   GetInvolvedRoute: typeof GetInvolvedRoute
   LeadershipRoute: typeof LeadershipRoute
@@ -358,6 +465,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -378,6 +492,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/resources/policy-briefs': {
       id: '/resources/policy-briefs'
@@ -449,6 +570,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsCommunityDialogueProgramsRouteImport
       parentRoute: typeof ProgramsRoute
     }
+    '/dashboard/submissions': {
+      id: '/dashboard/submissions'
+      path: '/submissions'
+      fullPath: '/dashboard/submissions'
+      preLoaderRoute: typeof DashboardSubmissionsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/programs': {
+      id: '/dashboard/programs'
+      path: '/programs'
+      fullPath: '/dashboard/programs'
+      preLoaderRoute: typeof DashboardProgramsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/policy-briefs': {
+      id: '/dashboard/policy-briefs'
+      path: '/policy-briefs'
+      fullPath: '/dashboard/policy-briefs'
+      preLoaderRoute: typeof DashboardPolicyBriefsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/leadership': {
+      id: '/dashboard/leadership'
+      path: '/leadership'
+      fullPath: '/dashboard/leadership'
+      preLoaderRoute: typeof DashboardLeadershipRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/gallery': {
+      id: '/dashboard/gallery'
+      path: '/gallery'
+      fullPath: '/dashboard/gallery'
+      preLoaderRoute: typeof DashboardGalleryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/blogs': {
+      id: '/dashboard/blogs'
+      path: '/blogs'
+      fullPath: '/dashboard/blogs'
+      preLoaderRoute: typeof DashboardBlogsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/resources/blogs/$slug': {
       id: '/resources/blogs/$slug'
       path: '/$slug'
@@ -465,6 +635,32 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface DashboardRouteChildren {
+  DashboardBlogsRoute: typeof DashboardBlogsRoute
+  DashboardGalleryRoute: typeof DashboardGalleryRoute
+  DashboardLeadershipRoute: typeof DashboardLeadershipRoute
+  DashboardPolicyBriefsRoute: typeof DashboardPolicyBriefsRoute
+  DashboardProgramsRoute: typeof DashboardProgramsRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardSubmissionsRoute: typeof DashboardSubmissionsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardBlogsRoute: DashboardBlogsRoute,
+  DashboardGalleryRoute: DashboardGalleryRoute,
+  DashboardLeadershipRoute: DashboardLeadershipRoute,
+  DashboardPolicyBriefsRoute: DashboardPolicyBriefsRoute,
+  DashboardProgramsRoute: DashboardProgramsRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
+  DashboardSubmissionsRoute: DashboardSubmissionsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
 
 interface ProgramsUpcomingProgramsRouteChildren {
   ProgramsUpcomingProgramsSlugRoute: typeof ProgramsUpcomingProgramsSlugRoute
@@ -546,6 +742,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   DonateRoute: DonateRoute,
   GetInvolvedRoute: GetInvolvedRoute,
   LeadershipRoute: LeadershipRoute,
