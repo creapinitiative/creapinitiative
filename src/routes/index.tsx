@@ -76,7 +76,9 @@ function isPastEvent(endDate?: string | null): boolean {
 }
 
 function Home() {
-  const UPCOMING_PROGRAMS = (Route.useLoaderData() ?? []).filter((p) => !isPastEvent(p.event_end_date));
+  const ALL_PROGRAMS = Route.useLoaderData() ?? [];
+  const UPCOMING_PROGRAMS = ALL_PROGRAMS.filter((p) => !isPastEvent(p.event_end_date));
+  const HAS_PAST_PROGRAMS = ALL_PROGRAMS.some((p) => isPastEvent(p.event_end_date));
 
   return (
     <>
@@ -229,7 +231,23 @@ function Home() {
 
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
             {UPCOMING_PROGRAMS.length === 0 && (
-              <p className="text-ink3 md:col-span-2 xl:col-span-3">No upcoming programs right now — check back soon.</p>
+              <p className="text-ink3 md:col-span-2 xl:col-span-3">
+                No upcoming programs right now — check back shortly
+                {HAS_PAST_PROGRAMS && (
+                  <>
+                    {" "}
+                    or{" "}
+                    <Link
+                      to="/programs/upcoming-programs"
+                      hash="past-programs-archive"
+                      className="font-semibold text-g700 hover:text-g500 underline underline-offset-2"
+                    >
+                      view past programs
+                    </Link>
+                  </>
+                )}
+                .
+              </p>
             )}
             {UPCOMING_PROGRAMS.map((program, idx) => (
               <RevealItem
