@@ -1,34 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { galleryImagesApi } from "@/api/collections-api";
-import { tryGetSupabaseAdmin } from "@/api/supabase-admin";
-
-const debugGalleryLoad = createServerFn({ method: "GET" }).handler(async () => {
-  const images = await galleryImagesApi.list();
-  const supabase = tryGetSupabaseAdmin();
-  let rawLength: number | null = null;
-  let rawError: string | null = null;
-  if (supabase) {
-    const res = await supabase.from("gallery_images").select("id");
-    rawLength = res.data?.length ?? null;
-    rawError = res.error?.message ?? null;
-  }
-  return {
-    images,
-    debug: {
-      envUrlPresent: !!process.env.VITE_SUPABASE_URL,
-      envServiceKeyPresent: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-      envServiceKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length ?? 0,
-      supabaseConfigured: !!supabase,
-      apiListLength: images.length,
-      rawLength,
-      rawError,
-    },
-  };
-});
 
 export const Route = createFileRoute("/resources/gallery")({
   head: () => ({
@@ -37,13 +11,12 @@ export const Route = createFileRoute("/resources/gallery")({
       { name: "description", content: "Photo highlights from CREAP programs, outreaches, workshops, and community events." },
     ],
   }),
-  loader: () => debugGalleryLoad(),
+  loader: () => galleryImagesApi.list(),
   component: GalleryPage,
 });
 
 function GalleryPage() {
-  const result = Route.useLoaderData();
-  const images = result?.images ?? [];
+  const images = Route.useLoaderData() ?? [];
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -69,10 +42,6 @@ function GalleryPage() {
         title="Gallery"
         body="A visual record of our work across communities, schools, and policy spaces."
       />
-
-      <pre style={{ background: "black", color: "lime", padding: 16, fontSize: 12, whiteSpace: "pre-wrap" }}>
-        DEBUG: {JSON.stringify(result?.debug, null, 2)}
-      </pre>
 
       <section className="bg-bg py-16 lg:py-24">
         <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
