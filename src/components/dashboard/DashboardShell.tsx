@@ -139,8 +139,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       <BottomNav />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-[64px] lg:h-[72px] shrink-0 bg-white border-b border-rule flex items-center justify-end px-4 sm:px-6 lg:px-8">
-          <p className="text-xs sm:text-sm text-ink3 truncate">{session.user.email}</p>
+        <header className="h-[64px] lg:h-[72px] shrink-0 bg-g900 lg:bg-white border-b border-white/10 lg:border-rule flex items-center justify-between lg:justify-end px-4 sm:px-6 lg:px-8">
+          <img src={logo} alt="CREAP Africa Initiative" className="h-7 w-auto lg:hidden" />
+          <p className="text-xs sm:text-sm text-white/85 lg:text-ink3 truncate">{session.user.email}</p>
         </header>
         <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-20 lg:pb-8 overflow-y-auto min-w-0">{children}</main>
       </div>
