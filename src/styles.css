@@ -303,3 +303,12 @@
 .slide-border-top-smooth:hover::after {
   transform: scaleX(1);
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
