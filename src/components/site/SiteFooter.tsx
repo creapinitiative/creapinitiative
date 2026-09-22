@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import logo from "@/assets/creap-logo-alt-small.png";
 import { Reveal } from "@/components/site/Reveal";
 import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin } from "lucide-react";
+import { TikTokIcon, ThreadsIcon } from "@/components/site/SocialIcons";
 
 export function SiteFooter() {
   return (
@@ -64,10 +65,12 @@ export function SiteFooter() {
           <p className="mt-3 text-sm text-white/60">Abuja, Nigeria.</p>
           <div className="flex items-center gap-3 mt-6">
             {[
-              { Icon: Facebook, href: "https://www.facebook.com/share/1ESwRFSCuT/" },
-              { Icon: Linkedin, href: "https://www.linkedin.com/company/creap-africa-initiative/" },
+              { Icon: Facebook, href: "https://www.facebook.com/share/16BhHZR317/" },
               { Icon: Instagram, href: "https://www.instagram.com/creapafricainitiative" },
+              { Icon: Linkedin, href: "https://www.linkedin.com/company/creap-africa-initiative/" },
               { Icon: Twitter, href: "https://x.com/creapafrica" },
+              { Icon: TikTokIcon, href: "https://vt.tiktok.com/ZS4HjMs5W/" },
+              { Icon: ThreadsIcon, href: "https://www.threads.com/@creapafricainitiative" },
               { Icon: Youtube, href: "https://youtube.com/@creapafricainitiative" },
             ].map(({ Icon, href }, i) => (
               <a
@@ -90,6 +93,7 @@ export function SiteFooter() {
               ["About", "/about"],
               ["Programs", "/programs"],
               ["Resources", "/resources"],
+              ["Reports", "/reports"],
               ["Leadership", "/leadership"],
               ["Opportunities", "/opportunities"],
             ].map(([l, t]) => (

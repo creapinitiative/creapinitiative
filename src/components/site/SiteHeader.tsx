@@ -28,6 +28,15 @@ const NAV = [
       { label: "Blogs", to: "/resources/blogs" },
     ],
   },
+  {
+    label: "Reports",
+    to: "/reports/project-reports",
+    children: [
+      { label: "Project Reports", to: "/reports/project-reports" },
+      { label: "Annual Reports", to: "/reports/annual-reports" },
+      { label: "Financial Reports", to: "/reports/financial-reports" },
+    ],
+  },
   { label: "Leadership", to: "/leadership" },
   { label: "Get Involved", to: "/get-involved" },
   { label: "Opportunities", to: "/opportunities" },

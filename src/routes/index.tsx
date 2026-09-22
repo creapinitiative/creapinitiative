@@ -58,8 +58,9 @@ const PUBS = [
   },
   {
     tag: "Policy Brief",
-    title: "Balancing Innovation and Caution in the Quest for Food Security",
+    title: "Balancing Innovation and Caution in Our Quest for Food Security",
     body: "Evidence-based pathways to agricultural innovation that maintain ecological integrity.",
+    file: "/reports/policy-brief-food-security-2025.pdf",
   },
   {
     tag: "Report",
@@ -158,7 +159,7 @@ function Home() {
               </div>
               <p className="eyebrow-dark text-g700 mb-5">Mission</p>
               <p className="font-display text-[34px] leading-[1.32] text-g900 max-w-[42ch]">
-                Empowering marginalized and underserved communities through people-centred, rights-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies
+                Empowering marginalised and underserved communities by advancing people-centred, right-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies.
               </p>
             </article>
           </div>
@@ -320,7 +321,11 @@ function Home() {
                 <div className="p-6 lg:p-7 flex-1 flex flex-col">
                   <h3 className="font-display text-[30px] leading-tight mb-3 flex-1">{p.title}</h3>
                   <p className="text-ink3 leading-relaxed mb-5">{p.body}</p>
-                  <a href="#" className="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider font-semibold text-gold hover:text-g600 transition">
+                  <a
+                    href={p.file ?? "#"}
+                    download={Boolean(p.file)}
+                    className="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider font-semibold text-gold hover:text-g600 transition"
+                  >
                     View PDF <Download size={13} />
                   </a>
                 </div>
@@ -339,10 +344,12 @@ function Home() {
           </h2>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             {[
-              ["Facebook", "https://www.facebook.com/share/1ESwRFSCuT/"],
-              ["LinkedIn", "https://www.linkedin.com/company/creap-africa-initiative/"],
+              ["Facebook", "https://www.facebook.com/share/16BhHZR317/"],
               ["Instagram", "https://www.instagram.com/creapafricainitiative"],
+              ["LinkedIn", "https://www.linkedin.com/company/creap-africa-initiative/"],
               ["Twitter / X", "https://x.com/creapafrica"],
+              ["TikTok", "https://vt.tiktok.com/ZS4HjMs5W/"],
+              ["Threads", "https://www.threads.com/@creapafricainitiative"],
               ["YouTube", "https://youtube.com/@creapafricainitiative"],
             ].map(([l, h], idx) => (
               <RevealItem

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as LeadershipRouteImport } from './routes/leadership'
@@ -21,6 +22,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResourcesPolicyBriefsRouteImport } from './routes/resources.policy-briefs'
 import { Route as ResourcesGalleryRouteImport } from './routes/resources.gallery'
 import { Route as ResourcesBlogsRouteImport } from './routes/resources.blogs'
+import { Route as ReportsProjectReportsRouteImport } from './routes/reports.project-reports'
+import { Route as ReportsFinancialReportsRouteImport } from './routes/reports.financial-reports'
+import { Route as ReportsAnnualReportsRouteImport } from './routes/reports.annual-reports'
 import { Route as ProgramsUpcomingProgramsRouteImport } from './routes/programs.upcoming-programs'
 import { Route as ProgramsSpecialProgramsRouteImport } from './routes/programs.special-programs'
 import { Route as ProgramsOurKeyProgramsRouteImport } from './routes/programs.our-key-programs'
@@ -31,6 +35,11 @@ import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/progr
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgramsRoute = ProgramsRouteImport.update({
@@ -88,6 +97,21 @@ const ResourcesBlogsRoute = ResourcesBlogsRouteImport.update({
   path: '/blogs',
   getParentRoute: () => ResourcesRoute,
 } as any)
+const ReportsProjectReportsRoute = ReportsProjectReportsRouteImport.update({
+  id: '/project-reports',
+  path: '/project-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const ReportsFinancialReportsRoute = ReportsFinancialReportsRouteImport.update({
+  id: '/financial-reports',
+  path: '/financial-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const ReportsAnnualReportsRoute = ReportsAnnualReportsRouteImport.update({
+  id: '/annual-reports',
+  path: '/annual-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
 const ProgramsUpcomingProgramsRoute =
   ProgramsUpcomingProgramsRouteImport.update({
     id: '/upcoming-programs',
@@ -131,11 +155,15 @@ export interface FileRoutesByFullPath {
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/reports/annual-reports': typeof ReportsAnnualReportsRoute
+  '/reports/financial-reports': typeof ReportsFinancialReportsRoute
+  '/reports/project-reports': typeof ReportsProjectReportsRoute
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
@@ -151,11 +179,15 @@ export interface FileRoutesByTo {
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/reports/annual-reports': typeof ReportsAnnualReportsRoute
+  '/reports/financial-reports': typeof ReportsFinancialReportsRoute
+  '/reports/project-reports': typeof ReportsProjectReportsRoute
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
@@ -172,11 +204,15 @@ export interface FileRoutesById {
   '/leadership': typeof LeadershipRoute
   '/opportunities': typeof OpportunitiesRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
   '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
+  '/reports/annual-reports': typeof ReportsAnnualReportsRoute
+  '/reports/financial-reports': typeof ReportsFinancialReportsRoute
+  '/reports/project-reports': typeof ReportsProjectReportsRoute
   '/resources/blogs': typeof ResourcesBlogsRouteWithChildren
   '/resources/gallery': typeof ResourcesGalleryRoute
   '/resources/policy-briefs': typeof ResourcesPolicyBriefsRoute
@@ -194,11 +230,15 @@ export interface FileRouteTypes {
     | '/leadership'
     | '/opportunities'
     | '/programs'
+    | '/reports'
     | '/resources'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
     | '/programs/upcoming-programs'
+    | '/reports/annual-reports'
+    | '/reports/financial-reports'
+    | '/reports/project-reports'
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
@@ -214,11 +254,15 @@ export interface FileRouteTypes {
     | '/leadership'
     | '/opportunities'
     | '/programs'
+    | '/reports'
     | '/resources'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
     | '/programs/upcoming-programs'
+    | '/reports/annual-reports'
+    | '/reports/financial-reports'
+    | '/reports/project-reports'
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
@@ -234,11 +278,15 @@ export interface FileRouteTypes {
     | '/leadership'
     | '/opportunities'
     | '/programs'
+    | '/reports'
     | '/resources'
     | '/programs/community-dialogue-programs'
     | '/programs/our-key-programs'
     | '/programs/special-programs'
     | '/programs/upcoming-programs'
+    | '/reports/annual-reports'
+    | '/reports/financial-reports'
+    | '/reports/project-reports'
     | '/resources/blogs'
     | '/resources/gallery'
     | '/resources/policy-briefs'
@@ -255,6 +303,7 @@ export interface RootRouteChildren {
   LeadershipRoute: typeof LeadershipRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
   ProgramsRoute: typeof ProgramsRouteWithChildren
+  ReportsRoute: typeof ReportsRouteWithChildren
   ResourcesRoute: typeof ResourcesRouteWithChildren
 }
 
@@ -265,6 +314,13 @@ declare module '@tanstack/react-router' {
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/programs': {
@@ -344,6 +400,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesBlogsRouteImport
       parentRoute: typeof ResourcesRoute
     }
+    '/reports/project-reports': {
+      id: '/reports/project-reports'
+      path: '/project-reports'
+      fullPath: '/reports/project-reports'
+      preLoaderRoute: typeof ReportsProjectReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/reports/financial-reports': {
+      id: '/reports/financial-reports'
+      path: '/financial-reports'
+      fullPath: '/reports/financial-reports'
+      preLoaderRoute: typeof ReportsFinancialReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/reports/annual-reports': {
+      id: '/reports/annual-reports'
+      path: '/annual-reports'
+      fullPath: '/reports/annual-reports'
+      preLoaderRoute: typeof ReportsAnnualReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
     '/programs/upcoming-programs': {
       id: '/programs/upcoming-programs'
       path: '/upcoming-programs'
@@ -422,6 +499,21 @@ const ProgramsRouteWithChildren = ProgramsRoute._addFileChildren(
   ProgramsRouteChildren,
 )
 
+interface ReportsRouteChildren {
+  ReportsAnnualReportsRoute: typeof ReportsAnnualReportsRoute
+  ReportsFinancialReportsRoute: typeof ReportsFinancialReportsRoute
+  ReportsProjectReportsRoute: typeof ReportsProjectReportsRoute
+}
+
+const ReportsRouteChildren: ReportsRouteChildren = {
+  ReportsAnnualReportsRoute: ReportsAnnualReportsRoute,
+  ReportsFinancialReportsRoute: ReportsFinancialReportsRoute,
+  ReportsProjectReportsRoute: ReportsProjectReportsRoute,
+}
+
+const ReportsRouteWithChildren =
+  ReportsRoute._addFileChildren(ReportsRouteChildren)
+
 interface ResourcesBlogsRouteChildren {
   ResourcesBlogsSlugRoute: typeof ResourcesBlogsSlugRoute
 }
@@ -459,6 +551,7 @@ const rootRouteChildren: RootRouteChildren = {
   LeadershipRoute: LeadershipRoute,
   OpportunitiesRoute: OpportunitiesRoute,
   ProgramsRoute: ProgramsRouteWithChildren,
+  ReportsRoute: ReportsRouteWithChildren,
   ResourcesRoute: ResourcesRouteWithChildren,
 }
 export const routeTree = rootRouteImport

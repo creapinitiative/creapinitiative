@@ -80,8 +80,8 @@ function About() {
             <p className="text-[11px] tracking-[0.16em] uppercase text-gold font-semibold">Mandate</p>
             <p className="text-white/60 leading-relaxed mt-3">
               Implemented through strategic thematic focus areas in{" "}
-              <strong className="text-white font-semibold">Peace and Democracy, Climate Change and Sustainability</strong>, and{" "}
-              <strong className="text-white font-semibold">Youth Empowerment and Inclusive Development</strong>
+              <strong className="text-white font-semibold">Peace Building and Democracy, Climate Change and Sustainability</strong>, and{" "}
+              <strong className="text-white font-semibold">Youth Empowerment and Inclusive Development</strong>.
             </p>
           </div>
         </Reveal>
@@ -106,7 +106,7 @@ function About() {
               </div>
               <p className="text-[11px] tracking-[0.16em] uppercase text-g900/70 font-semibold mb-4">Mission</p>
               <div className="font-display text-2xl lg:text-[1.7rem] text-g900 leading-snug">
-                Empowering marginalized and underserved communities through people-centred, rights-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies
+                Empowering marginalised and underserved communities by advancing people-centred, right-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies.
               </div>
             </div>
           </div>

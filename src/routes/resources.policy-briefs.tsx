@@ -20,9 +20,10 @@ const BRIEFS = [
     date: "May 2026",
   },
   {
-    title: "Balancing Innovation and Caution in the Quest for Food Security",
+    title: "Balancing Innovation and Caution in Our Quest for Food Security",
     body: "Evidence-based pathways to agricultural innovation that maintain ecological integrity.",
-    date: "April 2026",
+    date: "August 2025",
+    file: "/reports/policy-brief-food-security-2025.pdf",
   },
   {
     title: "Climate-Smart Agriculture and AI for Sustainable Food Systems in Nigeria",
@@ -73,7 +74,8 @@ function PolicyBriefsPage() {
                 <p className="text-ink3 leading-relaxed">{brief.body}</p>
               </div>
               <a
-                href="#"
+                href={brief.file ?? "#"}
+                download={Boolean(brief.file)}
                 className="shrink-0 inline-flex items-center gap-2 border border-rule hover:border-g500 text-ink2 hover:text-g700 px-4 py-2 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition"
               >
                 Download <Download size={13} />
