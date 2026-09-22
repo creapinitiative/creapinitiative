@@ -9,7 +9,7 @@ export const Route = createFileRoute("/dashboard/policy-briefs")({
 });
 
 function PolicyBriefsAdminPage() {
-  const rows = Route.useLoaderData();
+  const rows = Route.useLoaderData() ?? [];
 
   return (
     <CollectionManager

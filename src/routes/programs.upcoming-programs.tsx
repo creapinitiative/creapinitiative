@@ -21,7 +21,7 @@ export const Route = createFileRoute("/programs/upcoming-programs")({
 
 function UpcomingProgramsPage() {
   const { location } = useRouterState();
-  const programs = Route.useLoaderData();
+  const programs = Route.useLoaderData() ?? [];
 
   if (location.pathname !== "/programs/upcoming-programs") {
     return <Outlet />;

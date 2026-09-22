@@ -16,7 +16,7 @@ export const Route = createFileRoute("/resources/policy-briefs")({
 });
 
 function PolicyBriefsPage() {
-  const briefs = Route.useLoaderData();
+  const briefs = Route.useLoaderData() ?? [];
 
   return (
     <>

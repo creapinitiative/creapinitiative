@@ -71,7 +71,7 @@ const PUBS = [
 ];
 
 function Home() {
-  const UPCOMING_PROGRAMS = Route.useLoaderData();
+  const UPCOMING_PROGRAMS = Route.useLoaderData() ?? [];
 
   return (
     <>

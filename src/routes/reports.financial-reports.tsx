@@ -16,7 +16,7 @@ export const Route = createFileRoute("/reports/financial-reports")({
 });
 
 function FinancialReportsPage() {
-  const reports = Route.useLoaderData();
+  const reports = Route.useLoaderData() ?? [];
 
   return (
     <>

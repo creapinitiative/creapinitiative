@@ -17,7 +17,7 @@ export const Route = createFileRoute("/resources/blogs")({
 
 function BlogsPage() {
   const { location } = useRouterState();
-  const posts = Route.useLoaderData();
+  const posts = Route.useLoaderData() ?? [];
 
   if (location.pathname !== "/resources/blogs") {
     return <Outlet />;

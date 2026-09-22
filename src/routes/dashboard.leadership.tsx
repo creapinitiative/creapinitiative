@@ -9,7 +9,7 @@ export const Route = createFileRoute("/dashboard/leadership")({
 });
 
 function LeadershipAdminPage() {
-  const rows = Route.useLoaderData();
+  const rows = Route.useLoaderData() ?? [];
 
   return (
     <CollectionManager

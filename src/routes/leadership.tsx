@@ -36,7 +36,7 @@ function Card({ name, role, photo_url }: LeadershipEntry) {
 }
 
 function Leadership() {
-  const all = Route.useLoaderData();
+  const all = Route.useLoaderData() ?? [];
   const executive = all.filter((m) => m.team === "executive");
   const management = all.filter((m) => m.team === "management");
   const state = all.filter((m) => m.team === "state");

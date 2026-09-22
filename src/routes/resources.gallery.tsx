@@ -16,7 +16,7 @@ export const Route = createFileRoute("/resources/gallery")({
 });
 
 function GalleryPage() {
-  const images = Route.useLoaderData();
+  const images = Route.useLoaderData() ?? [];
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
