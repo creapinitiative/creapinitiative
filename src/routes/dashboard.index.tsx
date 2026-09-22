@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Inbox, FileText, BookOpen, BookOpenCheck, Megaphone, Newspaper, CalendarDays, Images, Users2 } from "lucide-react";
+import { Inbox, Send, FileText, BookOpen, BookOpenCheck, Megaphone, Newspaper, CalendarDays, Images, Users2 } from "lucide-react";
 import { listSubmissions } from "@/api/submissions";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/dashboard/")({
 type Submission = { id: string; form_type: string; data: Record<string, unknown>; status: string; created_at: string };
 
 const QUICK_LINKS = [
+  { to: "/dashboard/messaging", label: "Messaging", icon: Send },
   { to: "/dashboard/policy-briefs", label: "Policy Briefs", icon: FileText },
   { to: "/dashboard/toolkits-guides", label: "Toolkits & Guides", icon: BookOpenCheck },
   { to: "/dashboard/press-statements", label: "Press Statements", icon: Megaphone },

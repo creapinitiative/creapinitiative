@@ -1,6 +1,6 @@
 type FormType = "contact" | "coordinator" | "donate_interest" | "newsletter";
 
-function wrapper(bodyHtml: string): string {
+export function wrapper(bodyHtml: string): string {
   return `
     <div style="background:#f6f8f6;padding:32px 16px;font-family:Helvetica,Arial,sans-serif;">
       <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:4px;overflow:hidden;border:1px solid #e5e8e5;">

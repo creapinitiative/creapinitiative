@@ -24,6 +24,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
 import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
 import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
+import { Route as DashboardMessagingRouteImport } from './routes/dashboard.messaging'
 import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.policy-briefs'
 import { Route as DashboardPressStatementsRouteImport } from './routes/dashboard.press-statements'
 import { Route as DashboardProgramsRouteImport } from './routes/dashboard.programs'
@@ -118,6 +119,11 @@ const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
 const DashboardLeadershipRoute = DashboardLeadershipRouteImport.update({
   id: '/leadership',
   path: '/leadership',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardMessagingRoute = DashboardMessagingRouteImport.update({
+  id: '/messaging',
+  path: '/messaging',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardPolicyBriefsRoute = DashboardPolicyBriefsRouteImport.update({
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/messaging': typeof DashboardMessagingRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/messaging': typeof DashboardMessagingRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -315,6 +323,7 @@ export interface FileRoutesById {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
+  '/dashboard/messaging': typeof DashboardMessagingRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -354,6 +363,7 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
+    | '/dashboard/messaging'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -390,6 +400,7 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
+    | '/dashboard/messaging'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -427,6 +438,7 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
+    | '/dashboard/messaging'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -569,6 +581,13 @@ declare module '@tanstack/react-router' {
       path: '/leadership'
       fullPath: '/dashboard/leadership'
       preLoaderRoute: typeof DashboardLeadershipRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/messaging': {
+      id: '/dashboard/messaging'
+      path: '/messaging'
+      fullPath: '/dashboard/messaging'
+      preLoaderRoute: typeof DashboardMessagingRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/policy-briefs': {
@@ -718,6 +737,7 @@ interface DashboardRouteChildren {
   DashboardBlogsRoute: typeof DashboardBlogsRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
   DashboardLeadershipRoute: typeof DashboardLeadershipRoute
+  DashboardMessagingRoute: typeof DashboardMessagingRoute
   DashboardPolicyBriefsRoute: typeof DashboardPolicyBriefsRoute
   DashboardPressStatementsRoute: typeof DashboardPressStatementsRoute
   DashboardProgramsRoute: typeof DashboardProgramsRoute
@@ -731,6 +751,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBlogsRoute: DashboardBlogsRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
   DashboardLeadershipRoute: DashboardLeadershipRoute,
+  DashboardMessagingRoute: DashboardMessagingRoute,
   DashboardPolicyBriefsRoute: DashboardPolicyBriefsRoute,
   DashboardPressStatementsRoute: DashboardPressStatementsRoute,
   DashboardProgramsRoute: DashboardProgramsRoute,
