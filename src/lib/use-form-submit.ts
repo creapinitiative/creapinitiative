@@ -17,15 +17,16 @@ export function useFormSubmit() {
     buildPayload: (formData: FormData) => Record<string, unknown>,
   ) {
     e.preventDefault();
+    const form = e.currentTarget;
     setStatus("submitting");
     setError(null);
 
     try {
-      const formData = new FormData(e.currentTarget);
+      const formData = new FormData(form);
       const payload = buildPayload(formData);
       await submitForm({ data: payload as never });
       setStatus("success");
-      e.currentTarget.reset();
+      form.reset();
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
