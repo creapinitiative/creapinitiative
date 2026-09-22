@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { HandHeart, Briefcase, Megaphone, Calendar } from "lucide-react";
 
 export const Route = createFileRoute("/get-involved")({
@@ -34,40 +35,40 @@ function GetInvolved() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="grid md:grid-cols-3 gap-7">
-            {WAYS.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="bg-white border border-rule rounded-sm p-9 hover:border-gold hover:shadow-md transition">
+            {WAYS.map(({ icon: Icon, title, body }, idx) => (
+              <RevealItem key={title} as="div" index={idx} className="bg-white border border-rule rounded-sm p-9 hover:border-gold hover:shadow-md transition">
                 <div className="w-14 h-14 grid place-items-center bg-g100 text-g500 rounded-sm mb-6">
                   <Icon size={26} strokeWidth={1.5} />
                 </div>
                 <h3 className="font-display text-2xl mb-3">{title}</h3>
                 <p className="text-sm text-ink3 leading-relaxed">{body}</p>
-              </div>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="py-20 bg-g50 border-t border-rule">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <p className="eyebrow-dark mb-4">Upcoming Events</p>
           <h2 className="display-lg mb-12">Mark your <em className="text-gold italic">calendar</em></h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {EVENTS.map((e) => (
-              <article key={e.title} className="bg-white border border-rule rounded-sm p-7 hover:border-gold transition">
+            {EVENTS.map((e, idx) => (
+              <RevealItem key={e.title} as="article" index={idx} className="bg-white border border-rule rounded-sm p-7 hover:border-gold transition">
                 <Calendar size={24} strokeWidth={1.5} className="text-gold mb-4" />
                 <p className="text-[11px] tracking-[0.16em] uppercase text-ink4 mb-2">{e.date} · {e.tag}</p>
                 <h3 className="font-display text-xl leading-tight">{e.title}</h3>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Coordinator form */}
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[900px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[900px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="text-center mb-12">
             <p className="eyebrow-dark mb-4">State Coordinator Application</p>
             <h2 className="display-lg">Lead CREAP in <em className="text-gold italic">your state</em></h2>
@@ -95,14 +96,14 @@ function GetInvolved() {
               Submit Application
             </button>
           </form>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-g700 text-white py-16 text-center">
-        <div className="mx-auto max-w-[800px] px-6">
+        <Reveal as="div" className="mx-auto max-w-[800px] px-6">
           <h3 className="display-md text-white mb-5">Prefer to give?</h3>
           <Link to="/donate" className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 uppercase tracking-wider text-xs font-semibold px-7 py-3.5 rounded-sm transition">Donate Now</Link>
-        </div>
+        </Reveal>
       </section>
     </>
   );

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 
 import sylvanusUdoenoh from "@/assets/leadership/sylvanus-udoenoh.jpg";
 import marvinJoseph from "@/assets/leadership/marvin-joseph.jpg";
@@ -92,37 +93,49 @@ function Leadership() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <p className="eyebrow-dark mb-4">Executive Leadership</p>
           <h2 className="display-lg mb-12">Governance & <em className="text-gold italic">stewardship</em></h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {EXECUTIVE.map((m) => <Card key={m.name} {...m} />)}
+            {EXECUTIVE.map((m, idx) => (
+              <RevealItem key={m.name} as="div" index={idx}>
+                <Card {...m} />
+              </RevealItem>
+            ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="py-24 bg-g50 border-t border-rule">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <p className="eyebrow-dark mb-4">Management Team</p>
           <h2 className="display-lg mb-12">Day-to-day <em className="text-gold italic">leadership</em></h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {MANAGEMENT.map((m) => <Card key={m.name} {...m} />)}
+            {MANAGEMENT.map((m, idx) => (
+              <RevealItem key={m.name} as="div" index={idx}>
+                <Card {...m} />
+              </RevealItem>
+            ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="py-24 bg-bg border-t border-rule">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <p className="eyebrow-dark mb-4">State Level Team</p>
           <h2 className="display-lg mb-12">Leading our work <em className="text-gold italic">on the ground</em></h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {STATE_TEAM.map((m) => <Card key={m.name} {...m} />)}
+            {STATE_TEAM.map((m, idx) => (
+              <RevealItem key={m.name} as="div" index={idx}>
+                <Card {...m} />
+              </RevealItem>
+            ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-g700 text-white py-20">
-        <div className="mx-auto max-w-[1100px] px-16 lg:px-28 text-center">
+        <Reveal as="div" className="mx-auto max-w-[1100px] px-5 sm:px-8 md:px-12 lg:px-28 text-center">
           <p className="eyebrow mb-4">Join Us</p>
           <h2 className="display-md text-white mb-5">
             Become a <em className="italic text-goldf">State Coordinator</em>
@@ -133,7 +146,7 @@ function Leadership() {
           <Link to="/get-involved" className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 uppercase tracking-wider text-xs font-semibold px-8 py-4 rounded-sm transition">
             Apply Now
           </Link>
-        </div>
+        </Reveal>
       </section>
     </>
   );

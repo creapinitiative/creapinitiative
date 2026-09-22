@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { ArrowRight } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-posts";
 
@@ -29,10 +30,12 @@ function BlogsPage() {
       />
 
       <section className="bg-g50 py-16 lg:py-24">
-        <div className="mx-auto max-w-[1320px] px-16 lg:px-28 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {BLOG_POSTS.map((post) => (
-            <article
+        <Reveal as="div" className="mx-auto max-w-[1320px] px-5 sm:px-8 md:px-12 lg:px-28 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {BLOG_POSTS.map((post, idx) => (
+            <RevealItem
               key={post.slug}
+              as="article"
+              index={idx}
               className="group bg-white border border-rule rounded-sm overflow-hidden hover:border-gold hover:shadow-[0_18px_30px_rgba(10,26,15,0.12)] transition-all"
             >
               <div className="relative overflow-hidden">
@@ -62,9 +65,9 @@ function BlogsPage() {
                   Read Article <ArrowRight size={14} />
                 </Link>
               </div>
-            </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </section>
     </>
   );

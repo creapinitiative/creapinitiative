@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import slideEvidence from "@/assets/Evidence Driven Policy.jpg";
-import slideEquity from "@/assets/Equity for Marginalized.jpg";
-import slideGovernance from "@/assets/Civic Participation.jpg";
-import slideClimate from "@/assets/Greening futures.jpeg";
-import slidePeace from "@/assets/championing Peace.jpg";
-import slideCapacity from "@/assets/Empowering people through....jpg";
-import slidePartnership from "@/assets/Stronger together through....jpg";
+import slideEvidence from "@/assets/evidence-driven-policy.jpg";
+import slideEquity from "@/assets/equity-for-marginalized.jpg";
+import slideGovernance from "@/assets/civic-participation.jpg";
+import slideClimate from "@/assets/greening-futures.jpeg";
+import slidePeace from "@/assets/championing-peace.jpg";
+import slideCapacity from "@/assets/empowering-people-through-knowledge.jpg";
+import slidePartnership from "@/assets/stronger-together-through-collaboration.jpg";
 
 const SLIDES = [
   {
@@ -95,8 +95,8 @@ export function HeroSlider() {
             className="absolute inset-0"
             style={{ background: "linear-gradient(105deg, rgba(8,20,12,0.88) 0%, rgba(8,20,12,0.45) 55%, rgba(8,20,12,0.25) 100%)" }}
           />
-          <div className="absolute inset-0 flex items-end">
-            <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-20 pb-24 lg:pb-28">
+          <div className="absolute inset-0 flex items-center lg:items-end">
+            <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-20 lg:pb-28">
               <div
                 key={`c-${idx}-${i}`}
                 className={`max-w-[820px] ${idx === i ? "animate-fade-up" : "opacity-0"}`}
@@ -123,17 +123,17 @@ export function HeroSlider() {
       {/* Arrows */}
       <button
         onClick={() => go(i - 1)}
-        className="absolute left-5 lg:left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
+        className="absolute left-3 lg:left-10 top-1/2 -translate-y-1/2 z-20 w-8 h-8 lg:w-10 lg:h-10 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
         aria-label="Previous slide"
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft size={16} />
       </button>
       <button
         onClick={() => go(i + 1)}
-        className="absolute right-5 lg:right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
+        className="absolute right-3 lg:right-10 top-1/2 -translate-y-1/2 z-20 w-8 h-8 lg:w-10 lg:h-10 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
         aria-label="Next slide"
       >
-        <ChevronRight size={20} />
+        <ChevronRight size={16} />
       </button>
 
       {/* Dots + counter */}

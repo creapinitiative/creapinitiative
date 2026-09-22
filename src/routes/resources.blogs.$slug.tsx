@@ -32,7 +32,7 @@ function BlogPostPage() {
 
   return (
     <article className="bg-bg pt-[150px] lg:pt-[190px] pb-20 lg:pb-24">
-      <div className="mx-auto max-w-[920px] px-16 lg:px-28">
+      <div className="mx-auto max-w-[920px] px-5 sm:px-8 md:px-12 lg:px-28">
         <Link
           to="/resources/blogs"
           className="inline-flex items-center gap-2 text-[12px] font-semibold tracking-[0.12em] uppercase text-g700 hover:text-g500 mb-7"

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Download, Stethoscope, Tractor, MonitorSmartphone } from "lucide-react";
 
 export const Route = createFileRoute("/programs/special-programs")({
@@ -40,10 +41,12 @@ function SpecialProgramsPage() {
       />
 
       <section className="bg-bg py-16 lg:py-24">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {SPECIAL_PROGRAMS.map(({ icon: Icon, title, body }) => (
-            <article
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {SPECIAL_PROGRAMS.map(({ icon: Icon, title, body }, idx) => (
+            <RevealItem
               key={title}
+              as="article"
+              index={idx}
               className="bg-white border border-rule rounded-sm p-8 flex flex-col hover:border-gold hover:shadow-md transition"
             >
               <div className="w-14 h-14 rounded-sm bg-g100 text-g500 grid place-items-center mb-6">
@@ -57,9 +60,9 @@ function SpecialProgramsPage() {
               >
                 Download Report <Download size={13} />
               </a>
-            </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </section>
     </>
   );

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Briefcase, GraduationCap, Users2 } from "lucide-react";
 
 export const Route = createFileRoute("/opportunities")({
@@ -28,9 +29,9 @@ function Opportunities() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1100px] px-16 lg:px-28 space-y-4">
-          {OPENINGS.map(({ icon: Icon, type, title, location, deadline }) => (
-            <article key={title} className="bg-white border border-rule rounded-sm p-7 lg:p-8 grid md:grid-cols-12 gap-6 items-center hover:border-gold transition">
+        <Reveal as="div" className="mx-auto max-w-[1100px] px-5 sm:px-8 md:px-12 lg:px-28 space-y-4">
+          {OPENINGS.map(({ icon: Icon, type, title, location, deadline }, idx) => (
+            <RevealItem key={title} as="article" index={idx} className="bg-white border border-rule rounded-sm p-7 lg:p-8 grid md:grid-cols-12 gap-6 items-center hover:border-gold transition">
               <div className="md:col-span-1"><Icon size={28} strokeWidth={1.5} className="text-gold" /></div>
               <div className="md:col-span-7">
                 <span className="text-[11px] tracking-[0.16em] uppercase font-semibold text-gold">{type}</span>
@@ -42,9 +43,9 @@ function Opportunities() {
                   Apply
                 </Link>
               </div>
-            </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </section>
     </>
   );

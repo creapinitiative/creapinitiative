@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Download } from "lucide-react";
 
 export const Route = createFileRoute("/programs/community-dialogue-programs")({
@@ -77,11 +78,14 @@ function CommunityDialogueProgramsPage() {
       />
 
       <section className="bg-g50 py-16 lg:py-24">
-        <div className="mx-auto max-w-[1320px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1320px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="rounded-sm border border-rule bg-white overflow-hidden">
             {DIALOGUES.map((item, index) => (
-              <article
+              <RevealItem
                 key={item.title}
+                as="article"
+                index={index}
+                step={0.05}
                 className={[
                   "grid grid-cols-1 md:grid-cols-[80px_1fr_auto] gap-6 md:gap-8 items-start px-6 py-7 md:px-9 md:py-8",
                   index !== DIALOGUES.length - 1 ? "border-b border-rule" : "",
@@ -100,10 +104,10 @@ function CommunityDialogueProgramsPage() {
                 >
                   Download Report <Download size={13} />
                 </a>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

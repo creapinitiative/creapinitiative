@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import logo from "@/assets/creap-logo-alt-small.png";
+import { Reveal } from "@/components/site/Reveal";
 import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin } from "lucide-react";
 
 export function SiteFooter() {
@@ -7,7 +8,7 @@ export function SiteFooter() {
     <footer className="bg-g900 text-white/75">
       {/* Newsletter band */}
       <section className="bg-g700">
-        <div className="mx-auto max-w-[1200px] px-16 lg:px-28 py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <Reveal as="div" y={20} className="mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12 lg:px-28 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <p className="eyebrow text-gold3 mb-4">Stay Connected</p>
             <h2 className="display-lg text-white">
@@ -50,11 +51,11 @@ export function SiteFooter() {
               We respect your privacy. Unsubscribe at any time.
             </p>
           </form>
-        </div>
+        </Reveal>
       </section>
 
       {/* Main footer */}
-      <div className="mx-auto max-w-[1400px] px-16 lg:px-28 py-20 grid lg:grid-cols-5 gap-8 lg:gap-10">
+      <Reveal as="div" y={20} className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 py-20 grid lg:grid-cols-5 gap-8 lg:gap-10">
         <div className="lg:col-span-2">
           <img src={logo} alt="CREAP" className="h-12 w-auto mb-6" />
           <p className="max-w-md text-sm text-white/65 leading-relaxed">
@@ -120,10 +121,10 @@ export function SiteFooter() {
             <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> 9 Yola Street, Garki Area 7 Abuja, Federal Capital Territory, Nigeria</p>
           </div>
         </div>
-      </div>
+      </Reveal>
 
       <div className="border-t border-white/8">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/45">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/45">
           <p>© {new Date().getFullYear()} CREAP Africa Initiative. All rights reserved.</p>
           <p>Registered under the Companies and Allied Matters Act, 2020.</p>
         </div>

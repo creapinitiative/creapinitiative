@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Scale, Users, FileText, Download, CalendarDays, MapPin, SunMedium, Shield } from "lucide-react";
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { AnimatedStat } from "@/components/site/AnimatedStat";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { UPCOMING_PROGRAMS } from "@/lib/upcoming-programs";
 
 export const Route = createFileRoute("/")({
@@ -77,9 +78,12 @@ function Home() {
       <section className="relative bg-g900 text-white">
         <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(90deg, transparent, var(--gold), transparent)" }} />
         <div className="mx-auto max-w-[1400px] grid grid-cols-2 md:grid-cols-5">
-          {ACRONYM.map((a) => (
-            <div
+          {ACRONYM.map((a, idx) => (
+            <RevealItem
               key={a.letter}
+              as="div"
+              index={idx}
+              y={20}
               className="group relative px-6 lg:px-8 py-14 lg:py-16 border-r border-white/[0.06] last:border-r-0 odd:border-b md:odd:border-b-0 transition-colors hover:bg-[rgba(184,148,31,0.04)]"
             >
               <span className={`block font-display font-light leading-none text-[clamp(3.5rem,6vw,6rem)] mb-5 ${a.gold ? "text-gold3" : "text-white/15"}`}>
@@ -88,11 +92,11 @@ function Home() {
               <h3 className="font-display text-xl text-white mb-2.5">{a.word}</h3>
               <p className="text-[13px] text-white/55 leading-relaxed font-light">{a.desc}</p>
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            </div>
+            </RevealItem>
           ))}
         </div>
         <div className="border-t border-white/[0.06]">
-          <div className="mx-auto max-w-[1400px] px-16 lg:px-28 py-7 flex flex-wrap items-center justify-between gap-4">
+          <div className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 py-7 flex flex-wrap items-center justify-between gap-4">
             <p className="text-[11px] tracking-[0.24em] uppercase text-white/45">
               Community · Rights · Education · Advancement · Pathway · Initiative
             </p>
@@ -105,7 +109,7 @@ function Home() {
 
       {/* 3. Who We Are */}
       <section className="bg-bg py-20 lg:py-24">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28 grid lg:grid-cols-[1.04fr_0.96fr] gap-12 lg:gap-14 items-start">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 grid lg:grid-cols-[1.04fr_0.96fr] gap-12 lg:gap-14 items-start">
           <div className="pt-4 lg:pt-8 max-w-[640px]">
             <div className="inline-flex items-center gap-4 mb-6">
               <span className="h-[2px] w-9 bg-gold" aria-hidden="true" />
@@ -158,12 +162,12 @@ function Home() {
               </p>
             </article>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* 4. Three Thematic Areas */}
       <section className="bg-g50 py-20 lg:py-24">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="eyebrow-dark mb-4">Our Focus Areas</p>
             <h2 className="display-lg">
@@ -175,8 +179,13 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-0 rounded-sm overflow-hidden bg-white shadow-[0_12px_28px_rgba(10,26,15,0.08)]">
-            {THEMES.map(({ icon: Icon, title, body }) => (
-              <article key={title} className="slide-border-top-smooth group bg-white p-8 lg:p-9 border-r border-rule last:border-r-0 transition-all duration-300">
+            {THEMES.map(({ icon: Icon, title, body }, idx) => (
+              <RevealItem
+                key={title}
+                as="article"
+                index={idx}
+                className="slide-border-top-smooth group bg-white p-8 lg:p-9 border-r border-rule last:border-r-0 transition-all duration-300"
+              >
                 <div className="w-12 h-12 grid place-items-center bg-g100 text-g500 group-hover:bg-g500 group-hover:text-white rounded-sm mb-5 transition-colors">
                   <Icon size={22} strokeWidth={1.6} />
                 </div>
@@ -185,15 +194,15 @@ function Home() {
                 <Link to="/programs" className="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider font-semibold text-gold hover:text-g500 transition">
                   Learn more <ArrowRight size={13} />
                 </Link>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* 5. Statistics Band */}
       <section className="bg-bg py-20 lg:py-24 border-t border-rule">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
             <div>
               <p className="eyebrow-dark mb-4">Opportunities</p>
@@ -210,9 +219,11 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {UPCOMING_PROGRAMS.map((program) => (
-              <article
+            {UPCOMING_PROGRAMS.map((program, idx) => (
+              <RevealItem
                 key={program.slug}
+                as="article"
+                index={idx}
                 className="group bg-white border border-rule rounded-sm overflow-hidden hover:border-gold hover:shadow-[0_18px_30px_rgba(10,26,15,0.12)] transition-all"
               >
                 <div className="relative overflow-hidden">
@@ -252,14 +263,14 @@ function Home() {
                     View Program <ArrowRight size={14} />
                   </Link>
                 </div>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-g800 text-white py-20 lg:py-24">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="max-w-3xl mb-14">
             <p className="eyebrow mb-4">Key Impacts</p>
             <h2 className="display-lg text-white">
@@ -267,22 +278,22 @@ function Home() {
             </h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
-            {STATS.map((s) => (
-              <div key={s.label} className="border-t border-white/12 pt-7">
+            {STATS.map((s, idx) => (
+              <RevealItem key={s.label} as="div" index={idx} className="border-t border-white/12 pt-7">
                 <div className="font-display text-[clamp(2.5rem,4.5vw,4rem)] text-gold3 font-medium leading-none">
                   <AnimatedStat value={s.value} />
                 </div>
                 <h3 className="font-display text-lg text-white mt-4 mb-2">{s.label}</h3>
                 <p className="text-white/55 leading-relaxed">{s.desc}</p>
-              </div>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* 6. Publications */}
       <section className="bg-bg py-20 lg:py-24">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
             <div>
               <p className="eyebrow-dark mb-4">Knowledge Products</p>
@@ -296,8 +307,8 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-0 rounded-sm overflow-hidden bg-white shadow-[0_12px_26px_rgba(10,26,15,0.08)]">
-            {PUBS.map((p) => (
-              <article key={p.title} className="slide-border-top-smooth group bg-white overflow-hidden flex flex-col border-r border-rule last:border-r-0">
+            {PUBS.map((p, idx) => (
+              <RevealItem key={p.title} as="article" index={idx} className="slide-border-top-smooth group bg-white overflow-hidden flex flex-col border-r border-rule last:border-r-0">
                 <div className="aspect-[4/3] bg-g100 relative overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <FileText size={72} strokeWidth={1} className="text-g300 group-hover:text-gold transition-colors duration-500" />
@@ -313,15 +324,15 @@ function Home() {
                     View PDF <Download size={13} />
                   </a>
                 </div>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* 7. Social follow band */}
       <section className="bg-g50 border-t border-rule py-20">
-        <div className="mx-auto max-w-[1400px] px-16 lg:px-28 text-center">
+        <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 text-center">
           <p className="eyebrow-dark mb-4">Follow Our Journey</p>
           <h2 className="display-lg max-w-2xl mx-auto">
             Stay updated with our latest <em className="text-gold italic">community stories</em>
@@ -333,19 +344,23 @@ function Home() {
               ["Instagram", "https://www.instagram.com/creapafricainitiative"],
               ["Twitter / X", "https://x.com/creapafrica"],
               ["YouTube", "https://youtube.com/@creapafricainitiative"],
-            ].map(([l, h]) => (
-              <a
+            ].map(([l, h], idx) => (
+              <RevealItem
                 key={l}
+                as="a"
+                index={idx}
+                step={0.05}
+                y={12}
                 href={h}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 border border-rule hover:border-gold hover:bg-white text-sm tracking-wide text-ink3 hover:text-g700 rounded-sm transition"
               >
                 @creapinitiative · {l}
-              </a>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

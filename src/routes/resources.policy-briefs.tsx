@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Download, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/resources/policy-briefs")({
@@ -55,10 +56,12 @@ function PolicyBriefsPage() {
       />
 
       <section className="bg-g50 py-16 lg:py-24">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28 space-y-4">
-          {BRIEFS.map((brief) => (
-            <article
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28 space-y-4">
+          {BRIEFS.map((brief, idx) => (
+            <RevealItem
               key={brief.title}
+              as="article"
+              index={idx}
               className="group flex flex-col md:flex-row md:items-center gap-6 bg-white border border-rule rounded-sm p-7 hover:border-gold transition"
             >
               <div className="w-14 h-14 rounded-sm bg-g100 text-g500 grid place-items-center shrink-0 group-hover:bg-g600 group-hover:text-white transition">
@@ -75,9 +78,9 @@ function PolicyBriefsPage() {
               >
                 Download <Download size={13} />
               </a>
-            </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </section>
     </>
   );

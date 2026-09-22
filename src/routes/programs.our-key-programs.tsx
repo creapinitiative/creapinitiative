@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Earth, Handshake, Sprout, Trophy, Wheat, Download } from "lucide-react";
 
 export const Route = createFileRoute("/programs/our-key-programs")({
@@ -50,11 +51,13 @@ function OurKeyProgramsPage() {
       />
 
       <section className="bg-g50 py-16 lg:py-24">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="rounded-sm border border-rule bg-white overflow-hidden">
             {PROGRAMS.map(({ icon: Icon, title, body }, index) => (
-              <article
+              <RevealItem
                 key={title}
+                as="article"
+                index={index}
                 className={[
                   "grid grid-cols-1 md:grid-cols-[92px_1fr_auto] gap-6 md:gap-8 items-start px-6 py-8 md:px-10 md:py-10",
                   index !== PROGRAMS.length - 1 ? "border-b border-rule" : "",
@@ -73,10 +76,10 @@ function OurKeyProgramsPage() {
                 >
                   Download Report <Download size={13} />
                 </a>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

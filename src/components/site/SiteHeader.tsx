@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import logo from "@/assets/creap-logo-alt-small.png";
 import logoDark from "@/assets/creap-logo-primary.png";
 import { ChevronDown, Menu, X } from "lucide-react";
@@ -36,6 +37,7 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const { location } = useRouterState();
   const isHome = location.pathname === "/";
   const lightBg = !isHome; // interior pages = light header always
@@ -51,7 +53,15 @@ export function SiteHeader() {
   useEffect(() => {
     setOpen(false);
     setOpenDropdown(null);
+    setMobileExpanded(null);
   }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   const solid = lightBg || scrolled;
   const onLight = lightBg;
@@ -67,7 +77,7 @@ export function SiteHeader() {
           : "bg-transparent",
       ].join(" ")}
     >
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-16 lg:px-28 h-[78px]">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 sm:px-8 md:px-12 lg:px-28 h-[78px]">
         <Link to="/" className="flex items-center gap-3">
           <img
             src={onLight ? logoDark : logo}
@@ -190,50 +200,98 @@ export function SiteHeader() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className={["lg:hidden p-2 rounded-sm", onLight ? "text-ink" : "text-white"].join(" ")}
+          className={["lg:hidden p-2 rounded-sm relative z-[110]", open ? "text-white" : onLight ? "text-ink" : "text-white"].join(" ")}
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {open && (
-        <div className="lg:hidden bg-g900 border-t border-white/10 px-6 py-4">
-          <div className="flex flex-col gap-1">
-            {NAV.map((item) => (
-              <div key={item.label}>
-                <Link
-                  to={item.to}
-                  className="text-white/85 hover:text-white py-2.5 text-sm tracking-wide block"
-                >
-                  {item.label}
-                </Link>
-                {item.children && (
-                  <div className="ml-4 border-l border-white/10 pl-3 mt-1 mb-2 space-y-1">
-                    {item.children.map((child) => (
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ x: "-100%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden fixed inset-0 z-[100] bg-g900 flex flex-col overflow-y-auto"
+          >
+            <div className="h-[78px] shrink-0 flex items-center px-5 sm:px-8 border-b border-white/10">
+              <img src={logo} alt="CREAP Africa Initiative" className="h-9 w-auto" />
+            </div>
+
+            <nav className="flex-1 px-5 sm:px-8 py-6 flex flex-col gap-1">
+              {NAV.map((item) => {
+                const expanded = mobileExpanded === item.label;
+                return (
+                  <div key={item.label} className="border-b border-white/8">
+                    <div className="flex items-center">
                       <Link
-                        key={child.to}
-                        to={child.to}
-                        className="text-white/65 hover:text-white py-1.5 text-xs tracking-wide block"
+                        to={item.to}
+                        className="flex-1 text-white/90 hover:text-white py-4 text-[17px] font-display tracking-wide"
                       >
-                        {child.label}
+                        {item.label}
                       </Link>
-                    ))}
+                      {item.children && (
+                        <button
+                          type="button"
+                          onClick={() => setMobileExpanded(expanded ? null : item.label)}
+                          aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label} submenu`}
+                          aria-expanded={expanded}
+                          className="p-3 -mr-3 text-white/60 hover:text-gold3 transition"
+                        >
+                          <ChevronDown
+                            size={18}
+                            className={`transition-transform duration-300 ${expanded ? "rotate-180 text-gold3" : ""}`}
+                          />
+                        </button>
+                      )}
+                    </div>
+
+                    {item.children && (
+                      <AnimatePresence initial={false}>
+                        {expanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pb-3 pl-3 flex flex-col gap-0.5">
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.to}
+                                  to={child.to}
+                                  className="flex items-center gap-2.5 text-white/60 hover:text-gold3 py-2.5 text-[14px] tracking-wide transition"
+                                >
+                                  <span className="h-1 w-1 rounded-full bg-gold3/60" aria-hidden="true" />
+                                  {child.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
-            <div className="flex gap-2 pt-4 border-t border-white/10 mt-3">
-              <Link to="/get-involved" className="flex-1 text-center text-[12px] uppercase tracking-wider py-2.5 border border-white/25 text-white rounded-sm">
+                );
+              })}
+            </nav>
+
+            <div className="shrink-0 px-5 sm:px-8 py-6 border-t border-white/10 flex gap-3">
+              <Link to="/get-involved" className="flex-1 text-center text-[12px] uppercase tracking-wider py-3.5 border border-white/25 text-white rounded-sm">
                 Join Us
               </Link>
-              <Link to="/donate" className="flex-1 text-center text-[12px] uppercase tracking-wider py-2.5 bg-gold text-g900 font-semibold rounded-sm">
+              <Link to="/donate" className="flex-1 text-center text-[12px] uppercase tracking-wider py-3.5 bg-gold text-g900 font-semibold rounded-sm">
                 Donate
               </Link>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

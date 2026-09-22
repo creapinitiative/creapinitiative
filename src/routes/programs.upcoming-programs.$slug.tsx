@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, CalendarDays, ExternalLink, MapPin } from "lucide-react";
 import { UPCOMING_PROGRAMS_BY_SLUG } from "@/lib/upcoming-programs";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/programs/upcoming-programs/$slug")({
   component: UpcomingProgramDetailPage,
@@ -32,7 +33,7 @@ function UpcomingProgramDetailPage() {
 
   return (
     <article className="bg-bg pt-[150px] lg:pt-[190px] pb-20 lg:pb-24">
-      <div className="mx-auto max-w-[1040px] px-16 lg:px-28">
+      <div className="mx-auto max-w-[1040px] px-5 sm:px-8 md:px-12 lg:px-28">
         <Link
           to="/programs/upcoming-programs"
           className="inline-flex items-center gap-2 text-[12px] font-semibold tracking-[0.12em] uppercase text-g700 hover:text-g500 mb-7"
@@ -66,7 +67,7 @@ function UpcomingProgramDetailPage() {
         />
 
         <section className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-sm border border-rule bg-white p-7">
+          <RevealItem as="div" index={0} className="rounded-sm border border-rule bg-white p-7">
             <h2 className="font-display text-3xl mb-4">Who Can Apply</h2>
             <ul className="space-y-3 text-ink3">
               {program.audience.map((item) => (
@@ -76,9 +77,9 @@ function UpcomingProgramDetailPage() {
                 </li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
 
-          <div className="rounded-sm border border-rule bg-white p-7">
+          <RevealItem as="div" index={1} className="rounded-sm border border-rule bg-white p-7">
             <h2 className="font-display text-3xl mb-4">What You Will Learn</h2>
             <ul className="space-y-3 text-ink3">
               {program.skills.map((item) => (
@@ -88,10 +89,10 @@ function UpcomingProgramDetailPage() {
                 </li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
         </section>
 
-        <section className="mt-8 rounded-sm border border-rule bg-white p-7">
+        <Reveal as="section" className="mt-8 rounded-sm border border-rule bg-white p-7">
           <p className="text-ink2 leading-relaxed mb-6">{program.closingNote}</p>
           {program.partnerNote ? (
             <p className="text-sm text-ink4 mb-6">{program.partnerNote}</p>
@@ -115,7 +116,7 @@ function UpcomingProgramDetailPage() {
           >
             Apply Now <ExternalLink size={14} />
           </a>
-        </section>
+        </Reveal>
       </div>
     </article>
   );

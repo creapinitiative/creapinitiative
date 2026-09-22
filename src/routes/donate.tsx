@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { CreditCard, Building2, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/donate")({
@@ -24,7 +25,7 @@ function Donate() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1200px] px-16 lg:px-28 grid lg:grid-cols-2 gap-12">
+        <Reveal as="div" className="mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12 lg:px-28 grid lg:grid-cols-2 gap-12">
           <div className="bg-white border border-rule rounded-sm p-9 lg:p-12">
             <div className="w-14 h-14 grid place-items-center bg-g100 text-gold rounded-sm mb-6"><Heart size={26} /></div>
             <h2 className="display-md mb-4">Give Online</h2>
@@ -65,7 +66,7 @@ function Donate() {
             </dl>
             <p className="mt-7 text-[12px] text-white/50">Send confirmation to <span className="text-gold3">finance@creapinitiative.org</span></p>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

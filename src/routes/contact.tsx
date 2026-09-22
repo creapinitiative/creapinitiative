@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
@@ -31,10 +32,10 @@ function Contact() {
       />
 
       <section className="py-24 bg-bg">
-        <div className="mx-auto max-w-[1200px] px-16 lg:px-28 grid lg:grid-cols-5 gap-12">
+        <Reveal as="div" className="mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12 lg:px-28 grid lg:grid-cols-5 gap-12">
           <div className="lg:col-span-2 space-y-8">
-            {contacts.map(({ Icon, label, value }) => (
-              <div key={`${label}-${value}`} className="flex gap-4">
+            {contacts.map(({ Icon, label, value }, idx) => (
+              <RevealItem key={`${label}-${value}`} as="div" index={idx} y={16} className="flex gap-4">
                 <div className="w-12 h-12 grid place-items-center bg-g100 text-gold rounded-sm shrink-0">
                   <Icon size={20} strokeWidth={1.5} />
                 </div>
@@ -42,7 +43,7 @@ function Contact() {
                   <p className="text-[11px] tracking-[0.16em] uppercase text-ink4 font-semibold mb-1">{label}</p>
                   <p className="text-ink2">{value}</p>
                 </div>
-              </div>
+              </RevealItem>
             ))}
           </div>
 
@@ -67,7 +68,7 @@ function Contact() {
               Send Message
             </button>
           </form>
-        </div>
+        </Reveal>
       </section>
     </>
   );

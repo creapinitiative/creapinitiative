@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 
 import oh01 from "@/assets/gallery/oral-health-campaign-01.jpg";
 import oh02 from "@/assets/gallery/oral-health-campaign-02.jpg";
@@ -118,12 +119,16 @@ function GalleryPage() {
       />
 
       <section className="bg-bg py-16 lg:py-24">
-        <div className="mx-auto max-w-[1300px] px-16 lg:px-28">
+        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="columns-1 md:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
             {GALLERY_ITEMS.map((item, index) => {
               return (
-                <figure
+                <RevealItem
                   key={`${item.caption}-${index}`}
+                  as="figure"
+                  index={index}
+                  step={0.05}
+                  y={16}
                   className="mb-4 break-inside-avoid rounded-sm overflow-hidden border border-rule bg-white group"
                 >
                   <button
@@ -143,11 +148,11 @@ function GalleryPage() {
                     />
                   </button>
                   <figcaption className="px-4 py-3 text-ink3">{item.caption}</figcaption>
-                </figure>
+                </RevealItem>
               );
             })}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {activeIndex !== null && (

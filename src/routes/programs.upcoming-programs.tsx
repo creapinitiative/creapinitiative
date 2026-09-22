@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
+import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { UPCOMING_PROGRAMS } from "@/lib/upcoming-programs";
 
 export const Route = createFileRoute("/programs/upcoming-programs")({
@@ -33,10 +34,12 @@ function UpcomingProgramsPage() {
       />
 
       <section className="bg-g50 py-16 lg:py-24">
-        <div className="mx-auto max-w-[1320px] px-16 lg:px-28 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {UPCOMING_PROGRAMS.map((program) => (
-            <article
+        <Reveal as="div" className="mx-auto max-w-[1320px] px-5 sm:px-8 md:px-12 lg:px-28 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {UPCOMING_PROGRAMS.map((program, idx) => (
+            <RevealItem
               key={program.slug}
+              as="article"
+              index={idx}
               className="group bg-white border border-rule rounded-sm overflow-hidden hover:border-gold hover:shadow-[0_18px_30px_rgba(10,26,15,0.12)] transition-all"
             >
               <div className="relative overflow-hidden">
@@ -76,9 +79,9 @@ function UpcomingProgramsPage() {
                   View Program <ArrowRight size={14} />
                 </Link>
               </div>
-            </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </section>
     </>
   );
