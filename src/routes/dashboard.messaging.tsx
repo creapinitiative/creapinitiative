@@ -51,9 +51,9 @@ function MessagingPage() {
     return counts?.[recipientType] ?? null;
   }
 
-  function addFiles(files: FileList | null) {
-    if (!files) return;
-    setAttachments((prev) => [...prev, ...Array.from(files)]);
+  function addFiles(files: File[]) {
+    if (files.length === 0) return;
+    setAttachments((prev) => [...prev, ...files]);
   }
 
   function removeFile(idx: number) {
@@ -205,7 +205,7 @@ function MessagingPage() {
             multiple
             className="hidden"
             onChange={(e) => {
-              addFiles(e.target.files);
+              addFiles(Array.from(e.target.files ?? []));
               e.target.value = "";
             }}
           />
