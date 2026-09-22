@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Scale, Users, FileText, Download, CalendarDays, MapPin, SunMedium, Shield } from "lucide-react";
 import { HeroSlider } from "@/components/site/HeroSlider";
+import { AnimatedStat } from "@/components/site/AnimatedStat";
 import { UPCOMING_PROGRAMS } from "@/lib/upcoming-programs";
 
 export const Route = createFileRoute("/")({
@@ -269,7 +270,7 @@ function Home() {
             {STATS.map((s) => (
               <div key={s.label} className="border-t border-white/12 pt-7">
                 <div className="font-display text-[clamp(2.5rem,4.5vw,4rem)] text-gold3 font-medium leading-none">
-                  {s.value}
+                  <AnimatedStat value={s.value} />
                 </div>
                 <h3 className="font-display text-lg text-white mt-4 mb-2">{s.label}</h3>
                 <p className="text-white/55 leading-relaxed">{s.desc}</p>

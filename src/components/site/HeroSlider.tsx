@@ -70,22 +70,16 @@ const SLIDES = [
 
 export function HeroSlider() {
   const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
     const t = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 5500);
     return () => clearInterval(t);
-  }, [paused]);
+  }, []);
 
   const go = (n: number) => setI((n + SLIDES.length) % SLIDES.length);
 
   return (
-    <section
-      className="relative h-screen min-h-[640px] w-full overflow-hidden"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <section className="relative h-screen min-h-[640px] w-full overflow-hidden">
       {SLIDES.map((s, idx) => (
         <div
           key={idx}

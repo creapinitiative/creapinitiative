@@ -35,6 +35,7 @@ const NAV = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { location } = useRouterState();
   const isHome = location.pathname === "/";
   const lightBg = !isHome; // interior pages = light header always
@@ -47,7 +48,10 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setOpenDropdown(null);
+  }, [location.pathname]);
 
   const solid = lightBg || scrolled;
   const onLight = lightBg;
@@ -104,10 +108,19 @@ export function SiteHeader() {
               );
             }
 
+            const dropdownOpen = openDropdown === item.label;
+
             return (
-              <div key={item.label} className="relative group">
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(item.label)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
                 <Link
                   to={item.to}
+                  onClick={() => setOpenDropdown(null)}
+                  onFocus={() => setOpenDropdown(item.label)}
                   className={[
                     "px-3.5 py-2 text-[13px] font-medium tracking-wide rounded-sm transition-colors inline-flex items-center gap-1",
                     onLight
@@ -126,7 +139,10 @@ export function SiteHeader() {
 
                 <div
                   className={[
-                    "pointer-events-none absolute left-0 top-full pt-2 opacity-0 translate-y-1 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0",
+                    "absolute left-0 top-full pt-2 transition-all duration-200",
+                    dropdownOpen
+                      ? "pointer-events-auto opacity-100 translate-y-0"
+                      : "pointer-events-none opacity-0 translate-y-1",
                   ].join(" ")}
                 >
                   <div className="w-72 rounded-sm border border-rule bg-white shadow-[0_20px_35px_rgba(10,26,15,0.12)] p-2">
@@ -134,6 +150,7 @@ export function SiteHeader() {
                       <Link
                         key={child.to}
                         to={child.to}
+                        onClick={() => setOpenDropdown(null)}
                         className={[
                           "block rounded-sm px-3 py-2.5 text-[13px] transition",
                           activePath === child.to || activePath.startsWith(`${child.to}/`)

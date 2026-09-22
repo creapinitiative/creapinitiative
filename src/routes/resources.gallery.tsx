@@ -1,11 +1,45 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
-import aboutImg from "@/assets/about-team.jpg";
-import heroCivic from "@/assets/hero-civic.jpg";
-import heroHealth from "@/assets/hero-health.jpg";
-import heroCommunity from "@/assets/hero-community.jpg";
-import heroClimate from "@/assets/hero-climate.jpg";
+
+import oh01 from "@/assets/gallery/oral-health-campaign-01.jpg";
+import oh02 from "@/assets/gallery/oral-health-campaign-02.jpg";
+import oh03 from "@/assets/gallery/oral-health-campaign-03.jpg";
+import oh04 from "@/assets/gallery/oral-health-campaign-04.jpg";
+import oh05 from "@/assets/gallery/oral-health-campaign-05.jpg";
+import oh06 from "@/assets/gallery/oral-health-campaign-06.jpg";
+import oh07 from "@/assets/gallery/oral-health-campaign-07.jpg";
+import oh08 from "@/assets/gallery/oral-health-campaign-08.jpg";
+import oh09 from "@/assets/gallery/oral-health-campaign-09.jpg";
+import oh10 from "@/assets/gallery/oral-health-campaign-10.jpg";
+import oh11 from "@/assets/gallery/oral-health-campaign-11.jpg";
+import oh12 from "@/assets/gallery/oral-health-campaign-12.jpg";
+import oh13 from "@/assets/gallery/oral-health-campaign-13.jpg";
+import oh14 from "@/assets/gallery/oral-health-campaign-14.jpg";
+import oh15 from "@/assets/gallery/oral-health-campaign-15.jpg";
+import oh16 from "@/assets/gallery/oral-health-campaign-16.jpg";
+import oh17 from "@/assets/gallery/oral-health-campaign-17.jpg";
+import oh18 from "@/assets/gallery/oral-health-campaign-18.jpg";
+import oh19 from "@/assets/gallery/oral-health-campaign-19.jpg";
+import oh20 from "@/assets/gallery/oral-health-campaign-20.jpg";
+import oh21 from "@/assets/gallery/oral-health-campaign-21.jpg";
+import oh22 from "@/assets/gallery/oral-health-campaign-22.jpg";
+import oh23 from "@/assets/gallery/oral-health-campaign-23.jpg";
+import oh24 from "@/assets/gallery/oral-health-campaign-24.jpg";
+
+import rm01 from "@/assets/gallery/radio-maria-01.jpg";
+import rm02 from "@/assets/gallery/radio-maria-02.jpg";
+import rm03 from "@/assets/gallery/radio-maria-03.jpg";
+import rm04 from "@/assets/gallery/radio-maria-04.jpg";
+import rm05 from "@/assets/gallery/radio-maria-05.jpg";
+import rm06 from "@/assets/gallery/radio-maria-06.jpg";
+import rm07 from "@/assets/gallery/radio-maria-07.jpg";
+import rm08 from "@/assets/gallery/radio-maria-08.jpg";
+import rm09 from "@/assets/gallery/radio-maria-09.jpg";
+import rm10 from "@/assets/gallery/radio-maria-10.jpg";
+
+import sarcs from "@/assets/gallery/sarcs-conference.jpg";
+import days16 from "@/assets/gallery/16-days-activism.jpg";
 
 export const Route = createFileRoute("/resources/gallery")({
   head: () => ({
@@ -18,51 +52,42 @@ export const Route = createFileRoute("/resources/gallery")({
 });
 
 const GALLERY_ITEMS = [
-  {
-    image: heroCommunity,
-    caption: "Community dialogue session",
-    tall: true,
-  },
-  {
-    image: heroCivic,
-    caption: "Youth civic training workshop",
-    tall: false,
-  },
-  {
-    image: aboutImg,
-    caption: "School engagement day",
-    tall: true,
-  },
-  {
-    image: heroClimate,
-    caption: "Tree planting exercise",
-    tall: false,
-  },
-  {
-    image: heroHealth,
-    caption: "Climate adaptation field visit",
-    tall: false,
-  },
-  {
-    image: aboutImg,
-    caption: "Stakeholder policy roundtable",
-    tall: true,
-  },
-  {
-    image: heroCivic,
-    caption: "Volunteer community outreach",
-    tall: false,
-  },
-  {
-    image: heroCommunity,
-    caption: "Leadership mentorship cohort",
-    tall: true,
-  },
-  {
-    image: heroClimate,
-    caption: "Local governance workshop",
-    tall: false,
-  },
+  { image: oh20, caption: "CREAP staff and school officials hold up the Oral Health in Schools campaign banner", tall: false },
+  { image: oh01, caption: "Students and teachers rally behind the Oral Health in Schools campaign banner", tall: false },
+  { image: oh13, caption: "The wider school community poses with the campaign banner", tall: false },
+  { image: oh07, caption: "Facilitators review outreach materials ahead of the school session", tall: true },
+  { image: oh04, caption: "Learners hold up oral hygiene awareness flyers with the CREAP team", tall: false },
+  { image: oh18, caption: "A pupil addresses the school on healthy oral hygiene habits", tall: false },
+  { image: oh06, caption: "Pupils celebrate their new toothbrushes at the campaign send-off", tall: false },
+  { image: oh24, caption: "A pupil, teacher and CREAP staff member share the hygiene flyer", tall: true },
+  { image: oh02, caption: "The school community gathers for the oral health awareness campaign", tall: false },
+  { image: oh09, caption: "Facilitators brief the class using the campaign's roll-up banner", tall: false },
+  { image: oh12, caption: "Excited pupils wave their new toothbrushes", tall: false },
+  { image: oh15, caption: "A pupil and teacher share the oral hygiene flyer", tall: false },
+  { image: oh22, caption: "The team poses together with the oral health campaign banner", tall: false },
+  { image: oh10, caption: "Pupils and teachers display their oral hygiene flyers", tall: false },
+  { image: oh19, caption: "A candid moment as the team celebrates a successful outreach", tall: false },
+  { image: oh03, caption: "Pupils and staff pose together at the campaign banner", tall: false },
+  { image: oh16, caption: "Close-up with the 'Naflax is Smiling Bright' hygiene flyer", tall: true },
+  { image: oh14, caption: "Pupils raise their toothbrushes in celebration", tall: false },
+  { image: oh05, caption: "Pupils and facilitators share the 'Naflax is Smiling Bright' hygiene flyer", tall: false },
+  { image: oh23, caption: "The pupil continues the oral health talk before the campaign banner", tall: false },
+  { image: oh08, caption: "A pre-outreach briefing session at the school", tall: false },
+  { image: oh11, caption: "More learners join the flyer distribution exercise", tall: false },
+  { image: oh17, caption: "Another cheerful toothbrush celebration moment", tall: false },
+  { image: oh21, caption: "The full campaign banner, detailing the Gosa Junior Secondary School outreach", tall: false },
+  { image: rm01, caption: "On air at Radio Maria 91.3FM, Abuja", tall: true },
+  { image: rm03, caption: "The CREAP team with the Radio Maria FM banner", tall: false },
+  { image: rm07, caption: "The panel discussion continues in the studio", tall: false },
+  { image: rm02, caption: "Discussing CREAP's work live on Radio Maria", tall: true },
+  { image: rm06, caption: "Roundtable discussion in the Radio Maria studio", tall: false },
+  { image: rm10, caption: "The team celebrates after the broadcast", tall: true },
+  { image: rm04, caption: "Team photo after the on-air segment", tall: false },
+  { image: rm09, caption: "A wider view of the studio roundtable", tall: false },
+  { image: rm05, caption: "Another group photo at the Radio Maria studio", tall: false },
+  { image: rm08, caption: "Guests in conversation on air", tall: false },
+  { image: sarcs, caption: "Representing CREAP at the 11th Network Conference of Sexual Assault Referral Centers (SARCs)", tall: true },
+  { image: days16, caption: "Marking the 16 Days of Activism Against Sexual & Gender-Based Violence", tall: false },
 ];
 
 function GalleryPage() {
