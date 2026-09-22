@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { Sparkle, Shield } from "lucide-react";
+import { Sparkle, Shield, Scale, Handshake, User, Link2, Lightbulb, Sprout, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -25,13 +25,13 @@ const DRIVERS = [
 ];
 
 const VALUES = [
-  { emoji: "⚖️", label: "Equity" },
-  { emoji: "🤝", label: "Integrity" },
-  { emoji: "👤", label: "People-Centered" },
-  { emoji: "🔗", label: "Collaboration" },
-  { emoji: "💡", label: "Innovation" },
-  { emoji: "🌱", label: "Sustainability" },
-  { emoji: "💚", label: "Empathy" },
+  { icon: Scale, label: "Equity" },
+  { icon: Handshake, label: "Integrity" },
+  { icon: User, label: "People-Centered" },
+  { icon: Link2, label: "Collaboration" },
+  { icon: Lightbulb, label: "Innovation" },
+  { icon: Sprout, label: "Sustainability" },
+  { icon: Heart, label: "Empathy" },
 ];
 
 const OBJECTIVES = [
@@ -122,7 +122,7 @@ function About() {
               Our Key <em className="text-g500 italic">Drivers</em>
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 border border-rule rounded-sm overflow-hidden bg-white">
+          <div className="grid md:grid-cols-2 rounded-sm overflow-hidden bg-white">
             {DRIVERS.map(({ title, body }, idx) => (
               <RevealItem
                 key={title}
@@ -156,16 +156,17 @@ function About() {
             Core <em className="text-g500 italic">Values</em>
           </h2>
           <div className="flex flex-wrap gap-3">
-            {VALUES.map((v, idx) => (
+            {VALUES.map(({ icon: Icon, label }, idx) => (
               <RevealItem
-                key={v.label}
+                key={label}
                 as="span"
                 index={idx}
                 step={0.05}
                 y={12}
                 className="inline-flex items-center gap-2 bg-white border border-rule rounded-sm px-5 py-3 text-sm text-ink2"
               >
-                <span className="text-base">{v.emoji}</span> {v.label}
+                <Icon size={16} strokeWidth={1.75} className="text-gold" />
+                {label}
               </RevealItem>
             ))}
           </div>
