@@ -24,6 +24,8 @@ export function createCrudServerFns<Schema extends z.ZodTypeAny>(
       .order(orderBy.column, { ascending: orderBy.ascending })
       .order("created_at", { ascending: false });
 
+    console.error(`[DEBUG list] table=${table} rowCount=${data?.length} error=${error?.message ?? "none"}`);
+
     if (error) throw new Error(error.message);
     return data as Array<z.infer<Schema> & { id: string; sort_order: number }>;
   });
