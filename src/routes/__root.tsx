@@ -117,7 +117,9 @@ function RootComponent() {
   if (isDashboard) {
     return (
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <SuccessPopupProvider>
+          <Outlet />
+        </SuccessPopupProvider>
       </QueryClientProvider>
     );
   }

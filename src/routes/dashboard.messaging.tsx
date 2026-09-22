@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Send, Paperclip, X, Loader2 } from "lucide-react";
 import { getRecipientCounts, sendAdminEmail } from "@/api/mailer";
 import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
+import { useSuccessPopup } from "@/components/site/SuccessPopup";
 
 export const Route = createFileRoute("/dashboard/messaging")({
   component: MessagingPage,
@@ -36,6 +37,7 @@ function MessagingPage() {
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<SendResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { show } = useSuccessPopup();
 
   useEffect(() => {
     getRecipientCounts()
@@ -89,13 +91,16 @@ function MessagingPage() {
       formData.set("html", html);
       for (const file of attachments) formData.append("attachments", file);
 
-      const res = await sendAdminEmail({ data: formData });
-      setResult(res as SendResult);
-      if ((res as SendResult).failed.length === 0) {
+      const res = (await sendAdminEmail({ data: formData })) as SendResult;
+      if (res.failed.length === 0) {
+        setResult(null);
+        show(`Email sent to ${res.sent} recipient${res.sent === 1 ? "" : "s"}.`);
         setSubject("");
         setHtml("");
         setCustomEmails("");
         setAttachments([]);
+      } else {
+        setResult(res);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send.");
@@ -213,9 +218,8 @@ function MessagingPage() {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
         {result && (
-          <p className={result.failed.length > 0 ? "text-sm text-amber-700" : "text-sm text-g600"}>
-            Sent {result.sent} of {result.total}.
-            {result.failed.length > 0 && ` Failed: ${result.failed.join(", ")}`}
+          <p className="text-sm text-amber-700">
+            Sent {result.sent} of {result.total}. Failed: {result.failed.join(", ")}
           </p>
         )}
 
