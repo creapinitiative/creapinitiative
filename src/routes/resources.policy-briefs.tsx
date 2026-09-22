@@ -1,33 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { policyBriefsApi } from "@/api/collections-api";
-import { tryGetSupabaseAdmin } from "@/api/supabase-admin";
 import { Download, FileText } from "lucide-react";
-
-const debugLoad = createServerFn({ method: "GET" }).handler(async () => {
-  const viaFactory = await policyBriefsApi.list();
-  const supabase = tryGetSupabaseAdmin();
-  let raw: unknown = null;
-  let rawError: string | null = null;
-  if (supabase) {
-    const res = await supabase.from("policy_briefs").select("*");
-    raw = res.data;
-    rawError = res.error?.message ?? null;
-  }
-  return {
-    briefs: viaFactory,
-    debug: {
-      viaFactoryType: typeof viaFactory,
-      viaFactoryIsArray: Array.isArray(viaFactory),
-      viaFactoryLength: Array.isArray(viaFactory) ? viaFactory.length : null,
-      supabaseConfigured: !!supabase,
-      rawLength: Array.isArray(raw) ? raw.length : null,
-      rawError,
-    },
-  };
-});
 
 export const Route = createFileRoute("/resources/policy-briefs")({
   head: () => ({
@@ -36,13 +11,12 @@ export const Route = createFileRoute("/resources/policy-briefs")({
       { name: "description", content: "Policy briefs and research publications from CREAP Africa Initiative." },
     ],
   }),
-  loader: () => debugLoad(),
+  loader: () => policyBriefsApi.list(),
   component: PolicyBriefsPage,
 });
 
 function PolicyBriefsPage() {
-  const result = Route.useLoaderData();
-  const briefs = result?.briefs ?? [];
+  const briefs = Route.useLoaderData() ?? [];
 
   return (
     <>
@@ -51,10 +25,6 @@ function PolicyBriefsPage() {
         title="Policy Briefs"
         body="Research-informed recommendations to guide better policy and stronger community outcomes."
       />
-
-      <pre style={{ background: "black", color: "lime", padding: 16, fontSize: 12, whiteSpace: "pre-wrap" }}>
-        DEBUG: {JSON.stringify(result?.debug, null, 2)}
-      </pre>
 
       <section className="bg-g50 py-16 lg:py-24">
         <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28 space-y-4">
