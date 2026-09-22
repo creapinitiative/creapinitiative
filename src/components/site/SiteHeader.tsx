@@ -229,8 +229,16 @@ export function SiteHeader() {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="lg:hidden fixed inset-0 z-[100] bg-g900 flex flex-col overflow-y-auto"
             >
-              <div className="h-[78px] shrink-0 flex items-center px-5 sm:px-8 border-b border-white/10">
+              <div className="h-[78px] shrink-0 flex items-center justify-between px-5 sm:px-8 border-b border-white/10">
                 <img src={logo} alt="CREAP Africa Initiative" className="h-9 w-auto" />
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="p-2 -mr-2 text-white"
+                  aria-label="Close menu"
+                >
+                  <X size={22} />
+                </button>
               </div>
 
               <nav className="flex-1 px-5 sm:px-8 py-6 flex flex-col gap-1">

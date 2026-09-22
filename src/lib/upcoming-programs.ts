@@ -1,4 +1,4 @@
-import callForApplicationsImage from "@/assets/Call for applications.jpeg";
+import callForApplicationsImage from "@/assets/call-for-applications.jpeg";
 
 export type UpcomingProgram = {
   slug: string;
