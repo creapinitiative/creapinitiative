@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
-import { HandHeart, Briefcase, Megaphone, Calendar, CheckCircle2, AlertCircle } from "lucide-react";
+import { HandHeart, Briefcase, Megaphone, Calendar, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/get-involved")({
   head: () => ({
@@ -27,7 +27,7 @@ const EVENTS = [
 ];
 
 function GetInvolved() {
-  const { status, error, handleSubmit } = useFormSubmit();
+  const { status, error, handleSubmit } = useFormSubmit("Thanks — we'll be in touch.");
 
   return (
     <>
@@ -110,11 +110,6 @@ function GetInvolved() {
             >
               {status === "submitting" ? "Submitting…" : "Submit Application"}
             </button>
-            {status === "success" && (
-              <p className="sm:col-span-2 flex items-center gap-2 text-g600 text-sm">
-                <CheckCircle2 size={16} /> Thanks — we'll be in touch.
-              </p>
-            )}
             {status === "error" && (
               <p className="sm:col-span-2 flex items-center gap-2 text-red-600 text-sm">
                 <AlertCircle size={16} /> {error}

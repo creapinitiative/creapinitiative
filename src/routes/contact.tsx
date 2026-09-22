@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
-import { Mail, Phone, MapPin, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, Phone, MapPin, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
-  const { status, error, handleSubmit } = useFormSubmit();
+  const { status, error, handleSubmit } = useFormSubmit("Thank you — we'll respond soon.");
 
   const contacts = [
     { Icon: Phone, label: "Phone", value: "+234 8057193855" },
@@ -84,11 +84,6 @@ function Contact() {
             >
               {status === "submitting" ? "Sending…" : "Send Message"}
             </button>
-            {status === "success" && (
-              <p className="sm:col-span-2 flex items-center gap-2 text-g600 text-sm">
-                <CheckCircle2 size={16} /> Thank you — we'll respond soon.
-              </p>
-            )}
             {status === "error" && (
               <p className="sm:col-span-2 flex items-center gap-2 text-red-600 text-sm">
                 <AlertCircle size={16} /> {error}

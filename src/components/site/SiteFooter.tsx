@@ -2,11 +2,11 @@ import { Link } from "@tanstack/react-router";
 import logo from "@/assets/creap-logo-alt-small.png";
 import { Reveal } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
-import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin, CheckCircle2, AlertCircle } from "lucide-react";
+import { Facebook, Linkedin, Instagram, Twitter, Youtube, Mail, MapPin, AlertCircle } from "lucide-react";
 import { TikTokIcon, ThreadsIcon } from "@/components/site/SocialIcons";
 
 export function SiteFooter() {
-  const { status, error, handleSubmit } = useFormSubmit();
+  const { status, error, handleSubmit } = useFormSubmit("You're subscribed — welcome aboard!");
 
   return (
     <footer className="bg-g900 text-white/75">
@@ -62,11 +62,7 @@ export function SiteFooter() {
             >
               {status === "submitting" ? "Subscribing…" : "Subscribe to Community Pulse"}
             </button>
-            {status === "success" ? (
-              <p className="sm:col-span-2 flex items-center gap-2 text-gold3 text-[11px] tracking-wide">
-                <CheckCircle2 size={14} /> You're subscribed — welcome aboard!
-              </p>
-            ) : status === "error" ? (
+            {status === "error" ? (
               <p className="sm:col-span-2 flex items-center gap-2 text-red-300 text-[11px] tracking-wide">
                 <AlertCircle size={14} /> {error}
               </p>

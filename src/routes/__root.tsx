@@ -15,6 +15,7 @@ import favicon from "../assets/creap-favicon-live.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
+import { SuccessPopupProvider } from "../components/site/SuccessPopup";
 
 function NotFoundComponent() {
   return (
@@ -123,11 +124,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteHeader />
-      <main>
-        <Outlet />
-      </main>
-      <SiteFooter />
+      <SuccessPopupProvider>
+        <SiteHeader />
+        <main>
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </SuccessPopupProvider>
     </QueryClientProvider>
   );
 }

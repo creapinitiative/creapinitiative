@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
-import { CreditCard, Building2, Heart, CheckCircle2, AlertCircle } from "lucide-react";
+import { CreditCard, Building2, Heart, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/donate")({
   head: () => ({
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/donate")({
 const AMOUNTS = ["₦5,000", "₦20,000", "₦50,000", "Custom"];
 
 function Donate() {
-  const { status, error, handleSubmit } = useFormSubmit();
+  const { status, error, handleSubmit } = useFormSubmit("Thank you — we'll follow up shortly.");
   const [amount, setAmount] = useState<string>("");
 
   return (
@@ -68,11 +68,6 @@ function Donate() {
               >
                 <CreditCard size={15} /> {status === "submitting" ? "Sending…" : "Donate Securely"}
               </button>
-              {status === "success" && (
-                <p className="mt-4 flex items-center gap-2 text-g600 text-sm">
-                  <CheckCircle2 size={16} /> Thank you — we'll follow up shortly.
-                </p>
-              )}
               {status === "error" && (
                 <p className="mt-4 flex items-center gap-2 text-red-600 text-sm">
                   <AlertCircle size={16} /> {error}

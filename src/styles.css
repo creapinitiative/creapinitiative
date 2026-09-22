@@ -312,3 +312,33 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.success-checkmark-circle {
+  stroke: var(--g600);
+  stroke-width: 2;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: success-checkmark-circle 0.5s ease-out forwards;
+}
+
+.success-checkmark-check {
+  stroke: var(--g600);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: success-checkmark-check 0.35s 0.45s ease-out forwards;
+}
+
+@keyframes success-checkmark-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes success-checkmark-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
