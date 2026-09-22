@@ -121,3 +121,36 @@ create index if not exists form_submissions_created_at_idx on public.form_submis
 create index if not exists form_submissions_status_idx on public.form_submissions (status);
 create index if not exists reports_category_idx on public.reports (category);
 create index if not exists leadership_team_idx on public.leadership (team);
+
+-- ── Migration: past-event tagging for Upcoming Programs ─────────────────
+-- `create table if not exists` above won't add columns to an already-created
+-- table, so this runs as a separate, idempotent statement every time the
+-- file is re-run. Nullable: existing/future entries without it are treated
+-- as always-upcoming (never auto-archived).
+alter table public.upcoming_programs add column if not exists event_end_date date;
+
+-- ── Migration: Knowledge Hub — Toolkits & Guides ─────────────────────────
+create table if not exists public.toolkits_guides (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text not null,
+  date text not null,
+  file_url text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.toolkits_guides enable row level security;
+
+-- ── Migration: Knowledge Hub — Press Statements ──────────────────────────
+create table if not exists public.press_statements (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  body text not null,
+  date text not null,
+  file_url text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.press_statements enable row level security;

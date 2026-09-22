@@ -137,6 +137,19 @@ export function EntryForm({
                   </>
                 )}
 
+                {field.type === "date" && (
+                  <>
+                    <input
+                      type="date"
+                      required={field.required}
+                      value={(value as string) ?? ""}
+                      onChange={(e) => setField(field.key, e.target.value)}
+                      className="w-full border border-rule rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-gold transition"
+                    />
+                    {field.helper && <p className="text-xs text-ink4 mt-1">{field.helper}</p>}
+                  </>
+                )}
+
                 {field.type === "url" && (
                   <>
                     <input

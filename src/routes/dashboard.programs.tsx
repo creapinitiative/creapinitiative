@@ -21,6 +21,12 @@ function ProgramsAdminPage() {
       api={upcomingProgramsApi}
       getRowLabel={(row) => row.subtitle as string}
       getRowMeta={(row) => `${row.date} · ${row.venue}`}
+      getRowImage={(row) => row.image_url as string | undefined}
+      getRowBadge={(row) => {
+        const end = row.event_end_date as string | undefined;
+        if (!end) return undefined;
+        return end < new Date().toISOString().slice(0, 10) ? "Past" : "Upcoming";
+      }}
     />
   );
 }

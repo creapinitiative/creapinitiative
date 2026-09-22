@@ -8,6 +8,11 @@ export const Route = createFileRoute("/programs/upcoming-programs/$slug")({
   component: UpcomingProgramDetailPage,
 });
 
+function isPastEvent(endDate?: string | null): boolean {
+  if (!endDate) return false;
+  return endDate < new Date().toISOString().slice(0, 10);
+}
+
 function UpcomingProgramDetailPage() {
   const program = Route.useLoaderData();
 
@@ -45,7 +50,14 @@ function UpcomingProgramDetailPage() {
           <ArrowLeft size={14} /> Back to Upcoming Programs
         </Link>
 
-        <p className="eyebrow-dark mb-4">{program.title}</p>
+        <div className="flex items-center gap-3 mb-4">
+          <p className="eyebrow-dark">{program.title}</p>
+          {isPastEvent(program.event_end_date) && (
+            <span className="text-[10px] font-semibold uppercase tracking-[0.1em] px-2.5 py-1 rounded-sm bg-ink4/15 text-ink3">
+              Past Event
+            </span>
+          )}
+        </div>
         <h1 className="display-lg mb-4">{program.subtitle}</h1>
         <p className="text-xl text-ink2 leading-relaxed mb-4 max-w-4xl">{program.theme}</p>
         <p className="text-lg text-ink3 leading-relaxed mb-8 max-w-4xl">{program.summary}</p>

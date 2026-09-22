@@ -8,6 +8,7 @@ export type FieldConfig =
   | { key: string; label: string; type: "textarea"; required?: boolean; helper?: string }
   | { key: string; label: string; type: "url"; required?: boolean; helper?: string }
   | { key: string; label: string; type: "image"; required?: boolean; helper?: string }
+  | { key: string; label: string; type: "date"; required?: boolean; helper?: string }
   | { key: string; label: string; type: "boolean" }
   | { key: string; label: string; type: "select"; options: { value: string; label: string }[]; required?: boolean }
   | { key: string; label: string; type: "list"; helper?: string };
@@ -57,6 +58,12 @@ export const upcomingProgramFields: FieldConfig[] = [
   { key: "theme", label: "Theme", type: "textarea", required: true },
   { key: "summary", label: "Summary", type: "textarea", required: true },
   { key: "date", label: "Date", type: "text", required: true },
+  {
+    key: "event_end_date",
+    label: "Event end date",
+    type: "date",
+    helper: "Last day of the event. Used to auto-tag it \"Past\" and move it into the archive once it's over. Leave blank if unsure.",
+  },
   { key: "venue", label: "Venue", type: "text", required: true },
   { key: "image_url", label: "Cover image", type: "image" },
   { key: "audience", label: "Who can apply", type: "list", helper: "One item per line." },
@@ -89,4 +96,18 @@ export const leadershipFields: FieldConfig[] = [
     ],
   },
   { key: "photo_url", label: "Photo", type: "image" },
+];
+
+export const toolkitGuideFields: FieldConfig[] = [
+  { key: "title", label: "Title", type: "text", required: true },
+  { key: "date", label: "Date", type: "text", required: true },
+  { key: "description", label: "Description", type: "textarea", required: true },
+  { key: "file_url", label: "PDF / resource link", type: "url", helper: "Paste a Google Drive share link or any public URL." },
+];
+
+export const pressStatementFields: FieldConfig[] = [
+  { key: "title", label: "Title", type: "text", required: true },
+  { key: "date", label: "Date", type: "text", required: true },
+  { key: "body", label: "Statement", type: "textarea", required: true },
+  { key: "file_url", label: "Full statement link", type: "url", helper: "Optional — link to a PDF or external article." },
 ];

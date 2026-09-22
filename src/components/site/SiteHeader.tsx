@@ -20,10 +20,12 @@ const NAV = [
     ],
   },
   {
-    label: "Resources",
+    label: "Knowledge Hub",
     to: "/resources/policy-briefs",
     children: [
       { label: "Policy Briefs", to: "/resources/policy-briefs" },
+      { label: "Toolkits & Guides", to: "/resources/toolkits-guides" },
+      { label: "Press Statements", to: "/resources/press-statements" },
       { label: "Gallery", to: "/resources/gallery" },
       { label: "Blogs", to: "/resources/blogs" },
     ],

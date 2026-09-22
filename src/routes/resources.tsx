@@ -3,8 +3,8 @@ import { createFileRoute, Navigate, Outlet, useRouterState } from "@tanstack/rea
 export const Route = createFileRoute("/resources")({
   head: () => ({
     meta: [
-      { title: "Resources & Media — CREAP Africa Initiative" },
-      { name: "description", content: "Policy briefs, research reports, toolkits and news coverage from CREAP Africa Initiative." },
+      { title: "Knowledge Hub — CREAP Africa Initiative" },
+      { name: "description", content: "Policy briefs, toolkits, guides, press statements, gallery and blogs from CREAP Africa Initiative." },
     ],
   }),
   component: Resources,

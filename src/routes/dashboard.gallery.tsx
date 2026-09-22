@@ -21,6 +21,7 @@ function GalleryAdminPage() {
       api={galleryImagesApi}
       getRowLabel={(row) => row.caption as string}
       getRowMeta={(row) => (row.tall ? "Tall card" : "Standard card")}
+      getRowImage={(row) => row.image_url as string | undefined}
     />
   );
 }

@@ -77,11 +77,11 @@ function SubmissionsPage() {
           <p className="text-ink3 text-center py-12">No submissions here yet.</p>
         )}
         {filtered.map((s) => (
-          <div key={s.id} className="px-5 py-4">
-            <div className="flex items-center justify-between gap-4">
+          <div key={s.id} className="px-4 sm:px-5 py-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <button
                 onClick={() => setExpandedId(expandedId === s.id ? null : s.id)}
-                className="min-w-0 flex-1 text-left"
+                className="min-w-0 flex-1 basis-40 text-left"
               >
                 <div className="flex items-center gap-2 mb-0.5">
                   {s.status === "new" && <span className="h-1.5 w-1.5 rounded-full bg-gold shrink-0" />}
@@ -91,27 +91,30 @@ function SubmissionsPage() {
                   {(s.data.name as string) || (s.data.fullName as string) || (s.data.firstName as string) || (s.data.email as string) || "—"}
                 </p>
               </button>
-              <p className="text-xs text-ink4 shrink-0">{new Date(s.created_at).toLocaleString()}</p>
-              <div className="flex gap-1.5 shrink-0">
-                {s.status !== "read" && (
-                  <button onClick={() => markStatus(s.id, "read")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark read">
-                    <MailOpen size={14} />
+              <div className="flex items-center gap-3 shrink-0 ml-auto">
+                <p className="text-xs text-ink4 shrink-0 hidden sm:block">{new Date(s.created_at).toLocaleString()}</p>
+                <div className="flex gap-1.5 shrink-0">
+                  {s.status !== "read" && (
+                    <button onClick={() => markStatus(s.id, "read")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark read">
+                      <MailOpen size={14} />
+                    </button>
+                  )}
+                  {s.status !== "new" && (
+                    <button onClick={() => markStatus(s.id, "new")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark unread">
+                      <Mail size={14} />
+                    </button>
+                  )}
+                  {s.status !== "archived" && (
+                    <button onClick={() => markStatus(s.id, "archived")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Archive">
+                      <Archive size={14} />
+                    </button>
+                  )}
+                  <button onClick={() => remove(s.id)} className="p-2 border border-rule hover:border-red-400 hover:text-red-600 rounded-sm text-ink2" aria-label="Delete">
+                    <Trash2 size={14} />
                   </button>
-                )}
-                {s.status !== "new" && (
-                  <button onClick={() => markStatus(s.id, "new")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark unread">
-                    <Mail size={14} />
-                  </button>
-                )}
-                {s.status !== "archived" && (
-                  <button onClick={() => markStatus(s.id, "archived")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Archive">
-                    <Archive size={14} />
-                  </button>
-                )}
-                <button onClick={() => remove(s.id)} className="p-2 border border-rule hover:border-red-400 hover:text-red-600 rounded-sm text-ink2" aria-label="Delete">
-                  <Trash2 size={14} />
-                </button>
+                </div>
               </div>
+              <p className="text-xs text-ink4 shrink-0 sm:hidden w-full">{new Date(s.created_at).toLocaleString()}</p>
             </div>
 
             {expandedId === s.id && (

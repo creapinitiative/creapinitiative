@@ -9,12 +9,16 @@ import {
   upcomingProgramSchema,
   galleryImageSchema,
   leadershipSchema,
+  toolkitGuideSchema,
+  pressStatementSchema,
   type PolicyBrief,
   type Report,
   type BlogPost,
   type UpcomingProgramRow,
   type GalleryImage,
   type LeadershipEntry,
+  type ToolkitGuide,
+  type PressStatement,
 } from "@/api/collections";
 
 /**
@@ -470,4 +474,134 @@ export const leadershipApi = {
   create: createLeadershipEntry,
   update: updateLeadershipEntry,
   remove: removeLeadershipEntry,
+};
+
+// ── Toolkits & Guides ────────────────────────────────────────────────────
+
+export const listToolkitsGuides = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = tryGetSupabaseAdmin();
+  if (!supabase) return [] as ToolkitGuide[];
+  const { data, error } = await supabase
+    .from("toolkits_guides")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as ToolkitGuide[];
+});
+
+export const createToolkitGuide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => toolkitGuideSchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const sort_order = await nextSortOrder("toolkits_guides");
+    const { data: row, error } = await supabase.from("toolkits_guides").insert({ ...data, sort_order }).select().single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const updateToolkitGuide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string; data: unknown };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id, data: toolkitGuideSchema.parse(parsed.data) };
+  })
+  .handler(async ({ data: { id, data } }) => {
+    const supabase = getSupabaseAdmin();
+    const { data: row, error } = await supabase
+      .from("toolkits_guides")
+      .update({ ...data, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const removeToolkitGuide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id };
+  })
+  .handler(async ({ data: { id } }) => {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.from("toolkits_guides").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const toolkitsGuidesApi = {
+  list: listToolkitsGuides,
+  create: createToolkitGuide,
+  update: updateToolkitGuide,
+  remove: removeToolkitGuide,
+};
+
+// ── Press Statements ─────────────────────────────────────────────────────
+
+export const listPressStatements = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = tryGetSupabaseAdmin();
+  if (!supabase) return [] as PressStatement[];
+  const { data, error } = await supabase
+    .from("press_statements")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as PressStatement[];
+});
+
+export const createPressStatement = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => pressStatementSchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const sort_order = await nextSortOrder("press_statements");
+    const { data: row, error } = await supabase.from("press_statements").insert({ ...data, sort_order }).select().single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const updatePressStatement = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string; data: unknown };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id, data: pressStatementSchema.parse(parsed.data) };
+  })
+  .handler(async ({ data: { id, data } }) => {
+    const supabase = getSupabaseAdmin();
+    const { data: row, error } = await supabase
+      .from("press_statements")
+      .update({ ...data, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const removePressStatement = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id };
+  })
+  .handler(async ({ data: { id } }) => {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.from("press_statements").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const pressStatementsApi = {
+  list: listPressStatements,
+  create: createPressStatement,
+  update: updatePressStatement,
+  remove: removePressStatement,
 };

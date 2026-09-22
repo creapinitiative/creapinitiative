@@ -116,7 +116,7 @@ export function SiteFooter() {
             {[
               ["About", "/about"],
               ["Programs", "/programs"],
-              ["Resources", "/resources"],
+              ["Knowledge Hub", "/resources"],
               ["Reports", "/reports"],
               ["Leadership", "/leadership"],
               ["Opportunities", "/opportunities"],

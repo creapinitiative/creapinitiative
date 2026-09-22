@@ -49,6 +49,7 @@ export const upcomingProgramSchema = z.object({
   summary: z.string().min(1),
   image_url: z.string().url().optional().or(z.literal("")),
   date: z.string().min(1),
+  event_end_date: z.string().optional().or(z.literal("")),
   venue: z.string().min(1),
   audience: z.array(z.string().min(1)).default([]),
   skills: z.array(z.string().min(1)).default([]),
@@ -72,9 +73,25 @@ export const leadershipSchema = z.object({
   team: z.enum(["executive", "management", "state"]),
 });
 
+export const toolkitGuideSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  date: z.string().min(1),
+  file_url: z.string().url().optional().or(z.literal("")),
+});
+
+export const pressStatementSchema = z.object({
+  title: z.string().min(1),
+  body: z.string().min(1),
+  date: z.string().min(1),
+  file_url: z.string().url().optional().or(z.literal("")),
+});
+
 export type PolicyBrief = z.infer<typeof policyBriefSchema> & { id: string; sort_order: number };
 export type Report = z.infer<typeof reportSchema> & { id: string; sort_order: number };
 export type BlogPost = z.infer<typeof blogPostSchema> & { id: string; sort_order: number };
 export type UpcomingProgramRow = z.infer<typeof upcomingProgramSchema> & { id: string; sort_order: number };
 export type GalleryImage = z.infer<typeof galleryImageSchema> & { id: string; sort_order: number };
 export type LeadershipEntry = z.infer<typeof leadershipSchema> & { id: string; sort_order: number };
+export type ToolkitGuide = z.infer<typeof toolkitGuideSchema> & { id: string; sort_order: number };
+export type PressStatement = z.infer<typeof pressStatementSchema> & { id: string; sort_order: number };

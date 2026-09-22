@@ -70,8 +70,13 @@ const PUBS = [
   },
 ];
 
+function isPastEvent(endDate?: string | null): boolean {
+  if (!endDate) return false;
+  return endDate < new Date().toISOString().slice(0, 10);
+}
+
 function Home() {
-  const UPCOMING_PROGRAMS = Route.useLoaderData() ?? [];
+  const UPCOMING_PROGRAMS = (Route.useLoaderData() ?? []).filter((p) => !isPastEvent(p.event_end_date));
 
   return (
     <>
