@@ -16,6 +16,7 @@ import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as GetInvolvedRouteImport } from './routes/get-involved'
 import { Route as DonateRouteImport } from './routes/donate'
+import { Route as DebugCheckRouteImport } from './routes/debug-check'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -74,6 +75,11 @@ const GetInvolvedRoute = GetInvolvedRouteImport.update({
 const DonateRoute = DonateRouteImport.update({
   id: '/donate',
   path: '/donate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebugCheckRoute = DebugCheckRouteImport.update({
+  id: '/debug-check',
+  path: '/debug-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -205,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/debug-check': typeof DebugCheckRoute
   '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/debug-check': typeof DebugCheckRoute
   '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
@@ -271,6 +279,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/debug-check': typeof DebugCheckRoute
   '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/leadership': typeof LeadershipRoute
@@ -306,6 +315,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/dashboard'
+    | '/debug-check'
     | '/donate'
     | '/get-involved'
     | '/leadership'
@@ -338,6 +348,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/debug-check'
     | '/donate'
     | '/get-involved'
     | '/leadership'
@@ -371,6 +382,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/dashboard'
+    | '/debug-check'
     | '/donate'
     | '/get-involved'
     | '/leadership'
@@ -405,6 +417,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  DebugCheckRoute: typeof DebugCheckRoute
   DonateRoute: typeof DonateRoute
   GetInvolvedRoute: typeof GetInvolvedRoute
   LeadershipRoute: typeof LeadershipRoute
@@ -463,6 +476,13 @@ declare module '@tanstack/react-router' {
       path: '/donate'
       fullPath: '/donate'
       preLoaderRoute: typeof DonateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debug-check': {
+      id: '/debug-check'
+      path: '/debug-check'
+      fullPath: '/debug-check'
+      preLoaderRoute: typeof DebugCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -743,6 +763,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  DebugCheckRoute: DebugCheckRoute,
   DonateRoute: DonateRoute,
   GetInvolvedRoute: GetInvolvedRoute,
   LeadershipRoute: LeadershipRoute,
