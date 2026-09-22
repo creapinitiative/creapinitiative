@@ -52,7 +52,7 @@ export function Reveal<T extends TagName = "div">(props: RevealProps<T>) {
     <MotionTag
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount: 0.2 }}
+      viewport={{ once, amount: "some" }}
       transition={{ duration, delay, ease: EASE }}
       {...(rest as Record<string, unknown>)}
     >
