@@ -9,81 +9,41 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as DonateRouteImport } from './routes/donate'
-import { Route as GetInvolvedRouteImport } from './routes/get-involved'
-import { Route as LeadershipRouteImport } from './routes/leadership'
-import { Route as OpportunitiesRouteImport } from './routes/opportunities'
-import { Route as ProgramsRouteImport } from './routes/programs'
-import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as LeadershipRouteImport } from './routes/leadership'
+import { Route as GetInvolvedRouteImport } from './routes/get-involved'
+import { Route as DonateRouteImport } from './routes/donate'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
-import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
-import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
-import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
-import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.policy-briefs'
-import { Route as DashboardProgramsRouteImport } from './routes/dashboard.programs'
-import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
-import { Route as DashboardSubmissionsRouteImport } from './routes/dashboard.submissions'
-import { Route as ProgramsCommunityDialogueProgramsRouteImport } from './routes/programs.community-dialogue-programs'
-import { Route as ProgramsOurKeyProgramsRouteImport } from './routes/programs.our-key-programs'
-import { Route as ProgramsSpecialProgramsRouteImport } from './routes/programs.special-programs'
-import { Route as ProgramsUpcomingProgramsRouteImport } from './routes/programs.upcoming-programs'
-import { Route as ReportsAnnualReportsRouteImport } from './routes/reports.annual-reports'
-import { Route as ReportsFinancialReportsRouteImport } from './routes/reports.financial-reports'
-import { Route as ReportsProjectReportsRouteImport } from './routes/reports.project-reports'
-import { Route as ResourcesBlogsRouteImport } from './routes/resources.blogs'
-import { Route as ResourcesGalleryRouteImport } from './routes/resources.gallery'
 import { Route as ResourcesPolicyBriefsRouteImport } from './routes/resources.policy-briefs'
-import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
+import { Route as ResourcesGalleryRouteImport } from './routes/resources.gallery'
+import { Route as ResourcesBlogsRouteImport } from './routes/resources.blogs'
+import { Route as ReportsProjectReportsRouteImport } from './routes/reports.project-reports'
+import { Route as ReportsFinancialReportsRouteImport } from './routes/reports.financial-reports'
+import { Route as ReportsAnnualReportsRouteImport } from './routes/reports.annual-reports'
+import { Route as ProgramsUpcomingProgramsRouteImport } from './routes/programs.upcoming-programs'
+import { Route as ProgramsSpecialProgramsRouteImport } from './routes/programs.special-programs'
+import { Route as ProgramsOurKeyProgramsRouteImport } from './routes/programs.our-key-programs'
+import { Route as ProgramsCommunityDialogueProgramsRouteImport } from './routes/programs.community-dialogue-programs'
+import { Route as DashboardSubmissionsRouteImport } from './routes/dashboard.submissions'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardProgramsRouteImport } from './routes/dashboard.programs'
+import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.policy-briefs'
+import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
+import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
+import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
 import { Route as ResourcesBlogsSlugRouteImport } from './routes/resources.blogs.$slug'
+import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DonateRoute = DonateRouteImport.update({
-  id: '/donate',
-  path: '/donate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GetInvolvedRoute = GetInvolvedRouteImport.update({
-  id: '/get-involved',
-  path: '/get-involved',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeadershipRoute = LeadershipRouteImport.update({
-  id: '/leadership',
-  path: '/leadership',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesRoute = OpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProgramsRoute = ProgramsRouteImport.update({
-  id: '/programs',
-  path: '/programs',
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsRoute = ReportsRouteImport.update({
@@ -91,9 +51,49 @@ const ReportsRoute = ReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResourcesRoute = ResourcesRouteImport.update({
-  id: '/resources',
-  path: '/resources',
+const ProgramsRoute = ProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesRoute = OpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeadershipRoute = LeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetInvolvedRoute = GetInvolvedRouteImport.update({
+  id: '/get-involved',
+  path: '/get-involved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -101,81 +101,9 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardBlogsRoute = DashboardBlogsRouteImport.update({
-  id: '/blogs',
-  path: '/blogs',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardLeadershipRoute = DashboardLeadershipRouteImport.update({
-  id: '/leadership',
-  path: '/leadership',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardPolicyBriefsRoute = DashboardPolicyBriefsRouteImport.update({
+const ResourcesPolicyBriefsRoute = ResourcesPolicyBriefsRouteImport.update({
   id: '/policy-briefs',
   path: '/policy-briefs',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardProgramsRoute = DashboardProgramsRouteImport.update({
-  id: '/programs',
-  path: '/programs',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardReportsRoute = DashboardReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardSubmissionsRoute = DashboardSubmissionsRouteImport.update({
-  id: '/submissions',
-  path: '/submissions',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const ProgramsCommunityDialogueProgramsRoute =
-  ProgramsCommunityDialogueProgramsRouteImport.update({
-    id: '/community-dialogue-programs',
-    path: '/community-dialogue-programs',
-    getParentRoute: () => ProgramsRoute,
-  } as any)
-const ProgramsOurKeyProgramsRoute = ProgramsOurKeyProgramsRouteImport.update({
-  id: '/our-key-programs',
-  path: '/our-key-programs',
-  getParentRoute: () => ProgramsRoute,
-} as any)
-const ProgramsSpecialProgramsRoute = ProgramsSpecialProgramsRouteImport.update({
-  id: '/special-programs',
-  path: '/special-programs',
-  getParentRoute: () => ProgramsRoute,
-} as any)
-const ProgramsUpcomingProgramsRoute =
-  ProgramsUpcomingProgramsRouteImport.update({
-    id: '/upcoming-programs',
-    path: '/upcoming-programs',
-    getParentRoute: () => ProgramsRoute,
-  } as any)
-const ReportsAnnualReportsRoute = ReportsAnnualReportsRouteImport.update({
-  id: '/annual-reports',
-  path: '/annual-reports',
-  getParentRoute: () => ReportsRoute,
-} as any)
-const ReportsFinancialReportsRoute = ReportsFinancialReportsRouteImport.update({
-  id: '/financial-reports',
-  path: '/financial-reports',
-  getParentRoute: () => ReportsRoute,
-} as any)
-const ReportsProjectReportsRoute = ReportsProjectReportsRouteImport.update({
-  id: '/project-reports',
-  path: '/project-reports',
-  getParentRoute: () => ReportsRoute,
-} as any)
-const ResourcesBlogsRoute = ResourcesBlogsRouteImport.update({
-  id: '/blogs',
-  path: '/blogs',
   getParentRoute: () => ResourcesRoute,
 } as any)
 const ResourcesGalleryRoute = ResourcesGalleryRouteImport.update({
@@ -183,10 +111,87 @@ const ResourcesGalleryRoute = ResourcesGalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => ResourcesRoute,
 } as any)
-const ResourcesPolicyBriefsRoute = ResourcesPolicyBriefsRouteImport.update({
+const ResourcesBlogsRoute = ResourcesBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const ReportsProjectReportsRoute = ReportsProjectReportsRouteImport.update({
+  id: '/project-reports',
+  path: '/project-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const ReportsFinancialReportsRoute = ReportsFinancialReportsRouteImport.update({
+  id: '/financial-reports',
+  path: '/financial-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const ReportsAnnualReportsRoute = ReportsAnnualReportsRouteImport.update({
+  id: '/annual-reports',
+  path: '/annual-reports',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const ProgramsUpcomingProgramsRoute =
+  ProgramsUpcomingProgramsRouteImport.update({
+    id: '/upcoming-programs',
+    path: '/upcoming-programs',
+    getParentRoute: () => ProgramsRoute,
+  } as any)
+const ProgramsSpecialProgramsRoute = ProgramsSpecialProgramsRouteImport.update({
+  id: '/special-programs',
+  path: '/special-programs',
+  getParentRoute: () => ProgramsRoute,
+} as any)
+const ProgramsOurKeyProgramsRoute = ProgramsOurKeyProgramsRouteImport.update({
+  id: '/our-key-programs',
+  path: '/our-key-programs',
+  getParentRoute: () => ProgramsRoute,
+} as any)
+const ProgramsCommunityDialogueProgramsRoute =
+  ProgramsCommunityDialogueProgramsRouteImport.update({
+    id: '/community-dialogue-programs',
+    path: '/community-dialogue-programs',
+    getParentRoute: () => ProgramsRoute,
+  } as any)
+const DashboardSubmissionsRoute = DashboardSubmissionsRouteImport.update({
+  id: '/submissions',
+  path: '/submissions',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardProgramsRoute = DashboardProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardPolicyBriefsRoute = DashboardPolicyBriefsRouteImport.update({
   id: '/policy-briefs',
   path: '/policy-briefs',
-  getParentRoute: () => ResourcesRoute,
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLeadershipRoute = DashboardLeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardBlogsRoute = DashboardBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const ResourcesBlogsSlugRoute = ResourcesBlogsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ResourcesBlogsRoute,
 } as any)
 const ProgramsUpcomingProgramsSlugRoute =
   ProgramsUpcomingProgramsSlugRouteImport.update({
@@ -194,11 +199,6 @@ const ProgramsUpcomingProgramsSlugRoute =
     path: '/$slug',
     getParentRoute: () => ProgramsUpcomingProgramsRoute,
   } as any)
-const ResourcesBlogsSlugRoute = ResourcesBlogsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ResourcesBlogsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -416,67 +416,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/donate': {
-      id: '/donate'
-      path: '/donate'
-      fullPath: '/donate'
-      preLoaderRoute: typeof DonateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/get-involved': {
-      id: '/get-involved'
-      path: '/get-involved'
-      fullPath: '/get-involved'
-      preLoaderRoute: typeof GetInvolvedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leadership': {
-      id: '/leadership'
-      path: '/leadership'
-      fullPath: '/leadership'
-      preLoaderRoute: typeof LeadershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunities': {
-      id: '/opportunities'
-      path: '/opportunities'
-      fullPath: '/opportunities'
-      preLoaderRoute: typeof OpportunitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/programs': {
-      id: '/programs'
-      path: '/programs'
-      fullPath: '/programs'
-      preLoaderRoute: typeof ProgramsRouteImport
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports': {
@@ -486,11 +430,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/resources': {
-      id: '/resources'
-      path: '/resources'
-      fullPath: '/resources'
-      preLoaderRoute: typeof ResourcesRouteImport
+    '/programs': {
+      id: '/programs'
+      path: '/programs'
+      fullPath: '/programs'
+      preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities': {
+      id: '/opportunities'
+      path: '/opportunities'
+      fullPath: '/opportunities'
+      preLoaderRoute: typeof OpportunitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leadership': {
+      id: '/leadership'
+      path: '/leadership'
+      fullPath: '/leadership'
+      preLoaderRoute: typeof LeadershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-involved': {
+      id: '/get-involved'
+      path: '/get-involved'
+      fullPath: '/get-involved'
+      preLoaderRoute: typeof GetInvolvedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -500,109 +500,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/blogs': {
-      id: '/dashboard/blogs'
-      path: '/blogs'
-      fullPath: '/dashboard/blogs'
-      preLoaderRoute: typeof DashboardBlogsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/gallery': {
-      id: '/dashboard/gallery'
-      path: '/gallery'
-      fullPath: '/dashboard/gallery'
-      preLoaderRoute: typeof DashboardGalleryRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/leadership': {
-      id: '/dashboard/leadership'
-      path: '/leadership'
-      fullPath: '/dashboard/leadership'
-      preLoaderRoute: typeof DashboardLeadershipRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/policy-briefs': {
-      id: '/dashboard/policy-briefs'
+    '/resources/policy-briefs': {
+      id: '/resources/policy-briefs'
       path: '/policy-briefs'
-      fullPath: '/dashboard/policy-briefs'
-      preLoaderRoute: typeof DashboardPolicyBriefsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/programs': {
-      id: '/dashboard/programs'
-      path: '/programs'
-      fullPath: '/dashboard/programs'
-      preLoaderRoute: typeof DashboardProgramsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/reports': {
-      id: '/dashboard/reports'
-      path: '/reports'
-      fullPath: '/dashboard/reports'
-      preLoaderRoute: typeof DashboardReportsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/submissions': {
-      id: '/dashboard/submissions'
-      path: '/submissions'
-      fullPath: '/dashboard/submissions'
-      preLoaderRoute: typeof DashboardSubmissionsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/programs/community-dialogue-programs': {
-      id: '/programs/community-dialogue-programs'
-      path: '/community-dialogue-programs'
-      fullPath: '/programs/community-dialogue-programs'
-      preLoaderRoute: typeof ProgramsCommunityDialogueProgramsRouteImport
-      parentRoute: typeof ProgramsRoute
-    }
-    '/programs/our-key-programs': {
-      id: '/programs/our-key-programs'
-      path: '/our-key-programs'
-      fullPath: '/programs/our-key-programs'
-      preLoaderRoute: typeof ProgramsOurKeyProgramsRouteImport
-      parentRoute: typeof ProgramsRoute
-    }
-    '/programs/special-programs': {
-      id: '/programs/special-programs'
-      path: '/special-programs'
-      fullPath: '/programs/special-programs'
-      preLoaderRoute: typeof ProgramsSpecialProgramsRouteImport
-      parentRoute: typeof ProgramsRoute
-    }
-    '/programs/upcoming-programs': {
-      id: '/programs/upcoming-programs'
-      path: '/upcoming-programs'
-      fullPath: '/programs/upcoming-programs'
-      preLoaderRoute: typeof ProgramsUpcomingProgramsRouteImport
-      parentRoute: typeof ProgramsRoute
-    }
-    '/reports/annual-reports': {
-      id: '/reports/annual-reports'
-      path: '/annual-reports'
-      fullPath: '/reports/annual-reports'
-      preLoaderRoute: typeof ReportsAnnualReportsRouteImport
-      parentRoute: typeof ReportsRoute
-    }
-    '/reports/financial-reports': {
-      id: '/reports/financial-reports'
-      path: '/financial-reports'
-      fullPath: '/reports/financial-reports'
-      preLoaderRoute: typeof ReportsFinancialReportsRouteImport
-      parentRoute: typeof ReportsRoute
-    }
-    '/reports/project-reports': {
-      id: '/reports/project-reports'
-      path: '/project-reports'
-      fullPath: '/reports/project-reports'
-      preLoaderRoute: typeof ReportsProjectReportsRouteImport
-      parentRoute: typeof ReportsRoute
-    }
-    '/resources/blogs': {
-      id: '/resources/blogs'
-      path: '/blogs'
-      fullPath: '/resources/blogs'
-      preLoaderRoute: typeof ResourcesBlogsRouteImport
+      fullPath: '/resources/policy-briefs'
+      preLoaderRoute: typeof ResourcesPolicyBriefsRouteImport
       parentRoute: typeof ResourcesRoute
     }
     '/resources/gallery': {
@@ -612,19 +514,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesGalleryRouteImport
       parentRoute: typeof ResourcesRoute
     }
-    '/resources/policy-briefs': {
-      id: '/resources/policy-briefs'
-      path: '/policy-briefs'
-      fullPath: '/resources/policy-briefs'
-      preLoaderRoute: typeof ResourcesPolicyBriefsRouteImport
+    '/resources/blogs': {
+      id: '/resources/blogs'
+      path: '/blogs'
+      fullPath: '/resources/blogs'
+      preLoaderRoute: typeof ResourcesBlogsRouteImport
       parentRoute: typeof ResourcesRoute
     }
-    '/programs/upcoming-programs/$slug': {
-      id: '/programs/upcoming-programs/$slug'
-      path: '/$slug'
-      fullPath: '/programs/upcoming-programs/$slug'
-      preLoaderRoute: typeof ProgramsUpcomingProgramsSlugRouteImport
-      parentRoute: typeof ProgramsUpcomingProgramsRoute
+    '/reports/project-reports': {
+      id: '/reports/project-reports'
+      path: '/project-reports'
+      fullPath: '/reports/project-reports'
+      preLoaderRoute: typeof ReportsProjectReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/reports/financial-reports': {
+      id: '/reports/financial-reports'
+      path: '/financial-reports'
+      fullPath: '/reports/financial-reports'
+      preLoaderRoute: typeof ReportsFinancialReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/reports/annual-reports': {
+      id: '/reports/annual-reports'
+      path: '/annual-reports'
+      fullPath: '/reports/annual-reports'
+      preLoaderRoute: typeof ReportsAnnualReportsRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/programs/upcoming-programs': {
+      id: '/programs/upcoming-programs'
+      path: '/upcoming-programs'
+      fullPath: '/programs/upcoming-programs'
+      preLoaderRoute: typeof ProgramsUpcomingProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/special-programs': {
+      id: '/programs/special-programs'
+      path: '/special-programs'
+      fullPath: '/programs/special-programs'
+      preLoaderRoute: typeof ProgramsSpecialProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/our-key-programs': {
+      id: '/programs/our-key-programs'
+      path: '/our-key-programs'
+      fullPath: '/programs/our-key-programs'
+      preLoaderRoute: typeof ProgramsOurKeyProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/programs/community-dialogue-programs': {
+      id: '/programs/community-dialogue-programs'
+      path: '/community-dialogue-programs'
+      fullPath: '/programs/community-dialogue-programs'
+      preLoaderRoute: typeof ProgramsCommunityDialogueProgramsRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
+    '/dashboard/submissions': {
+      id: '/dashboard/submissions'
+      path: '/submissions'
+      fullPath: '/dashboard/submissions'
+      preLoaderRoute: typeof DashboardSubmissionsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/programs': {
+      id: '/dashboard/programs'
+      path: '/programs'
+      fullPath: '/dashboard/programs'
+      preLoaderRoute: typeof DashboardProgramsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/policy-briefs': {
+      id: '/dashboard/policy-briefs'
+      path: '/policy-briefs'
+      fullPath: '/dashboard/policy-briefs'
+      preLoaderRoute: typeof DashboardPolicyBriefsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/leadership': {
+      id: '/dashboard/leadership'
+      path: '/leadership'
+      fullPath: '/dashboard/leadership'
+      preLoaderRoute: typeof DashboardLeadershipRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/gallery': {
+      id: '/dashboard/gallery'
+      path: '/gallery'
+      fullPath: '/dashboard/gallery'
+      preLoaderRoute: typeof DashboardGalleryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/blogs': {
+      id: '/dashboard/blogs'
+      path: '/blogs'
+      fullPath: '/dashboard/blogs'
+      preLoaderRoute: typeof DashboardBlogsRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/resources/blogs/$slug': {
       id: '/resources/blogs/$slug'
@@ -632,6 +625,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/resources/blogs/$slug'
       preLoaderRoute: typeof ResourcesBlogsSlugRouteImport
       parentRoute: typeof ResourcesBlogsRoute
+    }
+    '/programs/upcoming-programs/$slug': {
+      id: '/programs/upcoming-programs/$slug'
+      path: '/$slug'
+      fullPath: '/programs/upcoming-programs/$slug'
+      preLoaderRoute: typeof ProgramsUpcomingProgramsSlugRouteImport
+      parentRoute: typeof ProgramsUpcomingProgramsRoute
     }
   }
 }
