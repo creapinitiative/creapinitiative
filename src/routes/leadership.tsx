@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, type ReactNode } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { leadershipApi } from "@/api/collections-api";
@@ -14,6 +15,32 @@ export const Route = createFileRoute("/leadership")({
   loader: () => leadershipApi.list(),
   component: Leadership,
 });
+
+const TEAMS: {
+  key: LeadershipEntry["team"];
+  tabLabel: string;
+  eyebrow: string;
+  heading: ReactNode;
+}[] = [
+  {
+    key: "executive",
+    tabLabel: "Executive Leadership",
+    eyebrow: "Executive Leadership",
+    heading: <>Governance & <em className="text-gold italic">stewardship</em></>,
+  },
+  {
+    key: "management",
+    tabLabel: "Management Team",
+    eyebrow: "Management Team",
+    heading: <>Day-to-day <em className="text-gold italic">leadership</em></>,
+  },
+  {
+    key: "state",
+    tabLabel: "State Level Team",
+    eyebrow: "State Level Team",
+    heading: <>Leading our work <em className="text-gold italic">on the ground</em></>,
+  },
+];
 
 function Card({ name, role, photo_url }: LeadershipEntry) {
   return (
@@ -37,9 +64,10 @@ function Card({ name, role, photo_url }: LeadershipEntry) {
 
 function Leadership() {
   const all = Route.useLoaderData() ?? [];
-  const executive = all.filter((m) => m.team === "executive");
-  const management = all.filter((m) => m.team === "management");
-  const state = all.filter((m) => m.team === "state");
+  const [activeTeam, setActiveTeam] = useState<LeadershipEntry["team"]>("executive");
+
+  const activeTeamInfo = TEAMS.find((t) => t.key === activeTeam) ?? TEAMS[0];
+  const members = all.filter((m) => m.team === activeTeam);
 
   return (
     <>
@@ -49,45 +77,41 @@ function Leadership() {
         body="An executive team, management specialists and state coordinators united by community, rights and sustainable development."
       />
 
+      <section className="pt-14 pb-2 bg-bg">
+        <div className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28 flex flex-wrap justify-center gap-3">
+          {TEAMS.map((team) => (
+            <button
+              key={team.key}
+              type="button"
+              onClick={() => setActiveTeam(team.key)}
+              className={[
+                "px-5 py-2.5 rounded-sm text-[12px] font-semibold uppercase tracking-[0.1em] border transition",
+                activeTeam === team.key
+                  ? "bg-g600 text-white border-g600"
+                  : "border-rule text-ink3 hover:border-g500 hover:text-ink",
+              ].join(" ")}
+            >
+              {team.tabLabel}
+            </button>
+          ))}
+        </div>
+      </section>
+
       <section className="py-24 bg-bg">
-        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
-          <p className="eyebrow-dark mb-4">Executive Leadership</p>
-          <h2 className="display-lg mb-12">Governance & <em className="text-gold italic">stewardship</em></h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {executive.map((m, idx) => (
-              <RevealItem key={m.id} as="div" index={idx}>
-                <Card {...m} />
-              </RevealItem>
-            ))}
-          </div>
-        </Reveal>
-      </section>
-
-      <section className="py-24 bg-g50 border-t border-rule">
-        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
-          <p className="eyebrow-dark mb-4">Management Team</p>
-          <h2 className="display-lg mb-12">Day-to-day <em className="text-gold italic">leadership</em></h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {management.map((m, idx) => (
-              <RevealItem key={m.id} as="div" index={idx}>
-                <Card {...m} />
-              </RevealItem>
-            ))}
-          </div>
-        </Reveal>
-      </section>
-
-      <section className="py-24 bg-bg border-t border-rule">
-        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
-          <p className="eyebrow-dark mb-4">State Level Team</p>
-          <h2 className="display-lg mb-12">Leading our work <em className="text-gold italic">on the ground</em></h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {state.map((m, idx) => (
-              <RevealItem key={m.id} as="div" index={idx}>
-                <Card {...m} />
-              </RevealItem>
-            ))}
-          </div>
+        <Reveal key={activeTeam} as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
+          <p className="eyebrow-dark mb-4">{activeTeamInfo.eyebrow}</p>
+          <h2 className="display-lg mb-12">{activeTeamInfo.heading}</h2>
+          {members.length === 0 ? (
+            <p className="text-ink3">No team members listed here yet.</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {members.map((m, idx) => (
+                <RevealItem key={m.id} as="div" index={idx}>
+                  <Card {...m} />
+                </RevealItem>
+              ))}
+            </div>
+          )}
         </Reveal>
       </section>
 

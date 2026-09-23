@@ -4,6 +4,17 @@ import { HeroSlider } from "@/components/site/HeroSlider";
 import { AnimatedStat } from "@/components/site/AnimatedStat";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { upcomingProgramsApi } from "@/api/collections-api";
+import logoFmoyd from "@/assets/partners/federal-ministry-of-youth-development.jpg";
+import logoIpcr from "@/assets/partners/ipcr.jpg";
+import logoNoa from "@/assets/partners/noa.jpg";
+import logoCivicus from "@/assets/partners/civicus.jpg";
+
+const PARTNERS = [
+  { name: "Federal Ministry of Youth Development", logo: logoFmoyd },
+  { name: "Institute for Peace and Conflict Resolution", logo: logoIpcr },
+  { name: "National Orientation Agency", logo: logoNoa },
+  { name: "CIVICUS", logo: logoCivicus },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -158,7 +169,7 @@ function Home() {
                 <SunMedium size={20} strokeWidth={1.8} />
               </div>
               <p className="eyebrow text-gold3 mb-5">Vision</p>
-              <p className="font-display text-[34px] leading-[1.32] text-white/95 max-w-[42ch]">
+              <p className="font-display text-[40px] lg:text-[46px] leading-[1.28] text-white/95 max-w-[42ch]">
                 Inclusive, resilient and empowered communities where rights are protected, opportunities are accessible, and sustainable development thrives.
               </p>
             </article>
@@ -168,7 +179,7 @@ function Home() {
                 <Shield size={20} strokeWidth={1.9} />
               </div>
               <p className="eyebrow-dark text-g700 mb-5">Mission</p>
-              <p className="font-display text-[34px] leading-[1.32] text-g900 max-w-[42ch]">
+              <p className="font-display text-[40px] lg:text-[46px] leading-[1.28] text-g900 max-w-[42ch]">
                 Empowering marginalised and underserved communities by advancing people-centred, right-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies.
               </p>
             </article>
@@ -366,7 +377,32 @@ function Home() {
         </Reveal>
       </section>
 
-      {/* 7. Social follow band */}
+      {/* 7. Partners */}
+      <section className="bg-bg py-16 lg:py-20 border-t border-rule">
+        <Reveal as="div" className="mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12 lg:px-28 text-center">
+          <p className="eyebrow-dark mb-10">In Partnership With</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10">
+            {PARTNERS.map((partner, idx) => (
+              <RevealItem
+                key={partner.name}
+                as="div"
+                index={idx}
+                step={0.06}
+                className="group"
+              >
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  title={partner.name}
+                  className="h-16 md:h-20 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                />
+              </RevealItem>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* 8. Social follow band */}
       <section className="bg-g50 border-t border-rule py-20">
         <Reveal as="div" className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 text-center">
           <p className="eyebrow-dark mb-4">Follow Our Journey</p>
