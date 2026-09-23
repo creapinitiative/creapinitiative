@@ -96,7 +96,7 @@ function About() {
                 <Sparkle size={24} className="text-gold" strokeWidth={1.5} />
               </div>
               <p className="eyebrow mb-4">Vision</p>
-              <div className="font-display text-[28px] lg:text-[34px] text-white leading-snug">
+              <div className="leading-relaxed text-white">
                 Inclusive, resilient and empowered communities where rights are protected, opportunities are accessible, and sustainable development thrives.
               </div>
             </div>
@@ -105,7 +105,7 @@ function About() {
                 <Shield size={24} className="text-g900" strokeWidth={1.5} />
               </div>
               <p className="text-[11px] tracking-[0.16em] uppercase text-g900/70 font-semibold mb-4">Mission</p>
-              <div className="font-display text-[28px] lg:text-[34px] text-g900 leading-snug">
+              <div className="leading-relaxed text-g900">
                 Empowering marginalised and underserved communities by advancing people-centred, right-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies.
               </div>
             </div>

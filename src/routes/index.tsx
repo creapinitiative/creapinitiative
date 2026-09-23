@@ -169,7 +169,7 @@ function Home() {
                 <SunMedium size={20} strokeWidth={1.8} />
               </div>
               <p className="eyebrow text-gold3 mb-5">Vision</p>
-              <p className="font-display text-[40px] lg:text-[46px] leading-[1.28] text-white/95 max-w-[42ch]">
+              <p className="leading-relaxed text-white/95 max-w-[42ch]">
                 Inclusive, resilient and empowered communities where rights are protected, opportunities are accessible, and sustainable development thrives.
               </p>
             </article>
@@ -179,7 +179,7 @@ function Home() {
                 <Shield size={20} strokeWidth={1.9} />
               </div>
               <p className="eyebrow-dark text-g700 mb-5">Mission</p>
-              <p className="font-display text-[40px] lg:text-[46px] leading-[1.28] text-g900 max-w-[42ch]">
+              <p className="leading-relaxed text-g900 max-w-[42ch]">
                 Empowering marginalised and underserved communities by advancing people-centred, right-based, and sustainable development solutions in advocacy, knowledge-sharing, skills development and leadership strategies.
               </p>
             </article>
