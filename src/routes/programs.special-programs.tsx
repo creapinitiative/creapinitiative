@@ -6,7 +6,7 @@ import { Download, Stethoscope, Tractor, MonitorSmartphone } from "lucide-react"
 export const Route = createFileRoute("/programs/special-programs")({
   head: () => ({
     meta: [
-      { title: "Special Programs — CREAP Africa Initiative" },
+      { title: "Special Projects — CREAP Africa Initiative" },
       { name: "description", content: "Special programs including oral health in schools and climate-smart agriculture." },
     ],
   }),
@@ -35,8 +35,8 @@ function SpecialProgramsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Home / Programs / Special Programs"
-        title="Special Programs"
+        eyebrow="Home / Programs / Special Projects"
+        title="Special Projects"
         body="Targeted initiatives that combine health, innovation and sustainability for measurable community impact."
       />
 

@@ -380,7 +380,7 @@ function Home() {
       {/* 7. Partners */}
       <section className="bg-bg py-16 lg:py-20 border-t border-rule">
         <Reveal as="div" className="mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12 lg:px-28 text-center">
-          <p className="eyebrow-dark mb-10">In Partnership With</p>
+          <p className="eyebrow-dark mb-10">Our Partners</p>
           <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10">
             {PARTNERS.map((partner, idx) => (
               <RevealItem
@@ -394,7 +394,7 @@ function Home() {
                   src={partner.logo}
                   alt={partner.name}
                   title={partner.name}
-                  className="h-16 md:h-20 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  className="h-16 md:h-20 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
                 />
               </RevealItem>
             ))}

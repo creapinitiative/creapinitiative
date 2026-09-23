@@ -15,7 +15,7 @@ const NAV = [
     children: [
       { label: "Our Key Programs", to: "/programs/our-key-programs" },
       { label: "Community Dialogue Programs", to: "/programs/community-dialogue-programs" },
-      { label: "Special Programs", to: "/programs/special-programs" },
+      { label: "Special Projects", to: "/programs/special-programs" },
       { label: "Upcoming Programs", to: "/programs/upcoming-programs" },
     ],
   },
