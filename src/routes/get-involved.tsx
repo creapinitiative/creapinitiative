@@ -31,9 +31,7 @@ function GetInvolved() {
   const [filter, setFilter] = useState<"all" | Opportunity["category"]>("all");
   const [applying, setApplying] = useState<Opportunity | null>(null);
 
-  const categories = (Object.keys(OPPORTUNITY_CATEGORY) as Opportunity["category"][]).filter((c) =>
-    openings.some((o) => o.category === c),
-  );
+  const categories = Object.keys(OPPORTUNITY_CATEGORY) as Opportunity["category"][];
   const shown = openings.filter((o) => filter === "all" || o.category === filter);
 
   return (
@@ -71,7 +69,7 @@ function GetInvolved() {
             </p>
           </div>
 
-          {categories.length > 1 && (
+          {(
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {(["all", ...categories] as const).map((c) => (
                 <button
@@ -89,8 +87,12 @@ function GetInvolved() {
           )}
 
           <div className="space-y-4">
-            {openings.length === 0 && (
-              <p className="text-ink3 text-center py-12">No open opportunities right now — please check back soon.</p>
+            {shown.length === 0 && (
+              <p className="text-ink3 text-center py-12">
+                {filter === "all"
+                  ? "No open opportunities right now — please check back soon."
+                  : `No ${OPPORTUNITY_CATEGORY[filter].label} opportunities are open right now — please check back soon.`}
+              </p>
             )}
             {shown.map((job, idx) => {
               const { label, icon: Icon } = OPPORTUNITY_CATEGORY[job.category] ?? OPPORTUNITY_CATEGORY["full-time"];
