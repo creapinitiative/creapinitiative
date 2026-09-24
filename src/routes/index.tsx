@@ -62,6 +62,8 @@ const THEMES = [
   },
 ];
 
+import { policyBriefCover } from "@/lib/policy-brief-covers";
+
 const PUBS = [
   {
     tag: "Policy Brief",
@@ -353,9 +355,13 @@ function Home() {
             {PUBS.map((p, idx) => (
               <RevealItem key={p.title} as="article" index={idx} className="slide-border-top-smooth group bg-white overflow-hidden flex flex-col border-r border-rule last:border-r-0">
                 <div className="aspect-[4/3] bg-g100 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <FileText size={72} strokeWidth={1} className="text-g300 group-hover:text-gold transition-colors duration-500" />
-                  </div>
+                  {policyBriefCover(p.title) ? (
+                    <img src={policyBriefCover(p.title)} alt={p.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-top" />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <FileText size={72} strokeWidth={1} className="text-g300 group-hover:text-gold transition-colors duration-500" />
+                    </div>
+                  )}
                   <span className="absolute top-4 left-4 bg-goldb text-g700 text-[10px] tracking-[0.18em] uppercase font-semibold px-2.5 py-1 rounded-sm">
                     {p.tag}
                   </span>

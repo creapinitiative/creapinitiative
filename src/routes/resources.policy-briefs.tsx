@@ -2,14 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { policyBriefsApi } from "@/api/collections-api";
-import { Download } from "lucide-react";
-
-// Fallback covers, used until a cover image is set for a brief in the dashboard.
-const fallbackCovers = Object.entries(
-  import.meta.glob("/src/assets/Policy Brief/*.{jpeg,jpg,png,webp}", { eager: true, import: "default" }),
-)
-  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
-  .map(([, url]) => url as string);
+import { Download, FileText } from "lucide-react";
+import { policyBriefCover } from "@/lib/policy-brief-covers";
 
 export const Route = createFileRoute("/resources/policy-briefs")({
   head: () => ({
@@ -40,7 +34,7 @@ function PolicyBriefsPage() {
           )}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {briefs.map((brief, idx) => {
-              const cover = brief.image_url || fallbackCovers[idx % Math.max(fallbackCovers.length, 1)];
+              const cover = brief.image_url || policyBriefCover(brief.title);
               return (
                 <RevealItem
                   key={brief.id}
@@ -49,8 +43,12 @@ function PolicyBriefsPage() {
                   className="group flex flex-col bg-white border border-rule rounded-sm overflow-hidden hover:border-gold transition"
                 >
                   <div className="aspect-[4/3] bg-g100 overflow-hidden">
-                    {cover && (
+                    {cover ? (
                       <img src={cover} alt={brief.title} loading="lazy" className="w-full h-full object-cover object-top" />
+                    ) : (
+                      <div className="w-full h-full grid place-items-center text-g300">
+                        <FileText size={64} strokeWidth={1} />
+                      </div>
                     )}
                   </div>
                   <div className="flex-1 flex flex-col p-6">
