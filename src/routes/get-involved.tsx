@@ -5,7 +5,7 @@ import { OpportunityApplyDialog } from "@/components/site/OpportunityApplyDialog
 import { OPPORTUNITY_CATEGORY } from "@/lib/opportunity-categories";
 import { opportunitiesApi } from "@/api/collections-api";
 import type { Opportunity } from "@/api/collections";
-import { HandHeart, Briefcase, Megaphone, Calendar } from "lucide-react";
+import { HandHeart, Briefcase, Megaphone } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/get-involved")({
@@ -24,12 +24,6 @@ const WAYS = [
   { icon: HandHeart, title: "Volunteer", body: "Join community outreaches, school programs, and field research as a trained CREAP volunteer." },
   { icon: Briefcase, title: "Partner", body: "Public and private institutions: build synergies that amplify community impact through joint initiatives." },
   { icon: Megaphone, title: "Advocate", body: "Use your platform to raise awareness on civic education, climate action and inclusive development." },
-];
-
-const EVENTS = [
-  { date: "Apr 18, 2026", tag: "Workshop", title: "Civic Education Bootcamp · Abuja" },
-  { date: "May 06, 2026", tag: "Outreach", title: "Oral Health Schools Day · Kaduna" },
-  { date: "Jun 12, 2026", tag: "Dialogue", title: "Youth & Climate Town Hall · Online" },
 ];
 
 function GetInvolved() {
@@ -60,22 +54,6 @@ function GetInvolved() {
                 </div>
                 <h3 className="font-display text-2xl mb-3">{title}</h3>
                 <p className="text-sm text-ink3 leading-relaxed">{body}</p>
-              </RevealItem>
-            ))}
-          </div>
-        </Reveal>
-      </section>
-
-      <section className="py-20 bg-g50 border-t border-rule">
-        <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
-          <p className="eyebrow-dark mb-4">Upcoming Events</p>
-          <h2 className="display-lg mb-12">Mark your <em className="text-gold italic">calendar</em></h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {EVENTS.map((e, idx) => (
-              <RevealItem key={e.title} as="article" index={idx} className="bg-white border border-rule rounded-sm p-7 hover:border-gold transition">
-                <Calendar size={24} strokeWidth={1.5} className="text-gold mb-4" />
-                <p className="text-[11px] tracking-[0.16em] uppercase text-ink4 mb-2">{e.date} · {e.tag}</p>
-                <h3 className="font-display text-xl leading-tight">{e.title}</h3>
               </RevealItem>
             ))}
           </div>
