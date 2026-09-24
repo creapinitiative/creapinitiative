@@ -150,10 +150,10 @@ function Donate() {
             <p className="text-white/70 mb-8">Use the account details below — please email a confirmation so we can send you a receipt.</p>
             <dl className="space-y-5 text-sm">
               {[
-                ["Account Name", "CREAP Africa Initiative"],
-                ["Bank", "Access Bank Nigeria PLC"],
-                ["Account Number", "0123456789"],
-                ["Sort Code", "044150149"],
+                ["Account Name", "Community Rights Education Advancement Pathway Initiative"],
+                ["Bank", "Stanbic IBTC Plc"],
+                ["Account Number (NGN)", "0075692453"],
+                ["Account Number (USD)", "0075692477"],
                 ["Reference", "Your full name"],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-6 border-b border-white/10 pb-3">
