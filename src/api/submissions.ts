@@ -160,3 +160,41 @@ export const deleteSubmission = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+/**
+ * Dashboard-only: correct an application's details (and optionally its
+ * status). Only the applicant-facing fields can change — which opportunity it
+ * belongs to stays fixed, so messaging-by-opportunity keeps working.
+ */
+export const updateOpportunityApplication = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator(
+    z.object({
+      id: z.string().min(1),
+      status: z.enum(["new", "read", "archived"]),
+      data: z.object({
+        fullName: z.string().trim().min(1),
+        email: z.string().trim().email(),
+        phone: z.string().trim().min(1),
+        cvLink: z.string().trim().url().optional().or(z.literal("")),
+        message: z.string().optional().or(z.literal("")),
+      }),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const { data: existing, error: readError } = await supabase
+      .from("form_submissions")
+      .select("data,form_type")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (readError) throw new Error(readError.message);
+    if (!existing || existing.form_type !== "opportunity") throw new Error("Application not found.");
+
+    const { error } = await supabase
+      .from("form_submissions")
+      .update({ data: { ...(existing.data as object), ...data.data, email: data.data.email.toLowerCase() }, status: data.status })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
