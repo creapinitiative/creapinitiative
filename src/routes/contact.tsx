@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Email } from "@/components/site/Email";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
@@ -44,7 +45,7 @@ function Contact() {
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.16em] uppercase text-ink4 font-semibold mb-1">{label}</p>
-                  <p className="text-ink2">{value}</p>
+                  <p className="text-ink2">{value.includes("@") ? <Email address={value} /> : value}</p>
                 </div>
               </RevealItem>
             ))}

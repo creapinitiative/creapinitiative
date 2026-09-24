@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
+import { Email } from "@/components/site/Email";
 import { Reveal } from "@/components/site/Reveal";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
 import { startDonation, confirmDonation } from "@/api/paystack";
@@ -161,7 +162,7 @@ function Donate() {
                 </div>
               ))}
             </dl>
-            <p className="mt-7 text-[12px] text-white/50">Send confirmation to <span className="text-gold3">finance@creapinitiative.org</span></p>
+            <p className="mt-7 text-[12px] text-white/50">Send confirmation to <Email address="finance@creapinitiative.org" className="text-gold3" /></p>
           </div>
         </Reveal>
       </section>

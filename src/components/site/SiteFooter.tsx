@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Email } from "@/components/site/Email";
 import logo from "@/assets/creap-logo-alt-small.png";
 import { Reveal } from "@/components/site/Reveal";
 import { useFormSubmit } from "@/lib/use-form-submit";
@@ -139,8 +140,8 @@ export function SiteFooter() {
           <div className="space-y-3 text-sm text-white/60 lg:mt-0">
             <p>+234 8057193855</p>
             <p>+234 7067926823</p>
-            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> contact@creapinitiative.org</p>
-            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> partnership@creapinitiative.org</p>
+            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> <Email address="contact@creapinitiative.org" /></p>
+            <p className="flex items-start gap-2"><Mail size={14} className="mt-1 text-gold3" /> <Email address="partnership@creapinitiative.org" /></p>
             <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> 8, Ebighi Anwang Road, Uquo, Esit Eket LGA, Akwa Ibom State</p>
             <p className="flex items-start gap-2"><MapPin size={14} className="mt-1 text-gold3" /> 9 Yola Street, Garki Area 7 Abuja, Federal Capital Territory, Nigeria</p>
           </div>
