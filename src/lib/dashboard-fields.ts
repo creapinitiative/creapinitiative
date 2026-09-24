@@ -17,6 +17,7 @@ export const policyBriefFields: FieldConfig[] = [
   { key: "title", label: "Title", type: "text", required: true },
   { key: "date", label: "Date", type: "text", required: true },
   { key: "body", label: "Summary", type: "textarea", required: true },
+  { key: "image_url", label: "Cover image", type: "image" },
   { key: "file_url", label: "PDF link", type: "url", helper: "Paste a Google Drive share link or any public URL." },
 ];
 
@@ -90,9 +91,8 @@ export const leadershipFields: FieldConfig[] = [
     type: "select",
     required: true,
     options: [
-      { value: "executive", label: "Executive Leadership" },
+      { value: "executive", label: "Board of Trustee" },
       { value: "management", label: "Management Team" },
-      { value: "state", label: "State Level Team" },
     ],
   },
   { key: "photo_url", label: "Photo", type: "image" },

@@ -4,9 +4,8 @@ import { leadershipFields } from "@/lib/dashboard-fields";
 import { leadershipApi } from "@/api/collections-api";
 
 const TEAM_LABELS: Record<string, string> = {
-  executive: "Executive",
+  executive: "Board of Trustee",
   management: "Management",
-  state: "State",
 };
 
 export const Route = createFileRoute("/dashboard/leadership")({
@@ -30,9 +29,8 @@ function LeadershipAdminPage() {
       getRowImage={(row) => row.photo_url as string | undefined}
       getRowBadge={(row) => TEAM_LABELS[row.team as string] ?? (row.team as string)}
       tabs={[
-        { key: "executive", label: "Executive" },
+        { key: "executive", label: "Board of Trustee" },
         { key: "management", label: "Management" },
-        { key: "state", label: "State" },
       ]}
       getRowGroup={(row) => row.team as string}
     />

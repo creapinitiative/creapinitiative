@@ -9,7 +9,7 @@ export const Route = createFileRoute("/leadership")({
   head: () => ({
     meta: [
       { title: "Leadership — CREAP Africa Initiative" },
-      { name: "description", content: "Meet the executive leadership, management team and state coordinators driving CREAP Africa Initiative." },
+      { name: "description", content: "Meet the board of trustee and management team driving CREAP Africa Initiative." },
     ],
   }),
   loader: () => leadershipApi.list(),
@@ -24,8 +24,8 @@ const TEAMS: {
 }[] = [
   {
     key: "executive",
-    tabLabel: "Executive Leadership",
-    eyebrow: "Executive Leadership",
+    tabLabel: "Board of Trustee",
+    eyebrow: "Board of Trustee",
     heading: <>Governance & <em className="text-gold italic">stewardship</em></>,
   },
   {
@@ -33,12 +33,6 @@ const TEAMS: {
     tabLabel: "Management Team",
     eyebrow: "Management Team",
     heading: <>Day-to-day <em className="text-gold italic">leadership</em></>,
-  },
-  {
-    key: "state",
-    tabLabel: "State Level Team",
-    eyebrow: "State Level Team",
-    heading: <>Leading our work <em className="text-gold italic">on the ground</em></>,
   },
 ];
 
@@ -74,7 +68,7 @@ function Leadership() {
       <PageHero
         eyebrow="Leadership"
         title={<>The people behind <em className="italic text-goldf">CREAP</em></>}
-        body="An executive team, management specialists and state coordinators united by community, rights and sustainable development."
+        body="A board of trustee and management specialists united by community, rights and sustainable development."
       />
 
       <section className="pt-14 pb-2 bg-bg">

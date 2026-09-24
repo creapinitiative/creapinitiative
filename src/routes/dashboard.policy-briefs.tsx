@@ -21,6 +21,7 @@ function PolicyBriefsAdminPage() {
       api={policyBriefsApi}
       getRowLabel={(row) => row.title as string}
       getRowMeta={(row) => row.date as string}
+      getRowImage={(row) => row.image_url as string | undefined}
     />
   );
 }

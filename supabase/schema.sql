@@ -24,6 +24,7 @@ create table if not exists public.policy_briefs (
   updated_at timestamptz not null default now()
 );
 alter table public.policy_briefs enable row level security;
+alter table public.policy_briefs add column if not exists image_url text;
 
 -- ── Reports (project / annual / financial) ──────────────────────────────
 create table if not exists public.reports (

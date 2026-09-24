@@ -11,6 +11,7 @@ export const policyBriefSchema = z.object({
   title: z.string().min(1),
   body: z.string().min(1),
   date: z.string().min(1),
+  image_url: z.string().url().optional().or(z.literal("")),
   file_url: z.string().url().optional().or(z.literal("")),
 });
 
@@ -70,7 +71,7 @@ export const leadershipSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
   photo_url: z.string().url().optional().or(z.literal("")),
-  team: z.enum(["executive", "management", "state"]),
+  team: z.enum(["executive", "management"]),
 });
 
 export const toolkitGuideSchema = z.object({
