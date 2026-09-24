@@ -1,16 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { useFormSubmit } from "@/lib/use-form-submit";
-import { HandHeart, Briefcase, Megaphone, Calendar, AlertCircle } from "lucide-react";
+import { OpportunityApplyDialog } from "@/components/site/OpportunityApplyDialog";
+import { OPPORTUNITY_CATEGORY } from "@/lib/opportunity-categories";
+import { opportunitiesApi } from "@/api/collections-api";
+import type { Opportunity } from "@/api/collections";
+import { HandHeart, Briefcase, Megaphone, Calendar } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/get-involved")({
   head: () => ({
     meta: [
       { title: "Get Involved — Volunteer, Partner, Engage | CREAP" },
-      { name: "description", content: "Volunteer, partner with us, or join CREAP's events. Apply to become a state coordinator and help drive community change." },
+      { name: "description", content: "Volunteer, partner with us, apply for open roles, fellowships and internships, or become a CREAP State Coordinator." },
     ],
   }),
+  // Show the empty state rather than an error page if the table isn't there yet.
+  loader: () => opportunitiesApi.list().catch(() => [] as Opportunity[]),
   component: GetInvolved,
 });
 
@@ -27,7 +33,14 @@ const EVENTS = [
 ];
 
 function GetInvolved() {
-  const { status, error, handleSubmit } = useFormSubmit("Thanks — we'll be in touch.");
+  const openings = Route.useLoaderData() ?? [];
+  const [filter, setFilter] = useState<"all" | Opportunity["category"]>("all");
+  const [applying, setApplying] = useState<Opportunity | null>(null);
+
+  const categories = (Object.keys(OPPORTUNITY_CATEGORY) as Opportunity["category"][]).filter((c) =>
+    openings.some((o) => o.category === c),
+  );
+  const shown = openings.filter((o) => filter === "all" || o.category === filter);
 
   return (
     <>
@@ -69,55 +82,65 @@ function GetInvolved() {
         </Reveal>
       </section>
 
-      {/* Coordinator form */}
-      <section className="py-24 bg-bg">
-        <Reveal as="div" className="mx-auto max-w-[900px] px-5 sm:px-8 md:px-12 lg:px-28">
-          <div className="text-center mb-12">
-            <p className="eyebrow-dark mb-4">State Coordinator Application</p>
-            <h2 className="display-lg">Lead CREAP in <em className="text-gold italic">your state</em></h2>
+      {/* Open opportunities — managed from Dashboard → Get Involved */}
+      <section id="opportunities" className="py-24 bg-bg scroll-mt-28">
+        <Reveal as="div" className="mx-auto max-w-[1100px] px-5 sm:px-8 md:px-12 lg:px-28">
+          <div className="text-center mb-10">
+            <p className="eyebrow-dark mb-4">Open Opportunities</p>
+            <h2 className="display-lg mb-4">Build your career on <em className="text-gold italic">purpose</em></h2>
+            <p className="text-ink3 max-w-xl mx-auto">
+              Roles, fellowships, internships, volunteer calls and State Coordinator positions — apply to the one that fits you.
+            </p>
           </div>
-          <form
-            onSubmit={(e) =>
-              handleSubmit(e, (fd) => ({
-                formType: "coordinator",
-                fullName: fd.get("fullName"),
-                email: fd.get("email"),
-                phone: fd.get("phone"),
-                state: fd.get("state"),
-                reason: fd.get("reason"),
-              }))
-            }
-            className="bg-white border border-rule rounded-sm p-8 lg:p-10 grid sm:grid-cols-2 gap-5"
-          >
-            {[
-              ["Full name", "fullName", "text"],
-              ["Email", "email", "email"],
-              ["Phone", "phone", "tel"],
-              ["State of residence", "state", "text"],
-            ].map(([label, name, type]) => (
-              <label key={name} className="flex flex-col gap-2 text-sm">
-                <span className="text-ink3 font-medium">{label} *</span>
-                <input name={name} type={type} required className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
-              </label>
-            ))}
-            <label className="sm:col-span-2 flex flex-col gap-2 text-sm">
-              <span className="text-ink3 font-medium">Why do you want to coordinate CREAP in your state? *</span>
-              <textarea name="reason" required rows={5} className="border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition" />
-            </label>
-            <button
-              disabled={status === "submitting"}
-              className="sm:col-span-2 bg-g600 hover:bg-g700 disabled:opacity-60 text-white uppercase tracking-wider text-xs font-semibold py-4 rounded-sm transition"
-            >
-              {status === "submitting" ? "Submitting…" : "Submit Application"}
-            </button>
-            {status === "error" && (
-              <p className="sm:col-span-2 flex items-center gap-2 text-red-600 text-sm">
-                <AlertCircle size={16} /> {error}
-              </p>
+
+          {categories.length > 1 && (
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {(["all", ...categories] as const).map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setFilter(c)}
+                  className={[
+                    "px-4 py-2 rounded-sm text-[12px] font-semibold uppercase tracking-[0.1em] border transition",
+                    filter === c ? "bg-g600 text-white border-g600" : "border-rule text-ink3 hover:border-g500 hover:text-ink",
+                  ].join(" ")}
+                >
+                  {c === "all" ? "All" : OPPORTUNITY_CATEGORY[c].label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {openings.length === 0 && (
+              <p className="text-ink3 text-center py-12">No open opportunities right now — please check back soon.</p>
             )}
-          </form>
+            {shown.map((job, idx) => {
+              const { label, icon: Icon } = OPPORTUNITY_CATEGORY[job.category] ?? OPPORTUNITY_CATEGORY["full-time"];
+              return (
+                <RevealItem key={job.id} as="article" index={idx} className="bg-white border border-rule rounded-sm p-7 lg:p-8 grid md:grid-cols-12 gap-6 items-center hover:border-gold transition">
+                  <div className="md:col-span-1"><Icon size={28} strokeWidth={1.5} className="text-gold" /></div>
+                  <div className="md:col-span-7">
+                    <span className="text-[11px] tracking-[0.16em] uppercase font-semibold text-gold">{label}</span>
+                    <h3 className="font-display text-2xl mt-1">{job.title}</h3>
+                    <p className="text-sm text-ink3 mt-1">{job.location} · Apply by {job.deadline}</p>
+                    {job.description && <p className="text-ink3 mt-2 leading-relaxed">{job.description}</p>}
+                  </div>
+                  <div className="md:col-span-4 md:text-right">
+                    <button
+                      onClick={() => setApplying(job)}
+                      className="inline-flex items-center gap-2 bg-g600 hover:bg-g700 text-white uppercase tracking-wider text-xs font-semibold px-6 py-3 rounded-sm transition"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </RevealItem>
+              );
+            })}
+          </div>
         </Reveal>
       </section>
+
+      {applying && <OpportunityApplyDialog opportunity={applying} onClose={() => setApplying(null)} />}
 
       <section className="bg-g700 text-white py-16 text-center">
         <Reveal as="div" className="mx-auto max-w-[800px] px-6">

@@ -27,7 +27,6 @@ const PAGES = [
   { value: "/reports/annual-reports", label: "Annual Reports" },
   { value: "/leadership", label: "Leadership" },
   { value: "/get-involved", label: "Get Involved" },
-  { value: "/opportunities", label: "Opportunities" },
   { value: "/donate", label: "Donate" },
   { value: "/contact", label: "Contact" },
 ];

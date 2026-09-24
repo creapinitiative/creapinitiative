@@ -3,22 +3,17 @@ import { useEffect, useState } from "react";
 import { listSubmissions } from "@/api/submissions";
 import { OpportunityApplications } from "@/components/dashboard/OpportunityApplications";
 import { CollectionManager } from "@/components/dashboard/CollectionManager";
+import { OPPORTUNITY_CATEGORY } from "@/lib/opportunity-categories";
 import { opportunityFields } from "@/lib/dashboard-fields";
 import { opportunitiesApi } from "@/api/collections-api";
 
-export const Route = createFileRoute("/dashboard/opportunities")({
+export const Route = createFileRoute("/dashboard/get-involved")({
   loader: () => opportunitiesApi.list(),
-  component: OpportunitiesAdminPage,
+  component: GetInvolvedAdminPage,
 });
 
-const CATEGORY_LABELS: Record<string, string> = {
-  "full-time": "Full-time",
-  fellowship: "Fellowship",
-  internship: "Internship",
-  volunteer: "Volunteer",
-};
 
-function OpportunitiesAdminPage() {
+function GetInvolvedAdminPage() {
   const rows = Route.useLoaderData() ?? [];
   const [tab, setTab] = useState<"openings" | "applications">("openings");
   const [applicationCount, setApplicationCount] = useState<number | null>(null);
@@ -54,16 +49,16 @@ function OpportunitiesAdminPage() {
 
       {tab === "openings" ? (
         <CollectionManager
-          title="Opportunities"
-          description="Roles, fellowships, internships and volunteer calls on the public Opportunities page."
+          title="Get Involved"
+          description="Roles, fellowships, internships, volunteer and State Coordinator calls listed on the public Get Involved page."
           fields={opportunityFields}
           collectionKey="opportunities"
           rows={rows}
           api={opportunitiesApi}
           getRowLabel={(row) => row.title as string}
           getRowMeta={(row) => `${row.location} · Apply by ${row.deadline}`}
-          getRowBadge={(row) => CATEGORY_LABELS[row.category as string] ?? (row.category as string)}
-          tabs={Object.entries(CATEGORY_LABELS).map(([key, label]) => ({ key, label }))}
+          getRowBadge={(row) => OPPORTUNITY_CATEGORY[row.category as keyof typeof OPPORTUNITY_CATEGORY]?.label ?? (row.category as string)}
+          tabs={Object.entries(OPPORTUNITY_CATEGORY).map(([key, v]) => ({ key, label: v.label }))}
           getRowGroup={(row) => row.category as string}
         />
       ) : (

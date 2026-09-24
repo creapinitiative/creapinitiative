@@ -9,7 +9,7 @@ export const Route = createFileRoute("/dashboard/submissions")({
 
 type Submission = {
   id: string;
-  form_type: "contact" | "coordinator" | "donate_interest" | "newsletter" | "opportunity" | "program_interest";
+  form_type: "contact" | "newsletter" | "opportunity" | "program_interest";
   data: Record<string, unknown>;
   status: "new" | "read" | "archived";
   created_at: string;
@@ -17,14 +17,12 @@ type Submission = {
 
 const FORM_LABELS: Record<string, string> = {
   contact: "Contact",
-  coordinator: "Coordinator Application",
-  donate_interest: "Donation Interest",
   newsletter: "Newsletter",
-  opportunity: "Opportunity Application",
+  opportunity: "Get Involved Application",
   program_interest: "Program Interest",
 };
 
-const FILTER_TYPES = ["all", "contact", "coordinator", "donate_interest", "newsletter", "opportunity", "program_interest"];
+const FILTER_TYPES = ["all", "contact", "newsletter", "opportunity", "program_interest"];
 
 /** Which field names the opportunity / program to narrow a filter by. */
 const TARGET_FIELD: Record<string, string> = { opportunity: "opportunityTitle", program_interest: "programTitle" };
@@ -68,7 +66,7 @@ function SubmissionsPage() {
   return (
     <div>
       <h1 className="font-display text-3xl text-ink mb-1">Submissions</h1>
-      <p className="text-ink3 mb-6">Every contact, coordinator, opportunity-application, program-interest and newsletter form submitted on the site.</p>
+      <p className="text-ink3 mb-6">Every contact, Get Involved application, program-interest and newsletter form submitted on the site.</p>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {FILTER_TYPES.map((type) => (

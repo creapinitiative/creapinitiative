@@ -41,7 +41,6 @@ const NAV = [
   },
   { label: "Leadership", to: "/leadership" },
   { label: "Get Involved", to: "/get-involved" },
-  { label: "Opportunities", to: "/opportunities" },
   { label: "Contact", to: "/contact" },
 ];
 

@@ -14,10 +14,8 @@ const RECIPIENT_OPTIONS = [
   { value: "all", label: "Everyone (all submissions & givers)" },
   { value: "newsletter", label: "Newsletter subscribers" },
   { value: "contact", label: "Contact form submitters" },
-  { value: "coordinator", label: "State coordinator applicants" },
-  { value: "donate_interest", label: "Donation interest" },
   { value: "givers", label: "All givers (paid donations)" },
-  { value: "opportunity", label: "Opportunity applicants" },
+  { value: "opportunity", label: "Get Involved applicants" },
   { value: "program_interest", label: "Upcoming program registrants" },
 ] as const;
 

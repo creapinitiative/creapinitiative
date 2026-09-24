@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Pencil, Trash2, X, ExternalLink, Mail, Phone } from "lucide-react";
+import { Pencil, Trash2, X, ExternalLink, Mail, Phone, MapPin } from "lucide-react";
 import { listSubmissions, deleteSubmission, updateOpportunityApplication } from "@/api/submissions";
 
 export type Application = {
@@ -10,9 +10,11 @@ export type Application = {
   data: {
     opportunityId?: string;
     opportunityTitle?: string;
+    opportunityCategory?: string;
     fullName?: string;
     email?: string;
     phone?: string;
+    state?: string;
     cvLink?: string;
     message?: string;
   };
@@ -40,6 +42,7 @@ function EditApplication({
   const [fullName, setFullName] = useState(d.fullName ?? "");
   const [email, setEmail] = useState(d.email ?? "");
   const [phone, setPhone] = useState(d.phone ?? "");
+  const [state, setState] = useState(d.state ?? "");
   const [cvLink, setCvLink] = useState(d.cvLink ?? "");
   const [message, setMessage] = useState(d.message ?? "");
   const [status, setStatus] = useState<Application["status"]>(application.status);
@@ -51,7 +54,7 @@ function EditApplication({
     setSaving(true);
     setError(null);
     try {
-      await updateOpportunityApplication({ data: { id: application.id, status, data: { fullName, email, phone, cvLink, message } } });
+      await updateOpportunityApplication({ data: { id: application.id, status, data: { fullName, email, phone, state, cvLink, message } } });
       onSaved();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save changes.");
@@ -84,6 +87,12 @@ function EditApplication({
             <span className="block text-sm font-medium text-ink2 mb-1.5">Phone *</span>
             <input required value={phone} onChange={(e) => setPhone(e.target.value)} className={inputClass} />
           </label>
+          {(d.state || d.opportunityCategory === "state-coordinator") && (
+            <label className="block">
+              <span className="block text-sm font-medium text-ink2 mb-1.5">State of residence</span>
+              <input value={state} onChange={(e) => setState(e.target.value)} className={inputClass} />
+            </label>
+          )}
           <label className="block">
             <span className="block text-sm font-medium text-ink2 mb-1.5">CV link</span>
             <input type="url" value={cvLink} onChange={(e) => setCvLink(e.target.value)} placeholder="https://" className={inputClass} />
@@ -213,6 +222,7 @@ export function OpportunityApplications({
               <div className="mt-3 bg-g50 rounded-sm p-4 text-sm space-y-2">
                 <p className="flex items-center gap-2 text-ink2"><Mail size={14} className="text-ink4" /> {r.data.email}</p>
                 <p className="flex items-center gap-2 text-ink2"><Phone size={14} className="text-ink4" /> {r.data.phone}</p>
+                {r.data.state && <p className="flex items-center gap-2 text-ink2"><MapPin size={14} className="text-ink4" /> {r.data.state}</p>}
                 {r.data.cvLink && (
                   <a href={r.data.cvLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-g600 underline break-all">
                     <ExternalLink size={14} /> View CV

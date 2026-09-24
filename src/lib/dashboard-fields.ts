@@ -125,6 +125,7 @@ export const opportunityFields: FieldConfig[] = [
       { value: "fellowship", label: "Fellowship" },
       { value: "internship", label: "Internship" },
       { value: "volunteer", label: "Volunteer" },
+      { value: "state-coordinator", label: "State Coordinator" },
     ],
   },
   { key: "location", label: "Location", type: "text", required: true, helper: "e.g. \"Abuja, Nigeria\" or \"Remote\"." },

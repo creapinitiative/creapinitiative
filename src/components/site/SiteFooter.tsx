@@ -116,7 +116,6 @@ export function SiteFooter() {
               ["Knowledge Hub", "/resources"],
               ["Reports", "/reports"],
               ["Leadership", "/leadership"],
-              ["Opportunities", "/opportunities"],
             ].map(([l, t]) => (
               <li key={t}>
                 <Link to={t} className="text-white/65 hover:text-gold3 transition">{l}</Link>
@@ -131,7 +130,6 @@ export function SiteFooter() {
             <li><Link to="/get-involved" className="text-white/65 hover:text-gold3">Get Involved</Link></li>
             <li><Link to="/get-involved" className="text-white/65 hover:text-gold3">Partner with Us</Link></li>
             <li><Link to="/donate" className="text-white/65 hover:text-gold3">Donate</Link></li>
-            <li><Link to="/opportunities" className="text-white/65 hover:text-gold3">Opportunities</Link></li>
           </ul>
         </div>
 

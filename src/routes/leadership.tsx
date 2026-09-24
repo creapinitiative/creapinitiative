@@ -118,7 +118,7 @@ function Leadership() {
           <p className="text-white/70 max-w-xl mx-auto mb-8">
             Help lead our work in your state — coordinating outreaches, partnerships and research engagement on the ground.
           </p>
-          <Link to="/get-involved" className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 uppercase tracking-wider text-xs font-semibold px-8 py-4 rounded-sm transition">
+          <Link to="/get-involved" hash="opportunities" className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 uppercase tracking-wider text-xs font-semibold px-8 py-4 rounded-sm transition">
             Apply Now
           </Link>
         </Reveal>

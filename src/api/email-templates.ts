@@ -1,4 +1,4 @@
-type FormType = "contact" | "coordinator" | "donate_interest" | "newsletter" | "opportunity" | "program_interest";
+type FormType = "contact" | "newsletter" | "opportunity" | "program_interest";
 
 function esc(value: unknown): string {
   return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -24,8 +24,6 @@ export function wrapper(bodyHtml: string): string {
 
 const FORM_LABELS: Record<FormType, string> = {
   contact: "Contact form",
-  coordinator: "State Coordinator application",
-  donate_interest: "Donation interest",
   newsletter: "Newsletter sign-up",
   opportunity: "Opportunity application",
   program_interest: "Program interest registration",
@@ -37,8 +35,6 @@ export function confirmationEmail(formType: FormType, data: Record<string, unkno
 
   const messages: Record<FormType, string> = {
     contact: "Thank you for reaching out — a member of our team will respond to your message shortly.",
-    coordinator: "Thank you for applying to become a State Coordinator. Our team will review your application and be in touch.",
-    donate_interest: "Thank you for your interest in supporting CREAP Africa Initiative — we'll follow up with next steps shortly.",
     newsletter: "You're subscribed to Community Pulse, our monthly newsletter. Welcome aboard!",
     opportunity: `Thank you for applying for <strong>${esc(data.opportunityTitle)}</strong>. We've received your application and our team will be in touch if you're shortlisted.`,
     program_interest: `Thank you for registering your interest in <strong>${esc(data.programTitle)}</strong>. We'll send you updates and next steps by email.`,

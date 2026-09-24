@@ -13,22 +13,6 @@ const contactSchema = z.object({
   message: z.string().min(1),
 });
 
-const coordinatorSchema = z.object({
-  formType: z.literal("coordinator"),
-  fullName: z.string().min(1),
-  email: z.string().email(),
-  phone: z.string().min(1),
-  state: z.string().min(1),
-  reason: z.string().min(1),
-});
-
-const donateInterestSchema = z.object({
-  formType: z.literal("donate_interest"),
-  fullName: z.string().min(1),
-  email: z.string().email(),
-  amount: z.string().optional().or(z.literal("")),
-});
-
 const newsletterSchema = z.object({
   formType: z.literal("newsletter"),
   firstName: z.string().min(1),
@@ -44,6 +28,7 @@ const opportunitySchema = z.object({
   fullName: z.string().min(1),
   email: z.string().email(),
   phone: z.string().min(1),
+  state: z.string().optional().or(z.literal("")),
   cvLink: z.string().url().optional().or(z.literal("")),
   message: z.string().optional().or(z.literal("")),
 });
@@ -61,8 +46,6 @@ const programInterestSchema = z.object({
 
 const submissionSchema = z.discriminatedUnion("formType", [
   contactSchema,
-  coordinatorSchema,
-  donateInterestSchema,
   newsletterSchema,
   opportunitySchema,
   programInterestSchema,
@@ -176,6 +159,7 @@ export const updateOpportunityApplication = createServerFn({ method: "POST" })
         fullName: z.string().trim().min(1),
         email: z.string().trim().email(),
         phone: z.string().trim().min(1),
+        state: z.string().optional().or(z.literal("")),
         cvLink: z.string().trim().url().optional().or(z.literal("")),
         message: z.string().optional().or(z.literal("")),
       }),

@@ -89,7 +89,7 @@ export const pressStatementSchema = z.object({
   file_url: z.string().url().optional().or(z.literal("")),
 });
 
-export const OPPORTUNITY_CATEGORIES = ["full-time", "fellowship", "internship", "volunteer"] as const;
+export const OPPORTUNITY_CATEGORIES = ["full-time", "fellowship", "internship", "volunteer", "state-coordinator"] as const;
 
 export const opportunitySchema = z.object({
   title: z.string().min(1),

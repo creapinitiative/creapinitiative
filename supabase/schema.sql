@@ -226,3 +226,24 @@ create table if not exists public.hero_slides (
   updated_at timestamptz not null default now()
 );
 alter table public.hero_slides enable row level security;
+
+-- ── Migration: Get Involved consolidation ────────────────────────────────
+-- 1. Remove the old test State Coordinator applications and "donation
+--    interest" entries (payments now go through Paystack).
+delete from public.form_submissions where form_type in ('coordinator', 'donate_interest');
+
+-- 2. Only the form types still in use are allowed from now on.
+alter table public.form_submissions drop constraint if exists form_submissions_form_type_check;
+alter table public.form_submissions add constraint form_submissions_form_type_check
+  check (form_type in ('contact', 'newsletter', 'opportunity', 'program_interest'));
+
+-- 3. A fifth opportunity category: State Coordinator.
+alter table public.opportunities drop constraint if exists opportunities_category_check;
+alter table public.opportunities add constraint opportunities_category_check
+  check (category in ('full-time', 'fellowship', 'internship', 'volunteer', 'state-coordinator'));
+
+insert into public.opportunities (title, category, location, deadline, description, sort_order)
+select 'State Coordinator', 'state-coordinator', 'Your state, Nigeria', 'Open',
+       'Lead CREAP''s work in your state — coordinating outreaches, partnerships and research engagement on the ground.',
+       coalesce((select max(sort_order) + 1 from public.opportunities), 0)
+where not exists (select 1 from public.opportunities where category = 'state-coordinator');

@@ -13,9 +13,9 @@ import { wrapper } from "@/api/email-templates";
  * shared `to`/`cc`), so recipients never see each other's addresses.
  */
 
-const BUCKET_GROUPS = ["contact", "coordinator", "donate_interest", "newsletter", "opportunity", "program_interest", "givers", "all"] as const;
+const BUCKET_GROUPS = ["contact", "newsletter", "opportunity", "program_interest", "givers", "all"] as const;
 type BucketGroup = (typeof BUCKET_GROUPS)[number];
-const FORM_TYPES = ["contact", "coordinator", "donate_interest", "newsletter", "opportunity", "program_interest"] as const;
+const FORM_TYPES = ["contact", "newsletter", "opportunity", "program_interest"] as const;
 
 const RECIPIENT_TYPES = [...BUCKET_GROUPS, "individual"] as const;
 type RecipientType = (typeof RECIPIENT_TYPES)[number];
@@ -26,8 +26,6 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
 
   const sets: Record<BucketGroup, Set<string>> = {
     contact: new Set(),
-    coordinator: new Set(),
-    donate_interest: new Set(),
     newsletter: new Set(),
     opportunity: new Set(),
     program_interest: new Set(),
@@ -59,8 +57,6 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
 
   return {
     contact: [...sets.contact],
-    coordinator: [...sets.coordinator],
-    donate_interest: [...sets.donate_interest],
     newsletter: [...sets.newsletter],
     opportunity: [...sets.opportunity],
     program_interest: [...sets.program_interest],
@@ -77,8 +73,6 @@ export const getRecipientCounts = createServerFn({ method: "GET" })
     const buckets = await fetchEmailBuckets(supabase);
     return {
       contact: buckets.contact.length,
-      coordinator: buckets.coordinator.length,
-      donate_interest: buckets.donate_interest.length,
       newsletter: buckets.newsletter.length,
       opportunity: buckets.opportunity.length,
       program_interest: buckets.program_interest.length,
