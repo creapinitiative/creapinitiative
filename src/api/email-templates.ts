@@ -1,4 +1,8 @@
-type FormType = "contact" | "coordinator" | "donate_interest" | "newsletter";
+type FormType = "contact" | "coordinator" | "donate_interest" | "newsletter" | "opportunity" | "program_interest";
+
+function esc(value: unknown): string {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+}
 
 export function wrapper(bodyHtml: string): string {
   return `
@@ -23,6 +27,8 @@ const FORM_LABELS: Record<FormType, string> = {
   coordinator: "State Coordinator application",
   donate_interest: "Donation interest",
   newsletter: "Newsletter sign-up",
+  opportunity: "Opportunity application",
+  program_interest: "Program interest registration",
 };
 
 /** Email sent back to whoever filled out the form. */
@@ -34,12 +40,14 @@ export function confirmationEmail(formType: FormType, data: Record<string, unkno
     coordinator: "Thank you for applying to become a State Coordinator. Our team will review your application and be in touch.",
     donate_interest: "Thank you for your interest in supporting CREAP Africa Initiative — we'll follow up with next steps shortly.",
     newsletter: "You're subscribed to Community Pulse, our monthly newsletter. Welcome aboard!",
+    opportunity: `Thank you for applying for <strong>${esc(data.opportunityTitle)}</strong>. We've received your application and our team will be in touch if you're shortlisted.`,
+    program_interest: `Thank you for registering your interest in <strong>${esc(data.programTitle)}</strong>. We'll send you updates and next steps by email.`,
   };
 
   return {
     subject: `We received your ${FORM_LABELS[formType].toLowerCase()}`,
     html: wrapper(`
-      <p>Hi ${name},</p>
+      <p>Hi ${esc(name)},</p>
       <p>${messages[formType]}</p>
       <p style="margin-top:24px;">— The CREAP Africa Initiative team</p>
     `),
@@ -52,7 +60,7 @@ export function notificationEmail(formType: FormType, data: Record<string, unkno
     .map(([key, value]) => `
       <tr>
         <td style="padding:6px 12px 6px 0;color:#8a8a8a;vertical-align:top;white-space:nowrap;">${key}</td>
-        <td style="padding:6px 0;color:#2b2b2b;">${String(value ?? "")}</td>
+        <td style="padding:6px 0;color:#2b2b2b;">${esc(value)}</td>
       </tr>
     `)
     .join("");

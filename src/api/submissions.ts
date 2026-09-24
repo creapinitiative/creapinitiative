@@ -36,11 +36,36 @@ const newsletterSchema = z.object({
   email: z.string().email(),
 });
 
+const opportunitySchema = z.object({
+  formType: z.literal("opportunity"),
+  opportunityId: z.string().min(1),
+  opportunityTitle: z.string().min(1),
+  opportunityCategory: z.string().optional().or(z.literal("")),
+  fullName: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().min(1),
+  cvLink: z.string().url().optional().or(z.literal("")),
+  message: z.string().optional().or(z.literal("")),
+});
+
+const programInterestSchema = z.object({
+  formType: z.literal("program_interest"),
+  programSlug: z.string().min(1),
+  programTitle: z.string().min(1),
+  fullName: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().optional().or(z.literal("")),
+  organisation: z.string().optional().or(z.literal("")),
+  message: z.string().optional().or(z.literal("")),
+});
+
 const submissionSchema = z.discriminatedUnion("formType", [
   contactSchema,
   coordinatorSchema,
   donateInterestSchema,
   newsletterSchema,
+  opportunitySchema,
+  programInterestSchema,
 ]);
 
 /**

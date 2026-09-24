@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Send, Paperclip, X, Loader2 } from "lucide-react";
-import { getRecipientCounts, sendAdminEmail } from "@/api/mailer";
+import { getRecipientCounts, getTargetOptions, sendAdminEmail } from "@/api/mailer";
 import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
 
@@ -17,10 +17,21 @@ const RECIPIENT_OPTIONS = [
   { value: "coordinator", label: "State coordinator applicants" },
   { value: "donate_interest", label: "Donation interest" },
   { value: "givers", label: "All givers (paid donations)" },
+  { value: "opportunity", label: "Opportunity applicants" },
+  { value: "program_interest", label: "Upcoming program registrants" },
 ] as const;
 
 type RecipientValue = (typeof RECIPIENT_OPTIONS)[number]["value"];
 type Counts = Record<Exclude<RecipientValue, "individual">, number>;
+
+type TargetOption = { id: string; title: string; count: number; past?: boolean };
+type TargetOptions = { opportunities: TargetOption[]; programs: TargetOption[] };
+
+/** Recipient groups that need a second pick: which opportunity / program. */
+const TARGETED = {
+  opportunity: { noun: "opportunity", allLabel: "All applicants", key: "opportunities" },
+  program_interest: { noun: "program", allLabel: "All registrants", key: "programs" },
+} as const;
 
 type SendResult = { sent: number; failed: string[]; total: number };
 
@@ -30,6 +41,8 @@ function MessagingPage() {
 
   const [recipientType, setRecipientType] = useState<RecipientValue>("individual");
   const [customEmails, setCustomEmails] = useState("");
+  const [targets, setTargets] = useState<TargetOptions | null>(null);
+  const [targetId, setTargetId] = useState("all");
   const [subject, setSubject] = useState("");
   const [html, setHtml] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -46,11 +59,21 @@ function MessagingPage() {
       .catch((err) => setCountsError(err instanceof Error ? err.message : "Failed to load recipient counts."));
   }, []);
 
+  useEffect(() => {
+    getTargetOptions()
+      .then((t) => setTargets(t as TargetOptions))
+      .catch(() => setTargets({ opportunities: [], programs: [] }));
+  }, []);
+
+  const targeted = recipientType === "opportunity" || recipientType === "program_interest" ? TARGETED[recipientType] : null;
+  const targetList: TargetOption[] = targeted && targets ? targets[targeted.key] : [];
+
   function recipientCount(): number | null {
     if (recipientType === "individual") {
       const n = customEmails.split(/[\n,]+/).map((e) => e.trim()).filter(Boolean).length;
       return n;
     }
+    if (targeted && targetId !== "all") return targetList.find((t) => t.id === targetId)?.count ?? 0;
     return counts?.[recipientType] ?? null;
   }
 
@@ -77,7 +100,9 @@ function MessagingPage() {
     }
 
     const count = recipientCount();
-    const label = RECIPIENT_OPTIONS.find((o) => o.value === recipientType)?.label ?? recipientType;
+    const groupLabel = RECIPIENT_OPTIONS.find((o) => o.value === recipientType)?.label ?? recipientType;
+    const targetLabel = targeted && targetId !== "all" ? targetList.find((t) => t.id === targetId)?.title : null;
+    const label = targetLabel ? `${groupLabel}: ${targetLabel}` : groupLabel;
     const confirmed = window.confirm(
       `Send this email to ${count ?? "an unknown number of"} recipient(s) (${label})?`,
     );
@@ -88,6 +113,7 @@ function MessagingPage() {
       const formData = new FormData();
       formData.set("recipientType", recipientType);
       formData.set("customEmails", customEmails);
+      formData.set("targetId", targetId);
       formData.set("subject", subject);
       formData.set("html", html);
       for (const file of attachments) formData.append("attachments", file);
@@ -140,7 +166,10 @@ function MessagingPage() {
                     type="radio"
                     name="recipientType"
                     checked={recipientType === opt.value}
-                    onChange={() => setRecipientType(opt.value)}
+                    onChange={() => {
+                      setRecipientType(opt.value);
+                      setTargetId("all");
+                    }}
                   />
                   {opt.label}
                 </span>
@@ -154,6 +183,33 @@ function MessagingPage() {
           </div>
           {countsError && <p className="text-xs text-red-600 mt-2">{countsError}</p>}
         </div>
+
+        {targeted && (
+          <label className="block">
+            <span className="block text-sm font-medium text-ink2 mb-1.5">
+              Which {targeted.noun}?
+            </span>
+            <select
+              value={targetId}
+              onChange={(e) => setTargetId(e.target.value)}
+              className="w-full border border-rule rounded-sm px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-gold transition"
+            >
+              <option value="all">
+                {targeted.allLabel} ({counts?.[recipientType as "opportunity" | "program_interest"] ?? "…"})
+              </option>
+              {targetList.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.title}{t.past ? " (past)" : ""} — {t.count} {t.count === 1 ? "person" : "people"}
+                </option>
+              ))}
+            </select>
+            {targets && targetList.length === 0 && (
+              <p className="text-xs text-ink4 mt-1.5">
+                No {targeted.noun === "program" ? "upcoming programs" : "opportunities"} have been added yet.
+              </p>
+            )}
+          </label>
+        )}
 
         {recipientType === "individual" && (
           <label className="block">

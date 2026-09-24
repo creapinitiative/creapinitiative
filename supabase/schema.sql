@@ -176,3 +176,53 @@ create table if not exists public.donations (
 alter table public.donations enable row level security;
 create index if not exists donations_status_idx on public.donations (status);
 create index if not exists donations_created_at_idx on public.donations (created_at desc);
+
+-- ── Migration: report cover images ───────────────────────────────────────
+alter table public.reports add column if not exists image_url text;
+
+-- ── Migration: Opportunities (dashboard-managed) ─────────────────────────
+create table if not exists public.opportunities (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text not null check (category in ('full-time', 'fellowship', 'internship', 'volunteer')),
+  location text not null,
+  deadline text not null default 'Open',
+  description text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.opportunities enable row level security;
+
+-- Seed the three openings that used to be hard-coded on the page (only if empty).
+insert into public.opportunities (title, category, location, deadline, sort_order)
+select * from (values
+  ('Programs Officer — Civic Education', 'full-time', 'Abuja, Nigeria', 'Rolling', 0),
+  ('Research Fellow — Climate Policy', 'fellowship', 'Remote / Nigeria', 'May 30, 2026', 1),
+  ('Communications Intern', 'internship', 'Hybrid · Abuja', 'Open', 2)
+) as seed(title, category, location, deadline, sort_order)
+where not exists (select 1 from public.opportunities);
+
+-- ── Migration: new form types (opportunity applications, program interest) ─
+alter table public.form_submissions drop constraint if exists form_submissions_form_type_check;
+alter table public.form_submissions add constraint form_submissions_form_type_check
+  check (form_type in ('contact', 'coordinator', 'donate_interest', 'newsletter', 'opportunity', 'program_interest'));
+
+-- ── Migration: Homepage hero slides ──────────────────────────────────────
+create table if not exists public.hero_slides (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  eyebrow text,
+  title text not null,
+  highlight text,
+  body text,
+  cta1_label text,
+  cta1_link text,
+  cta2_label text,
+  cta2_link text,
+  active boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.hero_slides enable row level security;

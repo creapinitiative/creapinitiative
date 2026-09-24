@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { HeroSlide } from "@/api/collections";
 import slideEvidence from "@/assets/evidence-driven-policy.jpg";
 import slideEquity from "@/assets/equity-for-marginalized.jpg";
 import slideGovernance from "@/assets/civic-participation.jpg";
@@ -9,11 +10,25 @@ import slidePeace from "@/assets/championing-peace.jpg";
 import slideCapacity from "@/assets/empowering-people-through-knowledge.jpg";
 import slidePartnership from "@/assets/stronger-together-through-collaboration.jpg";
 
-const SLIDES = [
+type Cta = { label: string; to: string };
+type Slide = {
+  img: string;
+  eyebrow: string;
+  title: string;
+  /** Rendered in gold italics after the title. */
+  highlight: string;
+  body: string;
+  cta1: Cta | null;
+  cta2: Cta | null;
+};
+
+// Shown when no slides have been set up in the dashboard yet (or it can't be reached).
+const DEFAULT_SLIDES: Slide[] = [
   {
     img: slideEvidence,
     eyebrow: "Evidence & Research",
-    title: <>Evidence-Driven Policy, <em className="text-goldf italic">Lasting Impact</em></>,
+    title: "Evidence-Driven Policy,",
+    highlight: "Lasting Impact",
     body: "We use research, data and community-generated evidence to inform policies and programs that create real, measurable change.",
     cta1: { label: "About CREAP", to: "/about" },
     cta2: { label: "Our Publications", to: "/resources/policy-briefs" },
@@ -21,7 +36,8 @@ const SLIDES = [
   {
     img: slideEquity,
     eyebrow: "Equity & Inclusion",
-    title: <>Equity for the Marginalized, <em className="text-goldf italic">Access for All</em></>,
+    title: "Equity for the Marginalized,",
+    highlight: "Access for All",
     body: "We pursue policies and systems that ensure access to opportunities, resources, and services for the marginalized and underserved.",
     cta1: { label: "Discover CREAP", to: "/about" },
     cta2: { label: "Get Involved", to: "/get-involved" },
@@ -29,7 +45,8 @@ const SLIDES = [
   {
     img: slideGovernance,
     eyebrow: "Governance & Democracy",
-    title: <>Civic Participation, <em className="text-goldf italic">Accountable Governance</em></>,
+    title: "Civic Participation,",
+    highlight: "Accountable Governance",
     body: "We promote civic participation and public accountability so communities can influence decisions that shape their lives.",
     cta1: { label: "Our Programs", to: "/programs/our-key-programs" },
     cta2: { label: "Read Reports", to: "/resources/policy-briefs" },
@@ -37,7 +54,8 @@ const SLIDES = [
   {
     img: slideClimate,
     eyebrow: "Climate & Environment",
-    title: <>Greening Futures, <em className="text-goldf italic">Building Climate Resilience</em></>,
+    title: "Greening Futures,",
+    highlight: "Building Climate Resilience",
     body: "We advance environmentally responsible development, climate adaptation, and sustainable livelihoods that protect ecosystems and communities.",
     cta1: { label: "Our Programs", to: "/programs/our-key-programs" },
     cta2: { label: "Get Involved", to: "/get-involved" },
@@ -45,7 +63,8 @@ const SLIDES = [
   {
     img: slidePeace,
     eyebrow: "Peace & Youth Empowerment",
-    title: <>Championing Peace, <em className="text-goldf italic">Youth Empowerment & Civic Life</em></>,
+    title: "Championing Peace,",
+    highlight: "Youth Empowerment & Civic Life",
     body: "We work constantly to promote Peace, Civic Education and Youth Empowerment, recognizing that development cannot thrive without social cohesion.",
     cta1: { label: "About CREAP", to: "/about" },
     cta2: { label: "View Programs", to: "/programs/our-key-programs" },
@@ -53,7 +72,8 @@ const SLIDES = [
   {
     img: slideCapacity,
     eyebrow: "Capacity & Empowerment",
-    title: <>Empowering People Through <em className="text-goldf italic">Knowledge & Skills</em></>,
+    title: "Empowering People Through",
+    highlight: "Knowledge & Skills",
     body: "We invest in digital skills, leadership training, and capacity development - building a generation equipped to drive sustainable change.",
     cta1: { label: "Get Involved", to: "/get-involved" },
     cta2: { label: "Our Programs", to: "/programs/our-key-programs" },
@@ -61,20 +81,52 @@ const SLIDES = [
   {
     img: slidePartnership,
     eyebrow: "Partnerships & Collaboration",
-    title: <>Stronger Together Through <em className="text-goldf italic">Strategic Collaboration</em></>,
+    title: "Stronger Together Through",
+    highlight: "Strategic Collaboration",
     body: "Our work is powered by collaboration with strategic public and private institutions - building synergies that amplify community impact.",
     cta1: { label: "Partner With Us", to: "/get-involved" },
     cta2: { label: "About CREAP", to: "/about" },
   },
 ];
 
-export function HeroSlider() {
+function toCta(label?: string | null, link?: string | null): Cta | null {
+  return label?.trim() && link?.trim() ? { label: label.trim(), to: link.trim() } : null;
+}
+
+function fromDashboard(slides: HeroSlide[]): Slide[] {
+  return slides.map((s) => ({
+    img: s.image_url,
+    eyebrow: s.eyebrow ?? "",
+    title: s.title,
+    highlight: s.highlight ?? "",
+    body: s.body ?? "",
+    cta1: toCta(s.cta1_label, s.cta1_link),
+    cta2: toCta(s.cta2_label, s.cta2_link),
+  }));
+}
+
+/** Internal paths use the router (no full reload); anything else is a normal link. */
+function SlideButton({ cta, className }: { cta: Cta; className: string }) {
+  if (cta.to.startsWith("/")) {
+    return <Link to={cta.to as never} className={className}>{cta.label}</Link>;
+  }
+  return <a href={cta.to} target="_blank" rel="noopener noreferrer" className={className}>{cta.label}</a>;
+}
+
+export function HeroSlider({ slides }: { slides?: HeroSlide[] }) {
+  const SLIDES = slides && slides.length > 0 ? fromDashboard(slides) : DEFAULT_SLIDES;
   const [i, setI] = useState(0);
 
   useEffect(() => {
+    if (SLIDES.length < 2) return;
     const t = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 5500);
     return () => clearInterval(t);
-  }, []);
+  }, [SLIDES.length]);
+
+  // If slides were removed while the visitor is on the page, keep the index valid.
+  useEffect(() => {
+    if (i >= SLIDES.length) setI(0);
+  }, [i, SLIDES.length]);
 
   const go = (n: number) => setI((n + SLIDES.length) % SLIDES.length);
 
@@ -101,19 +153,32 @@ export function HeroSlider() {
                 key={`c-${idx}-${i}`}
                 className={`max-w-[820px] ${idx === i ? "animate-fade-up" : "opacity-0"}`}
               >
-                <p className="eyebrow text-gold3 mb-5">{s.eyebrow}</p>
-                <h1 className="display-xl text-white">{s.title}</h1>
-                <p className="mt-6 text-base sm:text-lg text-white/80 max-w-[620px] leading-relaxed font-light">
-                  {s.body}
-                </p>
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <Link to={s.cta1.to} className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 font-semibold uppercase tracking-wider text-xs px-7 py-3.5 rounded-sm transition hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(184,148,31,0.35)]">
-                    {s.cta1.label} <ArrowRight size={14} />
-                  </Link>
-                  <Link to={s.cta2.to} className="inline-flex items-center gap-2 border border-white/45 text-white hover:border-white hover:bg-white/5 uppercase tracking-wider text-xs px-7 py-3.5 rounded-sm transition">
-                    {s.cta2.label}
-                  </Link>
-                </div>
+                {s.eyebrow && <p className="eyebrow text-gold3 mb-5">{s.eyebrow}</p>}
+                <h1 className="display-xl text-white">
+                  {s.title}
+                  {s.highlight && <> <em className="text-goldf italic">{s.highlight}</em></>}
+                </h1>
+                {s.body && (
+                  <p className="mt-6 text-base sm:text-lg text-white/80 max-w-[620px] leading-relaxed font-light">
+                    {s.body}
+                  </p>
+                )}
+                {(s.cta1 || s.cta2) && (
+                  <div className="mt-9 flex flex-wrap gap-3">
+                    {s.cta1 && (
+                      <SlideButton
+                        cta={s.cta1}
+                        className="inline-flex items-center gap-2 bg-gold hover:bg-gold2 text-g900 font-semibold uppercase tracking-wider text-xs px-7 py-3.5 rounded-sm transition hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(184,148,31,0.35)]"
+                      />
+                    )}
+                    {s.cta2 && (
+                      <SlideButton
+                        cta={s.cta2}
+                        className="inline-flex items-center gap-2 border border-white/45 text-white hover:border-white hover:bg-white/5 uppercase tracking-wider text-xs px-7 py-3.5 rounded-sm transition"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

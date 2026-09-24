@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, CalendarDays, ExternalLink, MapPin } from "lucide-react";
 import { getUpcomingProgramBySlug } from "@/api/collections-api";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
+import { useFormSubmit } from "@/lib/use-form-submit";
 
 export const Route = createFileRoute("/programs/upcoming-programs/$slug")({
   loader: ({ params }) => getUpcomingProgramBySlug({ data: { slug: params.slug } }),
@@ -11,6 +12,45 @@ export const Route = createFileRoute("/programs/upcoming-programs/$slug")({
 function isPastEvent(endDate?: string | null): boolean {
   if (!endDate) return false;
   return endDate < new Date().toISOString().slice(0, 10);
+}
+
+const inputClass =
+  "w-full border border-rule rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-gold transition";
+
+function InterestForm({ slug, title }: { slug: string; title: string }) {
+  const { status, error, handleSubmit } = useFormSubmit(`Thank you — you're registered for ${title}.`);
+  return (
+    <form
+      className="grid sm:grid-cols-2 gap-3"
+      onSubmit={(e) =>
+        handleSubmit(e, (fd) => ({
+          formType: "program_interest",
+          programSlug: slug,
+          programTitle: title,
+          fullName: fd.get("fullName"),
+          email: fd.get("email"),
+          phone: fd.get("phone"),
+          organisation: fd.get("organisation"),
+          message: fd.get("message"),
+        }))
+      }
+    >
+      <input name="fullName" required placeholder="Full name" className={inputClass} />
+      <input name="email" type="email" required placeholder="Email address" className={inputClass} />
+      <input name="phone" type="tel" placeholder="Phone number (optional)" className={inputClass} />
+      <input name="organisation" placeholder="Organisation / school (optional)" className={inputClass} />
+      <textarea name="message" rows={3} placeholder="Anything you'd like us to know? (optional)" className={`sm:col-span-2 ${inputClass}`} />
+      <div className="sm:col-span-2">
+        <button
+          disabled={status === "submitting"}
+          className="inline-flex items-center gap-2 bg-g600 hover:bg-g700 disabled:opacity-60 text-white uppercase tracking-[0.12em] text-xs font-semibold px-6 py-3 rounded-sm transition"
+        >
+          {status === "submitting" ? "Registering…" : "Register my interest"}
+        </button>
+        {status === "error" && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      </div>
+    </form>
+  );
 }
 
 function UpcomingProgramDetailPage() {
@@ -111,6 +151,16 @@ function UpcomingProgramDetailPage() {
             </ul>
           </RevealItem>
         </section>
+
+        {!isPastEvent(program.event_end_date) && (
+          <Reveal as="section" className="mt-8 rounded-sm border border-rule bg-white p-7">
+            <h2 className="font-display text-3xl mb-2">Register your interest</h2>
+            <p className="text-ink3 mb-6">
+              Tell us you're coming and we'll email you updates and next steps for {program.subtitle}.
+            </p>
+            <InterestForm slug={program.slug} title={program.subtitle} />
+          </Reveal>
+        )}
 
         <Reveal as="section" className="mt-8 rounded-sm border border-rule bg-white p-7">
           {program.closing_note && <p className="text-ink2 leading-relaxed mb-6">{program.closing_note}</p>}

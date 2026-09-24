@@ -13,9 +13,9 @@ import { wrapper } from "@/api/email-templates";
  * shared `to`/`cc`), so recipients never see each other's addresses.
  */
 
-const BUCKET_GROUPS = ["contact", "coordinator", "donate_interest", "newsletter", "givers", "all"] as const;
+const BUCKET_GROUPS = ["contact", "coordinator", "donate_interest", "newsletter", "opportunity", "program_interest", "givers", "all"] as const;
 type BucketGroup = (typeof BUCKET_GROUPS)[number];
-const FORM_TYPES = ["contact", "coordinator", "donate_interest", "newsletter"] as const;
+const FORM_TYPES = ["contact", "coordinator", "donate_interest", "newsletter", "opportunity", "program_interest"] as const;
 
 const RECIPIENT_TYPES = [...BUCKET_GROUPS, "individual"] as const;
 type RecipientType = (typeof RECIPIENT_TYPES)[number];
@@ -29,6 +29,8 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
     coordinator: new Set(),
     donate_interest: new Set(),
     newsletter: new Set(),
+    opportunity: new Set(),
+    program_interest: new Set(),
     givers: new Set(),
     all: new Set(),
   };
@@ -60,6 +62,8 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
     coordinator: [...sets.coordinator],
     donate_interest: [...sets.donate_interest],
     newsletter: [...sets.newsletter],
+    opportunity: [...sets.opportunity],
+    program_interest: [...sets.program_interest],
     givers: [...sets.givers],
     all: [...sets.all],
   };
@@ -76,8 +80,65 @@ export const getRecipientCounts = createServerFn({ method: "GET" })
       coordinator: buckets.coordinator.length,
       donate_interest: buckets.donate_interest.length,
       newsletter: buckets.newsletter.length,
+      opportunity: buckets.opportunity.length,
+      program_interest: buckets.program_interest.length,
       givers: buckets.givers.length,
       all: buckets.all.length,
+    };
+  });
+
+/** Which submission field identifies the opportunity / program a person applied to. */
+const TARGET_KEY = { opportunity: "opportunityId", program_interest: "programSlug" } as const;
+type TargetedType = keyof typeof TARGET_KEY;
+const TARGETED_TYPES = Object.keys(TARGET_KEY) as TargetedType[];
+
+/** Deduped emails per opportunity id / program slug, from the submissions inbox. */
+async function fetchTargetEmails(supabase: SupabaseClient, type: TargetedType): Promise<Map<string, Set<string>>> {
+  const { data, error } = await supabase.from("form_submissions").select("data").eq("form_type", type);
+  if (error) throw new Error(error.message);
+  const byTarget = new Map<string, Set<string>>();
+  for (const row of data ?? []) {
+    const d = (row.data ?? {}) as Record<string, unknown>;
+    const id = d[TARGET_KEY[type]];
+    const email = d.email;
+    if (typeof id !== "string" || typeof email !== "string" || !email.includes("@")) continue;
+    if (!byTarget.has(id)) byTarget.set(id, new Set());
+    byTarget.get(id)!.add(email.trim().toLowerCase());
+  }
+  return byTarget;
+}
+
+/**
+ * Dashboard-only: the opportunities and upcoming programs an admin can pick
+ * from once they choose one of those recipient groups, with how many people
+ * applied / registered for each.
+ */
+export const getTargetOptions = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async () => {
+    const supabase = getSupabaseAdmin();
+    const [applicants, registrants, opportunities, programs] = await Promise.all([
+      fetchTargetEmails(supabase, "opportunity"),
+      fetchTargetEmails(supabase, "program_interest"),
+      supabase.from("opportunities").select("id,title").order("sort_order", { ascending: true }),
+      supabase.from("upcoming_programs").select("slug,subtitle,event_end_date").order("sort_order", { ascending: true }),
+    ]);
+    if (opportunities.error) throw new Error(opportunities.error.message);
+    if (programs.error) throw new Error(programs.error.message);
+
+    const today = new Date().toISOString().slice(0, 10);
+    return {
+      opportunities: (opportunities.data ?? []).map((o) => ({
+        id: o.id as string,
+        title: o.title as string,
+        count: applicants.get(o.id as string)?.size ?? 0,
+      })),
+      programs: (programs.data ?? []).map((p) => ({
+        id: p.slug as string,
+        title: p.subtitle as string,
+        count: registrants.get(p.slug as string)?.size ?? 0,
+        past: Boolean(p.event_end_date) && (p.event_end_date as string) < today,
+      })),
     };
   });
 
@@ -94,6 +155,7 @@ export const sendAdminEmail = createServerFn({ method: "POST" })
 
     const recipientType = input.get("recipientType");
     const customEmails = input.get("customEmails");
+    const targetId = input.get("targetId");
     const subject = input.get("subject");
     const html = input.get("html");
     const attachments = input.getAll("attachments").filter((f): f is File => f instanceof File && f.size > 0);
@@ -107,6 +169,7 @@ export const sendAdminEmail = createServerFn({ method: "POST" })
     return {
       recipientType: recipientType as RecipientType,
       customEmails: typeof customEmails === "string" ? customEmails : "",
+      targetId: typeof targetId === "string" && targetId ? targetId : "all",
       subject: subject.trim(),
       html,
       attachments,
@@ -127,6 +190,10 @@ export const sendAdminEmail = createServerFn({ method: "POST" })
 
       const invalid = recipients.filter((e) => !EMAIL_RE.test(e));
       if (invalid.length > 0) throw new Error(`Invalid email address(es): ${invalid.join(", ")}`);
+    } else if ((TARGETED_TYPES as readonly string[]).includes(data.recipientType) && data.targetId !== "all") {
+      // A specific opportunity or program: only the people who applied / registered for it.
+      const byTarget = await fetchTargetEmails(supabase, data.recipientType as TargetedType);
+      recipients = [...(byTarget.get(data.targetId) ?? [])];
     } else {
       const buckets = await fetchEmailBuckets(supabase);
       recipients = buckets[data.recipientType];

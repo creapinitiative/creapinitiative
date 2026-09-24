@@ -21,6 +21,7 @@ export const reportSchema = z.object({
   subtitle: z.string().optional().or(z.literal("")),
   body: z.string().min(1),
   date: z.string().min(1),
+  image_url: z.string().url().optional().or(z.literal("")),
   file_url: z.string().url().optional().or(z.literal("")),
 });
 
@@ -88,6 +89,30 @@ export const pressStatementSchema = z.object({
   file_url: z.string().url().optional().or(z.literal("")),
 });
 
+export const OPPORTUNITY_CATEGORIES = ["full-time", "fellowship", "internship", "volunteer"] as const;
+
+export const opportunitySchema = z.object({
+  title: z.string().min(1),
+  category: z.enum(OPPORTUNITY_CATEGORIES),
+  location: z.string().min(1),
+  deadline: z.string().min(1),
+  description: z.string().optional().or(z.literal("")),
+});
+
+// Slide images may be absolute URLs (dashboard uploads) or site-relative (/hero/…).
+export const heroSlideSchema = z.object({
+  image_url: z.string().min(1, "A slide image is required"),
+  eyebrow: z.string().optional().or(z.literal("")),
+  title: z.string().min(1, "A headline is required"),
+  highlight: z.string().optional().or(z.literal("")),
+  body: z.string().optional().or(z.literal("")),
+  cta1_label: z.string().optional().or(z.literal("")),
+  cta1_link: z.string().optional().or(z.literal("")),
+  cta2_label: z.string().optional().or(z.literal("")),
+  cta2_link: z.string().optional().or(z.literal("")),
+  active: z.boolean().default(true),
+});
+
 export type PolicyBrief = z.infer<typeof policyBriefSchema> & { id: string; sort_order: number };
 export type Report = z.infer<typeof reportSchema> & { id: string; sort_order: number };
 export type BlogPost = z.infer<typeof blogPostSchema> & { id: string; sort_order: number };
@@ -96,3 +121,5 @@ export type GalleryImage = z.infer<typeof galleryImageSchema> & { id: string; so
 export type LeadershipEntry = z.infer<typeof leadershipSchema> & { id: string; sort_order: number };
 export type ToolkitGuide = z.infer<typeof toolkitGuideSchema> & { id: string; sort_order: number };
 export type PressStatement = z.infer<typeof pressStatementSchema> & { id: string; sort_order: number };
+export type Opportunity = z.infer<typeof opportunitySchema> & { id: string; sort_order: number };
+export type HeroSlide = z.infer<typeof heroSlideSchema> & { id: string; sort_order: number };

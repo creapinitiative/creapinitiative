@@ -37,6 +37,7 @@ export const reportFields: FieldConfig[] = [
   { key: "subtitle", label: "Subtitle", type: "text" },
   { key: "date", label: "Date", type: "text", required: true },
   { key: "body", label: "Summary", type: "textarea", required: true },
+  { key: "image_url", label: "Cover image", type: "image" },
   { key: "file_url", label: "PDF link", type: "url", helper: "Paste a Google Drive share link or any public URL." },
 ];
 
@@ -110,4 +111,23 @@ export const pressStatementFields: FieldConfig[] = [
   { key: "date", label: "Date", type: "text", required: true },
   { key: "body", label: "Statement", type: "textarea", required: true },
   { key: "file_url", label: "Full statement link", type: "url", helper: "Optional — link to a PDF or external article." },
+];
+
+export const opportunityFields: FieldConfig[] = [
+  { key: "title", label: "Title", type: "text", required: true },
+  {
+    key: "category",
+    label: "Category",
+    type: "select",
+    required: true,
+    options: [
+      { value: "full-time", label: "Full-time" },
+      { value: "fellowship", label: "Fellowship" },
+      { value: "internship", label: "Internship" },
+      { value: "volunteer", label: "Volunteer" },
+    ],
+  },
+  { key: "location", label: "Location", type: "text", required: true, helper: "e.g. \"Abuja, Nigeria\" or \"Remote\"." },
+  { key: "deadline", label: "Apply by", type: "text", required: true, helper: "A date, or words like \"Rolling\" or \"Open\"." },
+  { key: "description", label: "Short description", type: "textarea", helper: "Optional — shown on the opportunity card." },
 ];

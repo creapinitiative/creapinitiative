@@ -3,7 +3,7 @@ import { ArrowRight, Leaf, Scale, Users, FileText, Download, CalendarDays, MapPi
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { AnimatedStat } from "@/components/site/AnimatedStat";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { upcomingProgramsApi } from "@/api/collections-api";
+import { upcomingProgramsApi, listActiveHeroSlides } from "@/api/collections-api";
 import logoFmoyd from "@/assets/partners/federal-ministry-of-youth-development.jpg";
 import logoIpcr from "@/assets/partners/ipcr.jpg";
 import logoNoa from "@/assets/partners/noa.jpg";
@@ -25,7 +25,10 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Championing equity, access, and sustainability across Nigeria and Africa." },
     ],
   }),
-  loader: () => upcomingProgramsApi.list(),
+  loader: async () => {
+    const [programs, slides] = await Promise.all([upcomingProgramsApi.list(), listActiveHeroSlides()]);
+    return { programs, slides };
+  },
   component: Home,
 });
 
@@ -111,14 +114,14 @@ function isPastEvent(endDate?: string | null): boolean {
 }
 
 function Home() {
-  const ALL_PROGRAMS = Route.useLoaderData() ?? [];
+  const { programs: ALL_PROGRAMS, slides: HERO_SLIDES } = Route.useLoaderData();
   const UPCOMING_PROGRAMS = ALL_PROGRAMS.filter((p) => !isPastEvent(p.event_end_date));
   const HAS_PAST_PROGRAMS = ALL_PROGRAMS.some((p) => isPastEvent(p.event_end_date));
 
   return (
     <>
       {/* 1. Hero Slider */}
-      <HeroSlider />
+      <HeroSlider slides={HERO_SLIDES} />
 
       {/* 2. CREAP Acronym Band */}
       <section className="relative bg-g900 text-white">

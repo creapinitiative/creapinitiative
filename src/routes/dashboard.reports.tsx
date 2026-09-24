@@ -21,6 +21,7 @@ function ReportsAdminPage() {
       api={reportsApi}
       getRowLabel={(row) => row.title as string}
       getRowMeta={(row) => `${row.category} · ${row.date}`}
+      getRowImage={(row) => row.image_url as string | undefined}
     />
   );
 }

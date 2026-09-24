@@ -39,8 +39,10 @@ import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports
 import { Route as DashboardProgramsRouteImport } from './routes/dashboard.programs'
 import { Route as DashboardPressStatementsRouteImport } from './routes/dashboard.press-statements'
 import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.policy-briefs'
+import { Route as DashboardOpportunitiesRouteImport } from './routes/dashboard.opportunities'
 import { Route as DashboardMessagingRouteImport } from './routes/dashboard.messaging'
 import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
+import { Route as DashboardHeroSlidesRouteImport } from './routes/dashboard.hero-slides'
 import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
 import { Route as DashboardDonationsRouteImport } from './routes/dashboard.donations'
 import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
@@ -202,6 +204,11 @@ const DashboardPolicyBriefsRoute = DashboardPolicyBriefsRouteImport.update({
   path: '/policy-briefs',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardOpportunitiesRoute = DashboardOpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardMessagingRoute = DashboardMessagingRouteImport.update({
   id: '/messaging',
   path: '/messaging',
@@ -210,6 +217,11 @@ const DashboardMessagingRoute = DashboardMessagingRouteImport.update({
 const DashboardLeadershipRoute = DashboardLeadershipRouteImport.update({
   id: '/leadership',
   path: '/leadership',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardHeroSlidesRoute = DashboardHeroSlidesRouteImport.update({
+  id: '/hero-slides',
+  path: '/hero-slides',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
@@ -260,8 +272,10 @@ export interface FileRoutesByFullPath {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/hero-slides': typeof DashboardHeroSlidesRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
+  '/dashboard/opportunities': typeof DashboardOpportunitiesRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -299,8 +313,10 @@ export interface FileRoutesByTo {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/hero-slides': typeof DashboardHeroSlidesRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
+  '/dashboard/opportunities': typeof DashboardOpportunitiesRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -340,8 +356,10 @@ export interface FileRoutesById {
   '/dashboard/blogs': typeof DashboardBlogsRoute
   '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/hero-slides': typeof DashboardHeroSlidesRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
+  '/dashboard/opportunities': typeof DashboardOpportunitiesRoute
   '/dashboard/policy-briefs': typeof DashboardPolicyBriefsRoute
   '/dashboard/press-statements': typeof DashboardPressStatementsRoute
   '/dashboard/programs': typeof DashboardProgramsRoute
@@ -382,8 +400,10 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/donations'
     | '/dashboard/gallery'
+    | '/dashboard/hero-slides'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
+    | '/dashboard/opportunities'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -421,8 +441,10 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/donations'
     | '/dashboard/gallery'
+    | '/dashboard/hero-slides'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
+    | '/dashboard/opportunities'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -461,8 +483,10 @@ export interface FileRouteTypes {
     | '/dashboard/blogs'
     | '/dashboard/donations'
     | '/dashboard/gallery'
+    | '/dashboard/hero-slides'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
+    | '/dashboard/opportunities'
     | '/dashboard/policy-briefs'
     | '/dashboard/press-statements'
     | '/dashboard/programs'
@@ -713,6 +737,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPolicyBriefsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/opportunities': {
+      id: '/dashboard/opportunities'
+      path: '/opportunities'
+      fullPath: '/dashboard/opportunities'
+      preLoaderRoute: typeof DashboardOpportunitiesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/messaging': {
       id: '/dashboard/messaging'
       path: '/messaging'
@@ -725,6 +756,13 @@ declare module '@tanstack/react-router' {
       path: '/leadership'
       fullPath: '/dashboard/leadership'
       preLoaderRoute: typeof DashboardLeadershipRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/hero-slides': {
+      id: '/dashboard/hero-slides'
+      path: '/hero-slides'
+      fullPath: '/dashboard/hero-slides'
+      preLoaderRoute: typeof DashboardHeroSlidesRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/gallery': {
@@ -776,8 +814,10 @@ interface DashboardRouteChildren {
   DashboardBlogsRoute: typeof DashboardBlogsRoute
   DashboardDonationsRoute: typeof DashboardDonationsRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
+  DashboardHeroSlidesRoute: typeof DashboardHeroSlidesRoute
   DashboardLeadershipRoute: typeof DashboardLeadershipRoute
   DashboardMessagingRoute: typeof DashboardMessagingRoute
+  DashboardOpportunitiesRoute: typeof DashboardOpportunitiesRoute
   DashboardPolicyBriefsRoute: typeof DashboardPolicyBriefsRoute
   DashboardPressStatementsRoute: typeof DashboardPressStatementsRoute
   DashboardProgramsRoute: typeof DashboardProgramsRoute
@@ -791,8 +831,10 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBlogsRoute: DashboardBlogsRoute,
   DashboardDonationsRoute: DashboardDonationsRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
+  DashboardHeroSlidesRoute: DashboardHeroSlidesRoute,
   DashboardLeadershipRoute: DashboardLeadershipRoute,
   DashboardMessagingRoute: DashboardMessagingRoute,
+  DashboardOpportunitiesRoute: DashboardOpportunitiesRoute,
   DashboardPolicyBriefsRoute: DashboardPolicyBriefsRoute,
   DashboardPressStatementsRoute: DashboardPressStatementsRoute,
   DashboardProgramsRoute: DashboardProgramsRoute,

@@ -11,6 +11,10 @@ import {
   leadershipSchema,
   toolkitGuideSchema,
   pressStatementSchema,
+  opportunitySchema,
+  heroSlideSchema,
+  type Opportunity,
+  type HeroSlide,
   type PolicyBrief,
   type Report,
   type BlogPost,
@@ -604,4 +608,202 @@ export const pressStatementsApi = {
   create: createPressStatement,
   update: updatePressStatement,
   remove: removePressStatement,
+};
+
+
+// ── Opportunities ────────────────────────────────────────────────────────
+
+export const listOpportunities = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = tryGetSupabaseAdmin();
+  if (!supabase) return [] as Opportunity[];
+  const { data, error } = await supabase
+    .from("opportunities")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as Opportunity[];
+});
+
+export const createOpportunity = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => opportunitySchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const sort_order = await nextSortOrder("opportunities");
+    const { data: row, error } = await supabase.from("opportunities").insert({ ...data, sort_order }).select().single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const updateOpportunity = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string; data: unknown };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id, data: opportunitySchema.parse(parsed.data) };
+  })
+  .handler(async ({ data: { id, data } }) => {
+    const supabase = getSupabaseAdmin();
+    const { data: row, error } = await supabase
+      .from("opportunities")
+      .update({ ...data, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const removeOpportunity = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id };
+  })
+  .handler(async ({ data: { id } }) => {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.from("opportunities").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const opportunitiesApi = {
+  list: listOpportunities,
+  create: createOpportunity,
+  update: updateOpportunity,
+  remove: removeOpportunity,
+};
+
+// ── Hero Slides ──────────────────────────────────────────────────────────
+
+/** Dashboard: every slide, hidden ones included, in display order. */
+export const listHeroSlides = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = tryGetSupabaseAdmin();
+  if (!supabase) return [] as HeroSlide[];
+  const { data, error } = await supabase
+    .from("hero_slides")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data as HeroSlide[];
+});
+
+/** Homepage: only visible slides. An empty result means "use the built-in defaults". */
+export const listActiveHeroSlides = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = tryGetSupabaseAdmin();
+  if (!supabase) return [] as HeroSlide[];
+  const { data, error } = await supabase
+    .from("hero_slides")
+    .select("*")
+    .eq("active", true)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (error) return [] as HeroSlide[]; // never break the homepage over the hero
+  return data as HeroSlide[];
+});
+
+export const createHeroSlide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => heroSlideSchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const sort_order = await nextSortOrder("hero_slides");
+    const { data: row, error } = await supabase.from("hero_slides").insert({ ...data, sort_order }).select().single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const updateHeroSlide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string; data: unknown };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id, data: heroSlideSchema.parse(parsed.data) };
+  })
+  .handler(async ({ data: { id, data } }) => {
+    const supabase = getSupabaseAdmin();
+    const { data: row, error } = await supabase
+      .from("hero_slides")
+      .update({ ...data, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const removeHeroSlide = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: unknown) => {
+    const parsed = input as { id: string };
+    if (!parsed?.id) throw new Error("Missing id");
+    return { id: parsed.id };
+  })
+  .handler(async ({ data: { id } }) => {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.from("hero_slides").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/** Show or hide a slide on the homepage without deleting it. */
+export const setHeroSlideActive = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator(z.object({ id: z.string().min(1), active: z.boolean() }))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase
+      .from("hero_slides")
+      .update({ active: data.active, updated_at: new Date().toISOString() })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/** Persist a new slide order: `ids` is every slide id, first to last. */
+export const reorderHeroSlides = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator(z.object({ ids: z.array(z.string().min(1)).min(1) }))
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseAdmin();
+    const results = await Promise.all(
+      data.ids.map((id, index) => supabase.from("hero_slides").update({ sort_order: index }).eq("id", id)),
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
+    return { ok: true };
+  });
+
+const DEFAULT_HERO_SLIDES = [
+  { image_url: "/hero/evidence-driven-policy.jpg", eyebrow: "Evidence & Research", title: "Evidence-Driven Policy,", highlight: "Lasting Impact", body: "We use research, data and community-generated evidence to inform policies and programs that create real, measurable change.", cta1_label: "About CREAP", cta1_link: "/about", cta2_label: "Our Publications", cta2_link: "/resources/policy-briefs" },
+  { image_url: "/hero/equity-for-marginalized.jpg", eyebrow: "Equity & Inclusion", title: "Equity for the Marginalized,", highlight: "Access for All", body: "We pursue policies and systems that ensure access to opportunities, resources, and services for the marginalized and underserved.", cta1_label: "Discover CREAP", cta1_link: "/about", cta2_label: "Get Involved", cta2_link: "/get-involved" },
+  { image_url: "/hero/civic-participation.jpg", eyebrow: "Governance & Democracy", title: "Civic Participation,", highlight: "Accountable Governance", body: "We promote civic participation and public accountability so communities can influence decisions that shape their lives.", cta1_label: "Our Programs", cta1_link: "/programs/our-key-programs", cta2_label: "Read Reports", cta2_link: "/resources/policy-briefs" },
+  { image_url: "/hero/greening-futures.jpeg", eyebrow: "Climate & Environment", title: "Greening Futures,", highlight: "Building Climate Resilience", body: "We advance environmentally responsible development, climate adaptation, and sustainable livelihoods that protect ecosystems and communities.", cta1_label: "Our Programs", cta1_link: "/programs/our-key-programs", cta2_label: "Get Involved", cta2_link: "/get-involved" },
+  { image_url: "/hero/championing-peace.jpg", eyebrow: "Peace & Youth Empowerment", title: "Championing Peace,", highlight: "Youth Empowerment & Civic Life", body: "We work constantly to promote Peace, Civic Education and Youth Empowerment, recognizing that development cannot thrive without social cohesion.", cta1_label: "About CREAP", cta1_link: "/about", cta2_label: "View Programs", cta2_link: "/programs/our-key-programs" },
+  { image_url: "/hero/empowering-people-through-knowledge.jpg", eyebrow: "Capacity & Empowerment", title: "Empowering People Through", highlight: "Knowledge & Skills", body: "We invest in digital skills, leadership training, and capacity development - building a generation equipped to drive sustainable change.", cta1_label: "Get Involved", cta1_link: "/get-involved", cta2_label: "Our Programs", cta2_link: "/programs/our-key-programs" },
+  { image_url: "/hero/stronger-together-through-collaboration.jpg", eyebrow: "Partnerships & Collaboration", title: "Stronger Together Through", highlight: "Strategic Collaboration", body: "Our work is powered by collaboration with strategic public and private institutions - building synergies that amplify community impact.", cta1_label: "Partner With Us", cta1_link: "/get-involved", cta2_label: "About CREAP", cta2_link: "/about" },
+];
+
+/** One-click starting point: copies the built-in homepage slides into the editable list (only when it's empty). */
+export const loadDefaultHeroSlides = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .handler(async () => {
+    const supabase = getSupabaseAdmin();
+    const { count, error: countError } = await supabase.from("hero_slides").select("id", { count: "exact", head: true });
+    if (countError) throw new Error(countError.message);
+    if ((count ?? 0) > 0) throw new Error("You already have slides — nothing to load.");
+    const rows = DEFAULT_HERO_SLIDES.map((slide, index) => ({ ...slide, active: true, sort_order: index }));
+    const { error } = await supabase.from("hero_slides").insert(rows);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const heroSlidesApi = {
+  list: listHeroSlides,
+  create: createHeroSlide,
+  update: updateHeroSlide,
+  remove: removeHeroSlide,
 };
