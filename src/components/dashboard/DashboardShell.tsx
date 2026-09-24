@@ -12,6 +12,7 @@ import {
   CalendarDays,
   Images,
   Users2,
+  HandCoins,
   LogOut,
   ExternalLink,
   ChevronLeft,
@@ -24,6 +25,7 @@ import { LoginForm } from "@/components/dashboard/LoginForm";
 const NAV = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/submissions", label: "Submissions", icon: Inbox },
+  { to: "/dashboard/donations", label: "Donations", icon: HandCoins },
   { to: "/dashboard/messaging", label: "Messaging", icon: Send },
   { to: "/dashboard/policy-briefs", label: "Policy Briefs", icon: FileText },
   { to: "/dashboard/toolkits-guides", label: "Toolkits & Guides", icon: BookOpenCheck },

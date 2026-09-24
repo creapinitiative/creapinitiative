@@ -155,3 +155,24 @@ create table if not exists public.press_statements (
   updated_at timestamptz not null default now()
 );
 alter table public.press_statements enable row level security;
+
+-- ── Migration: Donations (Paystack) ──────────────────────────────────────
+-- One row per checkout attempt. `status` flips to 'success' only after the
+-- server has confirmed the transaction with Paystack (verify API or a
+-- signature-checked webhook) — never on the browser's say-so. Amounts are in
+-- kobo (₦1 = 100 kobo), Paystack's smallest unit.
+create table if not exists public.donations (
+  id uuid primary key default gen_random_uuid(),
+  reference text not null unique,
+  full_name text not null,
+  email text not null,
+  amount_kobo bigint not null check (amount_kobo > 0),
+  currency text not null default 'NGN',
+  status text not null default 'pending' check (status in ('pending', 'success', 'failed')),
+  channel text,
+  paid_at timestamptz,
+  created_at timestamptz not null default now()
+);
+alter table public.donations enable row level security;
+create index if not exists donations_status_idx on public.donations (status);
+create index if not exists donations_created_at_idx on public.donations (created_at desc);

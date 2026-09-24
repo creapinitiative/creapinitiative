@@ -11,11 +11,12 @@ export const Route = createFileRoute("/dashboard/messaging")({
 
 const RECIPIENT_OPTIONS = [
   { value: "individual", label: "Individual email(s)" },
-  { value: "all", label: "Everyone (all submissions)" },
+  { value: "all", label: "Everyone (all submissions & givers)" },
   { value: "newsletter", label: "Newsletter subscribers" },
   { value: "contact", label: "Contact form submitters" },
   { value: "coordinator", label: "State coordinator applicants" },
   { value: "donate_interest", label: "Donation interest" },
+  { value: "givers", label: "All givers (paid donations)" },
 ] as const;
 
 type RecipientValue = (typeof RECIPIENT_OPTIONS)[number]["value"];

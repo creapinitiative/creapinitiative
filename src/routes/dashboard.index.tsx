@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Inbox, Send, FileText, BookOpen, BookOpenCheck, Megaphone, Newspaper, CalendarDays, Images, Users2 } from "lucide-react";
+import { Inbox, Send, FileText, BookOpen, BookOpenCheck, Megaphone, Newspaper, CalendarDays, Images, Users2, HandCoins } from "lucide-react";
 import { listSubmissions } from "@/api/submissions";
+import { listDonations } from "@/api/paystack";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardOverview,
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/dashboard/")({
 type Submission = { id: string; form_type: string; data: Record<string, unknown>; status: string; created_at: string };
 
 const QUICK_LINKS = [
+  { to: "/dashboard/donations", label: "Donations", icon: HandCoins },
   { to: "/dashboard/messaging", label: "Messaging", icon: Send },
   { to: "/dashboard/policy-briefs", label: "Policy Briefs", icon: FileText },
   { to: "/dashboard/toolkits-guides", label: "Toolkits & Guides", icon: BookOpenCheck },
@@ -24,6 +26,13 @@ const QUICK_LINKS = [
 export function DashboardOverview() {
   const [submissions, setSubmissions] = useState<Submission[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [donations, setDonations] = useState<{ amount_kobo: number; status: string }[] | null>(null);
+
+  useEffect(() => {
+    listDonations()
+      .then((rows) => setDonations(rows))
+      .catch(() => setDonations([]));
+  }, []);
 
   useEffect(() => {
     listSubmissions()
@@ -33,6 +42,8 @@ export function DashboardOverview() {
 
   const newCount = submissions?.filter((s) => s.status === "new").length ?? 0;
   const recent = submissions?.slice(0, 5) ?? [];
+  const paid = donations?.filter((d) => d.status === "success") ?? [];
+  const totalRaised = paid.reduce((sum, d) => sum + Number(d.amount_kobo), 0) / 100;
 
   return (
     <div>
@@ -50,6 +61,17 @@ export function DashboardOverview() {
           </div>
           <p className="font-display text-4xl text-ink">{submissions?.length ?? "—"}</p>
           <p className="text-sm text-ink3 mt-1">{newCount} unread</p>
+        </Link>
+        <Link
+          to="/dashboard/donations"
+          className="bg-white border border-rule hover:border-gold rounded-sm p-6 transition"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-sm bg-g100 text-g600 grid place-items-center"><HandCoins size={18} /></div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-ink3">Donations</p>
+          </div>
+          <p className="font-display text-4xl text-ink">{donations ? `₦${totalRaised.toLocaleString("en-NG")}` : "—"}</p>
+          <p className="text-sm text-ink3 mt-1">{paid.length} successful gift{paid.length === 1 ? "" : "s"}</p>
         </Link>
       </div>
 

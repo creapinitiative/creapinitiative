@@ -42,7 +42,9 @@ import { Route as DashboardPolicyBriefsRouteImport } from './routes/dashboard.po
 import { Route as DashboardMessagingRouteImport } from './routes/dashboard.messaging'
 import { Route as DashboardLeadershipRouteImport } from './routes/dashboard.leadership'
 import { Route as DashboardGalleryRouteImport } from './routes/dashboard.gallery'
+import { Route as DashboardDonationsRouteImport } from './routes/dashboard.donations'
 import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
+import { Route as ApiPaystackWebhookRouteImport } from './routes/api.paystack-webhook'
 import { Route as ResourcesBlogsSlugRouteImport } from './routes/resources.blogs.$slug'
 import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
 
@@ -215,10 +217,20 @@ const DashboardGalleryRoute = DashboardGalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardDonationsRoute = DashboardDonationsRouteImport.update({
+  id: '/donations',
+  path: '/donations',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardBlogsRoute = DashboardBlogsRouteImport.update({
   id: '/blogs',
   path: '/blogs',
   getParentRoute: () => DashboardRoute,
+} as any)
+const ApiPaystackWebhookRoute = ApiPaystackWebhookRouteImport.update({
+  id: '/api/paystack-webhook',
+  path: '/api/paystack-webhook',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesBlogsSlugRoute = ResourcesBlogsSlugRouteImport.update({
   id: '/$slug',
@@ -244,7 +256,9 @@ export interface FileRoutesByFullPath {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/api/paystack-webhook': typeof ApiPaystackWebhookRoute
   '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
@@ -281,7 +295,9 @@ export interface FileRoutesByTo {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/api/paystack-webhook': typeof ApiPaystackWebhookRoute
   '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
@@ -320,7 +336,9 @@ export interface FileRoutesById {
   '/programs': typeof ProgramsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/api/paystack-webhook': typeof ApiPaystackWebhookRoute
   '/dashboard/blogs': typeof DashboardBlogsRoute
+  '/dashboard/donations': typeof DashboardDonationsRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/leadership': typeof DashboardLeadershipRoute
   '/dashboard/messaging': typeof DashboardMessagingRoute
@@ -360,7 +378,9 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/api/paystack-webhook'
     | '/dashboard/blogs'
+    | '/dashboard/donations'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
@@ -397,7 +417,9 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/api/paystack-webhook'
     | '/dashboard/blogs'
+    | '/dashboard/donations'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
@@ -435,7 +457,9 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/resources'
+    | '/api/paystack-webhook'
     | '/dashboard/blogs'
+    | '/dashboard/donations'
     | '/dashboard/gallery'
     | '/dashboard/leadership'
     | '/dashboard/messaging'
@@ -474,6 +498,7 @@ export interface RootRouteChildren {
   ProgramsRoute: typeof ProgramsRouteWithChildren
   ReportsRoute: typeof ReportsRouteWithChildren
   ResourcesRoute: typeof ResourcesRouteWithChildren
+  ApiPaystackWebhookRoute: typeof ApiPaystackWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -709,12 +734,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardGalleryRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/donations': {
+      id: '/dashboard/donations'
+      path: '/donations'
+      fullPath: '/dashboard/donations'
+      preLoaderRoute: typeof DashboardDonationsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/blogs': {
       id: '/dashboard/blogs'
       path: '/blogs'
       fullPath: '/dashboard/blogs'
       preLoaderRoute: typeof DashboardBlogsRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/api/paystack-webhook': {
+      id: '/api/paystack-webhook'
+      path: '/api/paystack-webhook'
+      fullPath: '/api/paystack-webhook'
+      preLoaderRoute: typeof ApiPaystackWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/resources/blogs/$slug': {
       id: '/resources/blogs/$slug'
@@ -735,6 +774,7 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardBlogsRoute: typeof DashboardBlogsRoute
+  DashboardDonationsRoute: typeof DashboardDonationsRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
   DashboardLeadershipRoute: typeof DashboardLeadershipRoute
   DashboardMessagingRoute: typeof DashboardMessagingRoute
@@ -749,6 +789,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBlogsRoute: DashboardBlogsRoute,
+  DashboardDonationsRoute: DashboardDonationsRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
   DashboardLeadershipRoute: DashboardLeadershipRoute,
   DashboardMessagingRoute: DashboardMessagingRoute,
@@ -857,6 +898,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgramsRoute: ProgramsRouteWithChildren,
   ReportsRoute: ReportsRouteWithChildren,
   ResourcesRoute: ResourcesRouteWithChildren,
+  ApiPaystackWebhookRoute: ApiPaystackWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

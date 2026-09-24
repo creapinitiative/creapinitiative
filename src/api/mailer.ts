@@ -13,7 +13,7 @@ import { wrapper } from "@/api/email-templates";
  * shared `to`/`cc`), so recipients never see each other's addresses.
  */
 
-const BUCKET_GROUPS = ["contact", "coordinator", "donate_interest", "newsletter", "all"] as const;
+const BUCKET_GROUPS = ["contact", "coordinator", "donate_interest", "newsletter", "givers", "all"] as const;
 type BucketGroup = (typeof BUCKET_GROUPS)[number];
 const FORM_TYPES = ["contact", "coordinator", "donate_interest", "newsletter"] as const;
 
@@ -29,6 +29,7 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
     coordinator: new Set(),
     donate_interest: new Set(),
     newsletter: new Set(),
+    givers: new Set(),
     all: new Set(),
   };
 
@@ -41,11 +42,25 @@ async function fetchEmailBuckets(supabase: SupabaseClient): Promise<Record<Bucke
     sets.all.add(normalized);
   }
 
+  // Givers = anyone with a confirmed (paid) Paystack donation.
+  const { data: donations, error: donationsError } = await supabase
+    .from("donations")
+    .select("email")
+    .eq("status", "success");
+  if (donationsError) throw new Error(donationsError.message);
+  for (const row of donations ?? []) {
+    if (typeof row.email !== "string" || !row.email.includes("@")) continue;
+    const normalized = row.email.trim().toLowerCase();
+    sets.givers.add(normalized);
+    sets.all.add(normalized);
+  }
+
   return {
     contact: [...sets.contact],
     coordinator: [...sets.coordinator],
     donate_interest: [...sets.donate_interest],
     newsletter: [...sets.newsletter],
+    givers: [...sets.givers],
     all: [...sets.all],
   };
 }
@@ -61,6 +76,7 @@ export const getRecipientCounts = createServerFn({ method: "GET" })
       coordinator: buckets.coordinator.length,
       donate_interest: buckets.donate_interest.length,
       newsletter: buckets.newsletter.length,
+      givers: buckets.givers.length,
       all: buckets.all.length,
     };
   });

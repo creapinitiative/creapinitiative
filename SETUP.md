@@ -94,3 +94,19 @@ nothing is lost. It's safe to re-run — it clears and re-inserts each table.
   and confirm: a row appears in the dashboard's Submissions inbox, a
   confirmation email arrives at the address you submitted, and a copy arrives
   at `ADMIN_NOTIFICATION_EMAIL`.
+
+
+## 5. Paystack (online giving)
+
+1. In the [Paystack dashboard](https://dashboard.paystack.com) go to
+   Settings -> API Keys & Webhooks and copy the **secret key** (`sk_test_…`
+   while testing, `sk_live_…` once your business is activated) to
+   `PAYSTACK_SECRET_KEY` (locally in `.env`, in production under the Cloudflare
+   Pages environment variables).
+2. On the same page set the **Live/Test Webhook URL** to
+   `https://creapinitiative.org/api/paystack-webhook`. This records a gift even
+   if the donor closes the tab before returning to the site.
+3. Run the `donations` migration at the bottom of `supabase/schema.sql`.
+
+Gifts appear under Dashboard -> Donations once Paystack confirms them, and
+"All givers (paid donations)" is a recipient option in Messaging.
