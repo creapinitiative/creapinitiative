@@ -92,7 +92,7 @@ function Donate() {
             <h2 className="display-md mb-4">Give Online</h2>
             <p className="text-ink3 mb-7">Choose an amount or enter your own.</p>
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+              <div className="grid grid-cols-3 gap-3 mb-3">
                 {AMOUNTS.map((a) => (
                   <button
                     key={a}
@@ -109,6 +109,9 @@ function Donate() {
                     {naira(a)}
                   </button>
                 ))}
+              </div>
+              <div className="relative mb-5">
+                <span className="absolute inset-y-0 left-4 flex items-center text-sm font-semibold text-ink3">₦</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -118,10 +121,10 @@ function Donate() {
                     setCustom(e.target.value);
                     setAmount(null);
                   }}
-                  placeholder="Custom"
+                  placeholder="Enter custom amount"
                   aria-label="Custom amount in naira"
                   className={[
-                    "w-full border rounded-sm px-3 py-3 text-sm font-semibold focus:outline-none focus:border-gold transition",
+                    "w-full border rounded-sm pl-9 pr-4 py-3 text-sm font-semibold focus:outline-none focus:border-gold transition [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
                     custom ? "border-gold bg-goldb" : "border-rule",
                   ].join(" ")}
                 />
