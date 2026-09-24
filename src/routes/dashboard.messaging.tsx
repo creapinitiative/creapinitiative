@@ -192,7 +192,7 @@ function MessagingPage() {
               >
                 <Paperclip size={11} className="text-ink4" />
                 <span className="max-w-[160px] truncate">{file.name}</span>
-                <button type="button" onClick={() => removeFile(idx)} className="text-ink4 hover:text-red-600" aria-label={`Remove ${file.name}`}>
+                <button type="button" onClick={() => removeFile(idx)} className="text-ink4 hover:text-red-600" aria-label={`Remove ${file.name}`} title={`Remove ${file.name}`}>
                   <X size={12} />
                 </button>
               </span>

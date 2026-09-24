@@ -86,7 +86,7 @@ function BottomNav() {
         <button
           onClick={() => scrollBy(-160)}
           className="shrink-0 h-14 w-8 grid place-items-center text-white/70 hover:text-white bg-g900 relative z-10"
-          aria-label="Scroll menu left"
+          aria-label="Scroll menu left" title="Scroll menu left"
         >
           <ChevronLeft size={16} />
         </button>
@@ -109,7 +109,7 @@ function BottomNav() {
         <button
           onClick={() => scrollBy(160)}
           className="shrink-0 h-14 w-8 grid place-items-center text-white/70 hover:text-white bg-g900 relative z-10"
-          aria-label="Scroll menu right"
+          aria-label="Scroll menu right" title="Scroll menu right"
         >
           <ChevronRight size={16} />
         </button>

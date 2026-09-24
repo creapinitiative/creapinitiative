@@ -124,14 +124,14 @@ export function HeroSlider() {
       <button
         onClick={() => go(i - 1)}
         className="absolute left-3 lg:left-10 top-1/2 -translate-y-1/2 z-20 w-8 h-8 lg:w-10 lg:h-10 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
-        aria-label="Previous slide"
+        aria-label="Previous slide" title="Previous slide"
       >
         <ChevronLeft size={16} />
       </button>
       <button
         onClick={() => go(i + 1)}
         className="absolute right-3 lg:right-10 top-1/2 -translate-y-1/2 z-20 w-8 h-8 lg:w-10 lg:h-10 grid place-items-center bg-white/8 hover:bg-white/15 backdrop-blur text-white rounded-sm border border-white/15 transition"
-        aria-label="Next slide"
+        aria-label="Next slide" title="Next slide"
       >
         <ChevronRight size={16} />
       </button>
@@ -144,7 +144,7 @@ export function HeroSlider() {
               key={idx}
               onClick={() => go(idx)}
               className={`h-[3px] transition-all ${idx === i ? "w-10 bg-gold" : "w-5 bg-white/30 hover:bg-white/50"}`}
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={`Go to slide ${idx + 1}`} title={`Go to slide ${idx + 1}`}
             />
           ))}
         </div>

@@ -95,21 +95,21 @@ function SubmissionsPage() {
                 <p className="text-xs text-ink4 shrink-0 hidden sm:block">{new Date(s.created_at).toLocaleString()}</p>
                 <div className="flex gap-1.5 shrink-0">
                   {s.status !== "read" && (
-                    <button onClick={() => markStatus(s.id, "read")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark read">
+                    <button onClick={() => markStatus(s.id, "read")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark read" title="Mark read">
                       <MailOpen size={14} />
                     </button>
                   )}
                   {s.status !== "new" && (
-                    <button onClick={() => markStatus(s.id, "new")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark unread">
+                    <button onClick={() => markStatus(s.id, "new")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Mark unread" title="Mark unread">
                       <Mail size={14} />
                     </button>
                   )}
                   {s.status !== "archived" && (
-                    <button onClick={() => markStatus(s.id, "archived")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Archive">
+                    <button onClick={() => markStatus(s.id, "archived")} className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2" aria-label="Archive" title="Archive">
                       <Archive size={14} />
                     </button>
                   )}
-                  <button onClick={() => remove(s.id)} className="p-2 border border-rule hover:border-red-400 hover:text-red-600 rounded-sm text-ink2" aria-label="Delete">
+                  <button onClick={() => remove(s.id)} className="p-2 border border-rule hover:border-red-400 hover:text-red-600 rounded-sm text-ink2" aria-label="Delete" title="Delete">
                     <Trash2 size={14} />
                   </button>
                 </div>

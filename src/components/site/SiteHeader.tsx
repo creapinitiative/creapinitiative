@@ -220,7 +220,7 @@ export function SiteHeader() {
         <button
           onClick={() => setOpen((v) => !v)}
           className={["lg:hidden p-2 rounded-sm relative z-[110]", open ? "text-white" : onLight ? "text-ink" : "text-white"].join(" ")}
-          aria-label="Toggle menu"
+          aria-label="Toggle menu" title="Toggle menu"
           aria-expanded={open}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -246,7 +246,7 @@ export function SiteHeader() {
                   type="button"
                   onClick={() => setOpen(false)}
                   className="p-2 -mr-2 text-white"
-                  aria-label="Close menu"
+                  aria-label="Close menu" title="Close menu"
                 >
                   <X size={22} />
                 </button>

@@ -106,7 +106,7 @@ function GalleryPage() {
                 setActiveIndex((prev) => (prev === null ? prev : (prev - 1 + images.length) % images.length));
               }}
               className="absolute left-4 md:left-8 text-white/85 hover:text-white text-3xl leading-none"
-              aria-label="Previous image"
+              aria-label="Previous image" title="Previous image"
             >
               ‹
             </button>
@@ -132,7 +132,7 @@ function GalleryPage() {
                 setActiveIndex((prev) => (prev === null ? prev : (prev + 1) % images.length));
               }}
               className="absolute right-4 md:right-8 text-white/85 hover:text-white text-3xl leading-none"
-              aria-label="Next image"
+              aria-label="Next image" title="Next image"
             >
               ›
             </button>

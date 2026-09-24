@@ -85,7 +85,7 @@ export function EntryForm({
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-rule shrink-0">
           <h2 className="font-display text-2xl text-ink">Edit entry</h2>
-          <button type="button" onClick={onCancel} className="p-1.5 text-ink3 hover:text-ink" aria-label="Close">
+          <button type="button" onClick={onCancel} className="p-1.5 text-ink3 hover:text-ink" aria-label="Close" title="Close">
             <X size={20} />
           </button>
         </div>

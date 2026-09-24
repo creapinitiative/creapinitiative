@@ -142,7 +142,7 @@ export function CollectionManager({
                 <button
                   onClick={() => setEditing(row)}
                   className="p-2 border border-rule hover:border-g500 rounded-sm text-ink2 transition"
-                  aria-label="Edit"
+                  aria-label="Edit" title="Edit"
                 >
                   <Pencil size={15} />
                 </button>
@@ -150,7 +150,7 @@ export function CollectionManager({
                   onClick={() => handleDelete(row)}
                   disabled={deletingId === row.id}
                   className="p-2 border border-rule hover:border-red-400 hover:text-red-600 rounded-sm text-ink2 disabled:opacity-50 transition"
-                  aria-label="Delete"
+                  aria-label="Delete" title="Delete"
                 >
                   <Trash2 size={15} />
                 </button>
