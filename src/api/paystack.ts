@@ -22,7 +22,10 @@ const MAX_NAIRA = 50_000_000;
 
 function getSecretKey(): string {
   const key = process.env.PAYSTACK_SECRET_KEY;
-  if (!key) throw new Error("Online giving isn't available right now. Please try again later.");
+  if (!key) {
+    console.error("PAYSTACK_SECRET_KEY is not set in this deployment's environment variables.");
+    throw new Error("Online giving isn't available right now. Please try again later.");
+  }
   return key;
 }
 

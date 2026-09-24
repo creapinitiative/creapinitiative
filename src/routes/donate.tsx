@@ -117,7 +117,7 @@ function Donate() {
                     setCustom(e.target.value);
                     setAmount(null);
                   }}
-                  placeholder="Custom ₦"
+                  placeholder="Custom"
                   aria-label="Custom amount in naira"
                   className={[
                     "w-full border rounded-sm px-3 py-3 text-sm font-semibold focus:outline-none focus:border-gold transition",
