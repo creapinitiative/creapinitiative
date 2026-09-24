@@ -14,7 +14,8 @@ export const Route = createFileRoute("/opportunities")({
       { name: "description", content: "Open roles, internships, fellowships and volunteer calls at CREAP Africa Initiative." },
     ],
   }),
-  loader: () => opportunitiesApi.list(),
+  // Show the empty state rather than an error page if the table isn't there yet.
+  loader: () => opportunitiesApi.list().catch(() => [] as Opportunity[]),
   component: Opportunities,
 });
 
