@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CollectionManager } from "@/components/dashboard/CollectionManager";
 import { policyBriefFields } from "@/lib/dashboard-fields";
+import { policyBriefCover } from "@/lib/policy-brief-covers";
 import { policyBriefsApi } from "@/api/collections-api";
 
 export const Route = createFileRoute("/dashboard/policy-briefs")({
@@ -21,7 +22,7 @@ function PolicyBriefsAdminPage() {
       api={policyBriefsApi}
       getRowLabel={(row) => row.title as string}
       getRowMeta={(row) => row.date as string}
-      getRowImage={(row) => row.image_url as string | undefined}
+      getRowImage={(row) => (row.image_url as string | undefined) || policyBriefCover(row.title as string)}
     />
   );
 }
