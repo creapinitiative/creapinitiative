@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Upload, X, Eye, EyeOff } from "lucide-react";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 import type { HeroSlide } from "@/api/collections";
 import { uploadImageToGitHub } from "@/api/github-upload";
 
@@ -138,7 +139,7 @@ export function HeroSlideEditor({
       const res = await uploadImageToGitHub({ data: fd });
       set("image_url", res.url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed.");
+      setError(friendlyErrorMessage(err));
     } finally {
       setUploading(false);
     }
@@ -160,7 +161,7 @@ export function HeroSlideEditor({
     try {
       await onSave(v);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save the slide.");
+      setError(friendlyErrorMessage(err));
       setSaving(false);
     }
   }

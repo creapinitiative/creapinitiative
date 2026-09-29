@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pencil, Trash2, X, ExternalLink, Mail, Phone, MapPin } from "lucide-react";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 import { listSubmissions, deleteSubmission, updateOpportunityApplication } from "@/api/submissions";
 
 export type Application = {
@@ -57,7 +58,16 @@ function EditApplication({
       await updateOpportunityApplication({ data: { id: application.id, status, data: { fullName, email, phone, state, cvLink, message } } });
       onSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save changes.");
+      setError(
+        friendlyErrorMessage(err, {
+          fullName: "Full name",
+          email: "Email",
+          phone: "Phone",
+          state: "State of residence",
+          cvLink: "CV link",
+          message: "Message",
+        }),
+      );
       setSaving(false);
     }
   }
@@ -143,7 +153,7 @@ export function OpportunityApplications({
   function reload() {
     listSubmissions()
       .then((all) => setRows((all as Application[]).filter((r) => r.form_type === "opportunity")))
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load applications."));
+      .catch((err) => setError(friendlyErrorMessage(err) || "Failed to load applications."));
   }
   useEffect(reload, []);
 
@@ -171,7 +181,7 @@ export function OpportunityApplications({
       reload();
       onChanged?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not delete the application.");
+      setError(friendlyErrorMessage(err));
     }
   }
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { slugify } from "@/lib/slugify";
 
 /**
  * One schema per CMS collection — the single source of truth for what a
@@ -26,10 +27,13 @@ export const reportSchema = z.object({
 });
 
 export const blogPostSchema = z.object({
+  // Whatever the admin types is normalized into a valid slug automatically,
+  // rather than rejecting anything that isn't already lowercase-with-hyphens.
   slug: z
     .string()
-    .min(1)
-    .regex(/^[a-z0-9-]+$/, "Use lowercase letters, numbers and hyphens only"),
+    .min(1, "Please enter a slug")
+    .transform((s) => slugify(s))
+    .refine((s) => s.length > 0, "Please enter a slug using letters, numbers or spaces"),
   title: z.string().min(1),
   category: z.string().min(1),
   excerpt: z.string().min(1),
@@ -41,10 +45,13 @@ export const blogPostSchema = z.object({
 });
 
 export const upcomingProgramSchema = z.object({
+  // Whatever the admin types is normalized into a valid slug automatically,
+  // rather than rejecting anything that isn't already lowercase-with-hyphens.
   slug: z
     .string()
-    .min(1)
-    .regex(/^[a-z0-9-]+$/, "Use lowercase letters, numbers and hyphens only"),
+    .min(1, "Please enter a slug")
+    .transform((s) => slugify(s))
+    .refine((s) => s.length > 0, "Please enter a slug using letters, numbers or spaces"),
   title: z.string().min(1),
   subtitle: z.string().min(1),
   theme: z.string().min(1),

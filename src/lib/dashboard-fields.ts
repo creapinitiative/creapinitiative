@@ -11,7 +11,7 @@ export type FieldConfig =
   | { key: string; label: string; type: "date"; required?: boolean; helper?: string }
   | { key: string; label: string; type: "boolean" }
   | { key: string; label: string; type: "select"; options: { value: string; label: string }[]; required?: boolean }
-  | { key: string; label: string; type: "list"; helper?: string };
+  | { key: string; label: string; type: "list"; helper?: string; splitOn?: "newline" | "comma-or-newline" };
 
 export const policyBriefFields: FieldConfig[] = [
   { key: "title", label: "Title", type: "text", required: true },
@@ -43,7 +43,7 @@ export const reportFields: FieldConfig[] = [
 
 export const blogPostFields: FieldConfig[] = [
   { key: "title", label: "Title", type: "text", required: true },
-  { key: "slug", label: "Slug", type: "text", required: true, helper: "Used in the URL — lowercase letters, numbers and hyphens only." },
+  { key: "slug", label: "Slug", type: "text", required: true, helper: "Used in the URL — automatically formatted as lowercase-with-hyphens." },
   { key: "category", label: "Category", type: "text", required: true },
   { key: "date", label: "Date", type: "text", required: true },
   { key: "author", label: "Author", type: "text", required: true },
@@ -55,7 +55,7 @@ export const blogPostFields: FieldConfig[] = [
 
 export const upcomingProgramFields: FieldConfig[] = [
   { key: "title", label: "Title / tag", type: "text", required: true },
-  { key: "slug", label: "Slug", type: "text", required: true, helper: "Used in the URL — lowercase letters, numbers and hyphens only." },
+  { key: "slug", label: "Slug", type: "text", required: true, helper: "Used in the URL — automatically formatted as lowercase-with-hyphens." },
   { key: "subtitle", label: "Subtitle", type: "text", required: true },
   { key: "theme", label: "Theme", type: "textarea", required: true },
   { key: "summary", label: "Summary", type: "textarea", required: true },
@@ -74,7 +74,7 @@ export const upcomingProgramFields: FieldConfig[] = [
   { key: "application_deadline", label: "Application deadline", type: "text" },
   { key: "closing_note", label: "Closing note", type: "textarea" },
   { key: "partner_note", label: "Partner note", type: "text" },
-  { key: "hashtags", label: "Hashtags", type: "list", helper: "One tag per line, without the # symbol." },
+  { key: "hashtags", label: "Hashtags", type: "list", helper: "One tag per line, or comma-separated — without the # symbol.", splitOn: "comma-or-newline" },
 ];
 
 export const galleryImageFields: FieldConfig[] = [

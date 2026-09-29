@@ -5,6 +5,7 @@ import { Email } from "@/components/site/Email";
 import { Reveal } from "@/components/site/Reveal";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
 import { startDonation, confirmDonation } from "@/api/paystack";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 import { CreditCard, Building2, Heart, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/donate")({
@@ -51,7 +52,7 @@ function Donate() {
           setError("Your payment wasn't completed, so you have not been charged. Please try again.");
         }
       })
-      .catch((err) => setError(err instanceof Error ? err.message : "We couldn't confirm your payment."))
+      .catch((err) => setError(friendlyErrorMessage(err)))
       .finally(() => navigate({ to: "/donate", search: {}, replace: true }));
   }, [reference, navigate, show]);
 
@@ -72,7 +73,7 @@ function Donate() {
       });
       window.location.href = authorizationUrl;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setError(friendlyErrorMessage(err, { fullName: "Full name", email: "Email address", amountNaira: "Amount" }));
       setSubmitting(false);
     }
   }

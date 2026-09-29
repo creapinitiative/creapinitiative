@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import type { FieldConfig } from "@/lib/dashboard-fields";
 import { uploadImageToGitHub } from "@/api/github-upload";
+import { slugify } from "@/lib/slugify";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 type Values = Record<string, unknown>;
 
@@ -9,9 +11,10 @@ function toTextareaList(value: unknown): string {
   return Array.isArray(value) ? value.join("\n") : "";
 }
 
-function fromTextareaList(value: string): string[] {
+function fromTextareaList(value: string, splitOn: "newline" | "comma-or-newline" = "newline"): string[] {
+  const pattern = splitOn === "comma-or-newline" ? /[\n,]+/ : /\n/;
   return value
-    .split("\n")
+    .split(pattern)
     .map((line) => line.trim())
     .filter(Boolean);
 }
@@ -48,11 +51,14 @@ export function EntryForm({
       const result = await uploadImageToGitHub({ data: formData });
       setField(key, result.url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed.");
+      setError(friendlyErrorMessage(err));
     } finally {
       setUploadingKey(null);
     }
   }
+
+  // Lets error messages read like the form ("Slug: …" instead of "slug: …").
+  const fieldLabels = Object.fromEntries(fields.map((f) => [f.key, f.label]));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +68,7 @@ export function EntryForm({
       const payload: Values = {};
       for (const field of fields) {
         if (field.type === "list") {
-          payload[field.key] = fromTextareaList(String(values[field.key] ?? ""));
+          payload[field.key] = fromTextareaList(String(values[field.key] ?? ""), field.splitOn);
         } else if (field.type === "boolean") {
           payload[field.key] = Boolean(values[field.key]);
         } else {
@@ -71,7 +77,7 @@ export function EntryForm({
       }
       await onSubmit(payload);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(friendlyErrorMessage(err, fieldLabels));
       setSaving(false);
     }
   }
@@ -105,7 +111,10 @@ export function EntryForm({
                     <input
                       required={field.required}
                       value={(value as string) ?? ""}
-                      onChange={(e) => setField(field.key, e.target.value)}
+                      onChange={(e) =>
+                        // The slug field formats itself as you type, so it can never fail the "lowercase-with-hyphens" rule.
+                        setField(field.key, field.key === "slug" ? slugify(e.target.value) : e.target.value)
+                      }
                       className="w-full border border-rule rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-gold transition"
                     />
                     {field.helper && <p className="text-xs text-ink4 mt-1">{field.helper}</p>}

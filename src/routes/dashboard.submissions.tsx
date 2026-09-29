@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Trash2, Mail, MailOpen, Archive } from "lucide-react";
 import { listSubmissions, updateSubmissionStatus, deleteSubmission } from "@/api/submissions";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 export const Route = createFileRoute("/dashboard/submissions")({
   component: SubmissionsPage,
@@ -37,7 +38,7 @@ function SubmissionsPage() {
   function reload() {
     listSubmissions()
       .then((rows) => setSubmissions(rows as Submission[]))
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load submissions."));
+      .catch((err) => setError(friendlyErrorMessage(err) || "Failed to load submissions."));
   }
 
   useEffect(reload, []);

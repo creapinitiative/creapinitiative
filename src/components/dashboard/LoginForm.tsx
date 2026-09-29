@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/creap-logo-primary.png";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 export function LoginForm({
   configured,
@@ -22,7 +23,7 @@ export function LoginForm({
     try {
       await onSignIn(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign in failed.");
+      setError(friendlyErrorMessage(err) || "Sign in failed.");
     } finally {
       setLoading(false);
     }

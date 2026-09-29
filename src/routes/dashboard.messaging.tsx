@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Send, Paperclip, X, Loader2 } from "lucide-react";
 import { getRecipientCounts, getTargetOptions, sendAdminEmail } from "@/api/mailer";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
 
@@ -54,7 +55,7 @@ function MessagingPage() {
   useEffect(() => {
     getRecipientCounts()
       .then((c) => setCounts(c as Counts))
-      .catch((err) => setCountsError(err instanceof Error ? err.message : "Failed to load recipient counts."));
+      .catch((err) => setCountsError(friendlyErrorMessage(err) || "Failed to load recipient counts."));
   }, []);
 
   useEffect(() => {
@@ -128,7 +129,7 @@ function MessagingPage() {
         setResult(res);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send.");
+      setError(friendlyErrorMessage(err, { subject: "Subject", html: "Message", customEmails: "Email address(es)" }));
     } finally {
       setSending(false);
     }

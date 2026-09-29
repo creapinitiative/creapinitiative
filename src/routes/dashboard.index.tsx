@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Inbox, Send, FileText, BookOpen, BookOpenCheck, Megaphone, Newspaper, CalendarDays, Images, Users2, HandCoins, GalleryHorizontal, HandHeart } from "lucide-react";
 import { listSubmissions } from "@/api/submissions";
 import { listDonations } from "@/api/paystack";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardOverview,
@@ -39,7 +40,7 @@ export function DashboardOverview() {
   useEffect(() => {
     listSubmissions()
       .then((rows) => setSubmissions(rows as Submission[]))
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load submissions."));
+      .catch((err) => setError(friendlyErrorMessage(err) || "Failed to load submissions."));
   }, []);
 
   const newCount = submissions?.filter((s) => s.status === "new").length ?? 0;

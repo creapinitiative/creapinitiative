@@ -12,6 +12,7 @@ import {
   loadDefaultHeroSlides,
 } from "@/api/collections-api";
 import { HeroSlideEditor, type SlideValues } from "@/components/dashboard/HeroSlideEditor";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 export const Route = createFileRoute("/dashboard/hero-slides")({
   loader: () => listHeroSlides(),
@@ -41,7 +42,7 @@ function HeroSlidesPage() {
       await router.invalidate();
     } catch (err) {
       setSlides(fallback);
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(friendlyErrorMessage(err));
     } finally {
       setBusy(false);
     }

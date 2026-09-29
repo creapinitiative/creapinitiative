@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Send } from "lucide-react";
 import { listDonations } from "@/api/paystack";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 export const Route = createFileRoute("/dashboard/donations")({
   component: DonationsPage,
@@ -27,7 +28,7 @@ function DonationsPage() {
   useEffect(() => {
     listDonations()
       .then(setDonations)
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load donations."));
+      .catch((err) => setError(friendlyErrorMessage(err) || "Failed to load donations."));
   }, []);
 
   const paid = (donations ?? []).filter((d) => d.status === "success");

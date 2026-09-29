@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { submitForm } from "@/api/submissions";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -34,7 +35,7 @@ export function useFormSubmit(successMessage?: string) {
       show(successMessage);
     } catch (err) {
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setError(friendlyErrorMessage(err));
     }
   }
 
