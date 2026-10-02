@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Send, Paperclip, X, Loader2 } from "lucide-react";
+import { Send, Paperclip, X, Loader2, LayoutTemplate, Pencil } from "lucide-react";
 import { getRecipientCounts, getTargetOptions, sendAdminEmail } from "@/api/mailer";
 import { friendlyErrorMessage } from "@/lib/friendly-error";
 import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
+import { EmailBuilder } from "@/components/dashboard/EmailBuilder";
+import { type EmailBlock, defaultBlocks, blocksToHtml } from "@/lib/email-blocks";
 import { useSuccessPopup } from "@/components/site/SuccessPopup";
 
 export const Route = createFileRoute("/dashboard/messaging")({
@@ -43,7 +45,9 @@ function MessagingPage() {
   const [targets, setTargets] = useState<TargetOptions | null>(null);
   const [targetId, setTargetId] = useState("all");
   const [subject, setSubject] = useState("");
+  const [mode, setMode] = useState<"simple" | "builder">("simple");
   const [html, setHtml] = useState("");
+  const [blocks, setBlocks] = useState<EmailBlock[]>(defaultBlocks);
   const [attachments, setAttachments] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,6 +70,9 @@ function MessagingPage() {
 
   const targeted = recipientType === "opportunity" || recipientType === "program_interest" ? TARGETED[recipientType] : null;
   const targetList: TargetOption[] = targeted && targets ? targets[targeted.key] : [];
+
+  // What actually gets sent, regardless of which mode composed it.
+  const bodyHtml = mode === "builder" ? blocksToHtml(blocks) : html;
 
   function recipientCount(): number | null {
     if (recipientType === "individual") {
@@ -93,8 +100,8 @@ function MessagingPage() {
       setError("Subject is required.");
       return;
     }
-    if (!html.trim()) {
-      setError("Message body is required.");
+    if (!bodyHtml.trim()) {
+      setError(mode === "builder" ? "Add at least one block to the email." : "Message body is required.");
       return;
     }
 
@@ -114,7 +121,7 @@ function MessagingPage() {
       formData.set("customEmails", customEmails);
       formData.set("targetId", targetId);
       formData.set("subject", subject);
-      formData.set("html", html);
+      formData.set("html", bodyHtml);
       for (const file of attachments) formData.append("attachments", file);
 
       const res = (await sendAdminEmail({ data: formData })) as SendResult;
@@ -123,6 +130,7 @@ function MessagingPage() {
         show(`Email sent to ${res.sent} recipient${res.sent === 1 ? "" : "s"}.`);
         setSubject("");
         setHtml("");
+        setBlocks(defaultBlocks());
         setCustomEmails("");
         setAttachments([]);
       } else {
@@ -138,7 +146,7 @@ function MessagingPage() {
   const count = recipientCount();
 
   return (
-    <div className="max-w-3xl">
+    <div className={mode === "builder" ? "max-w-[1120px]" : "max-w-3xl"}>
       <h1 className="font-display text-2xl sm:text-3xl text-ink mb-1">Messaging</h1>
       <p className="text-ink3 mb-6 text-sm sm:text-base">
         Send a one-off email to an individual address or to everyone who's ever submitted a form on the site.
@@ -233,8 +241,34 @@ function MessagingPage() {
         </label>
 
         <div>
-          <span className="block text-sm font-medium text-ink2 mb-1.5">Message</span>
-          <RichTextEditor value={html} onChange={setHtml} />
+          <div className="flex items-center justify-between gap-3 mb-1.5">
+            <span className="block text-sm font-medium text-ink2">Message</span>
+            <div className="flex gap-1 border border-rule rounded-sm p-0.5 bg-g50">
+              {(
+                [
+                  ["simple", "Simple", Pencil],
+                  ["builder", "Email builder", LayoutTemplate],
+                ] as const
+              ).map(([value, label, Icon]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setMode(value)}
+                  className={[
+                    "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm text-[11px] font-semibold uppercase tracking-wide transition",
+                    mode === value ? "bg-white text-ink shadow-sm" : "text-ink3 hover:text-ink",
+                  ].join(" ")}
+                >
+                  <Icon size={12} /> {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {mode === "simple" ? (
+            <RichTextEditor value={html} onChange={setHtml} />
+          ) : (
+            <EmailBuilder blocks={blocks} onChange={setBlocks} />
+          )}
         </div>
 
         <div>

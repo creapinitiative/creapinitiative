@@ -31,7 +31,16 @@ function ToolbarButton({
  * been sensitive to new dependencies, and the formatting needs here (bold,
  * italic, lists, links) are simple enough not to warrant one.
  */
-export function RichTextEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
+export function RichTextEditor({
+  value,
+  onChange,
+  minHeight = 240,
+}: {
+  value: string;
+  onChange: (html: string) => void;
+  /** Lets the email builder embed a compact editor per paragraph block instead of this default, full-size height. */
+  minHeight?: number;
+}) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [showSource, setShowSource] = useState(false);
 
@@ -93,7 +102,8 @@ export function RichTextEditor({ value, onChange }: { value: string; onChange: (
           contentEditable
           suppressContentEditableWarning
           onInput={() => onChange(editorRef.current?.innerHTML ?? "")}
-          className="min-h-[240px] px-4 py-3 text-sm leading-relaxed focus:outline-none [&_a]:text-g700 [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+          style={{ minHeight }}
+          className="px-4 py-3 text-sm leading-relaxed focus:outline-none [&_a]:text-g700 [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
         />
       )}
     </div>
