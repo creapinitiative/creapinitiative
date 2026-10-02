@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Heading,
   Pilcrow,
@@ -7,6 +7,7 @@ import {
   Minus,
   MoveVertical,
   Share2,
+  Columns as ColumnsIcon,
   GripVertical,
   Trash2,
   Copy,
@@ -15,10 +16,24 @@ import {
   Monitor,
   Smartphone,
   Upload,
+  X,
+  Bookmark,
+  Save,
+  Blocks,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
 import { uploadImageToGitHub } from "@/api/github-upload";
-import { type EmailBlock, type BlockType, type BlockAlign, BLOCK_LABELS, SOCIAL_LINKS, makeBlock } from "@/lib/email-blocks";
+import { listEmailSections, createEmailSection, removeEmailSection, type EmailSection } from "@/api/email-sections";
+import {
+  type EmailBlock,
+  type BlockType,
+  type BlockAlign,
+  type NestedColumnBlock,
+  BLOCK_LABELS,
+  SOCIAL_LINKS,
+  makeBlock,
+  regenerateIds,
+} from "@/lib/email-blocks";
 
 const BLOCK_DEFS: { type: BlockType; icon: typeof Heading }[] = [
   { type: "heading", icon: Heading },
@@ -28,7 +43,10 @@ const BLOCK_DEFS: { type: BlockType; icon: typeof Heading }[] = [
   { type: "divider", icon: Minus },
   { type: "spacer", icon: MoveVertical },
   { type: "social", icon: Share2 },
+  { type: "columns", icon: ColumnsIcon },
 ];
+
+const NESTED_BLOCK_TYPES = ["heading", "paragraph", "button"] as const;
 
 const fieldClass = "w-full border border-rule rounded-sm px-2.5 py-2 text-xs focus:outline-none focus:border-gold transition bg-white";
 const fieldLabelClass = "block text-[11px] font-medium text-ink3 mb-1";
@@ -50,6 +68,38 @@ function AlignPicker({ value, onChange, options }: { value: BlockAlign; onChange
           {a}
         </button>
       ))}
+    </div>
+  );
+}
+
+/** A single cell's content inside a Columns block — deliberately simpler than the top-level BlockPreview: no image/divider/spacer/social/nested-columns, so a column never needs its own settings panel. */
+function NestedBlockPreview({ block, onUpdate }: { block: NestedColumnBlock; onUpdate: (patch: Record<string, unknown>) => void }) {
+  if (block.type === "heading") {
+    return (
+      <input
+        value={block.text}
+        onChange={(e) => onUpdate({ text: e.target.value })}
+        placeholder="Heading"
+        className="w-full border-none bg-transparent font-semibold text-sm text-[#0a1a0f] focus:outline-none px-0.5"
+      />
+    );
+  }
+  if (block.type === "paragraph") {
+    return (
+      <textarea
+        // Plain text only in a column — embedding the full rich-text editor in a narrow cell isn't usable.
+        value={block.html.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")}
+        onChange={(e) => onUpdate({ html: e.target.value.split("\n").map((l) => l.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!)).join("<br/>") })}
+        rows={3}
+        placeholder="Text…"
+        className="w-full border-none bg-transparent text-xs text-ink2 leading-relaxed focus:outline-none resize-none px-0.5"
+      />
+    );
+  }
+  return (
+    <div className="space-y-1">
+      <input value={block.label} onChange={(e) => onUpdate({ label: e.target.value })} placeholder="Button label" className={fieldClass} />
+      <input value={block.link} onChange={(e) => onUpdate({ link: e.target.value })} placeholder="https://" className={fieldClass} />
     </div>
   );
 }
@@ -144,15 +194,78 @@ function BlockPreview({
 
     case "social":
       return (
-        <div style={{ textAlign: block.align }} className="text-xs">
-          {SOCIAL_LINKS.map((s, i) => (
-            <span key={s.label} className="font-semibold text-gold">
-              {i > 0 && <span className="text-ink4 mx-2 font-normal">·</span>}
-              {s.label}
-            </span>
+        <div style={{ textAlign: block.align }}>
+          {SOCIAL_LINKS.map((s) => (
+            <img
+              key={s.label}
+              src={`/email-icons/${s.icon}.png`}
+              alt={s.label}
+              width={36}
+              height={36}
+              className="inline-block rounded-full mx-1.5"
+            />
           ))}
         </div>
       );
+
+    case "columns": {
+      const addToColumn = (colIdx: number, type: (typeof NESTED_BLOCK_TYPES)[number]) => {
+        const next = block.columns.map((col, i) => (i === colIdx ? [...col, makeBlock(type) as NestedColumnBlock] : col));
+        onUpdate({ columns: next });
+      };
+      const removeFromColumn = (colIdx: number, id: string) => {
+        const next = block.columns.map((col, i) => (i === colIdx ? col.filter((b) => b.id !== id) : col));
+        onUpdate({ columns: next });
+      };
+      const updateInColumn = (colIdx: number, id: string, patch: Record<string, unknown>) => {
+        const next = block.columns.map((col, i) =>
+          i === colIdx ? col.map((b) => (b.id === id ? ({ ...b, ...patch } as NestedColumnBlock) : b)) : col,
+        );
+        onUpdate({ columns: next });
+      };
+
+      return (
+        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${block.columns.length}, 1fr)` }}>
+          {block.columns.map((col, colIdx) => (
+            <div key={colIdx} className="border border-dashed border-rule rounded-sm p-2 space-y-2 min-h-[70px]">
+              {col.map((nested) => (
+                <div key={nested.id} className="group/nested relative">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFromColumn(colIdx, nested.id);
+                    }}
+                    className="absolute -top-2 -right-2 z-10 hidden group-hover/nested:flex bg-g700 text-white rounded-full p-0.5"
+                    aria-label="Remove"
+                    title="Remove"
+                  >
+                    <X size={10} />
+                  </button>
+                  <NestedBlockPreview block={nested} onUpdate={(patch) => updateInColumn(colIdx, nested.id, patch)} />
+                </div>
+              ))}
+              <div className="flex gap-1">
+                {NESTED_BLOCK_TYPES.map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToColumn(colIdx, t);
+                    }}
+                    className="flex-1 border border-rule hover:border-gold rounded-sm py-1 text-[9px] font-semibold uppercase text-ink3 hover:text-ink2 transition"
+                    title={`Add ${BLOCK_LABELS[t]} to this column`}
+                  >
+                    + {BLOCK_LABELS[t]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
   }
 }
 
@@ -281,6 +394,31 @@ function BlockSettings({ block, onUpdate }: { block: EmailBlock; onUpdate: (patc
           <p className="text-xs text-ink4">Links to CREAP's own accounts — the same ones shown on the homepage.</p>
         </div>
       );
+
+    case "columns":
+      return (
+        <div className="space-y-3">
+          <div>
+            <span className={fieldLabelClass}>Layout</span>
+            <div className="flex gap-1">
+              {[2, 3].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => onUpdate({ columns: Array.from({ length: n }, (_, i) => block.columns[i] ?? []) })}
+                  className={[
+                    "flex-1 border rounded-sm py-1.5 text-[11px] font-semibold uppercase transition",
+                    block.columns.length === n ? "bg-g600 text-white border-g600" : "border-rule text-ink3 hover:border-g500",
+                  ].join(" ")}
+                >
+                  {n} columns
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-ink4">Add a heading, paragraph or button to each column directly in the canvas.</p>
+        </div>
+      );
   }
 }
 
@@ -298,6 +436,18 @@ export function EmailBuilder({ blocks, onChange }: { blocks: EmailBlock[]; onCha
   const [uploadingId, setUploadingId] = useState<string | null>(null);
   const dragIndex = useRef<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const [paletteTab, setPaletteTab] = useState<"blocks" | "saved">("blocks");
+  const [sections, setSections] = useState<EmailSection[] | null>(null);
+  const [sectionsError, setSectionsError] = useState<string | null>(null);
+  const [savingSection, setSavingSection] = useState(false);
+
+  function loadSections() {
+    listEmailSections()
+      .then(setSections)
+      .catch((err) => setSectionsError(err instanceof Error ? err.message : "Could not load saved sections."));
+  }
+  useEffect(loadSections, []);
 
   const selected = blocks.find((b) => b.id === selectedId) ?? null;
 
@@ -319,10 +469,41 @@ export function EmailBuilder({ blocks, onChange }: { blocks: EmailBlock[]; onCha
   function duplicate(id: string) {
     const idx = blocks.findIndex((b) => b.id === id);
     if (idx === -1) return;
-    const copy: EmailBlock = { ...blocks[idx], id: `${blocks[idx].id}-copy-${Date.now()}` };
+    const [copy] = regenerateIds([blocks[idx]]);
     const next = [...blocks];
     next.splice(idx + 1, 0, copy);
     onChange(next);
+  }
+
+  async function saveCurrentAsSection() {
+    if (blocks.length === 0) return;
+    const name = window.prompt("Name this section (e.g. \"Standard footer\"):")?.trim();
+    if (!name) return;
+    setSavingSection(true);
+    setSectionsError(null);
+    try {
+      await createEmailSection({ data: { name, blocks: blocks as unknown as Record<string, unknown>[] } });
+      loadSections();
+    } catch (err) {
+      setSectionsError(err instanceof Error ? err.message : "Could not save this section.");
+    } finally {
+      setSavingSection(false);
+    }
+  }
+
+  function insertSection(section: EmailSection) {
+    const inserted = regenerateIds(section.blocks as unknown as EmailBlock[]);
+    onChange([...blocks, ...inserted]);
+  }
+
+  async function deleteSection(section: EmailSection) {
+    if (!window.confirm(`Delete the saved section "${section.name}"? This can't be undone.`)) return;
+    try {
+      await removeEmailSection({ data: { id: section.id } });
+      loadSections();
+    } catch (err) {
+      setSectionsError(err instanceof Error ? err.message : "Could not delete this section.");
+    }
   }
 
   function move(id: string, direction: -1 | 1) {
@@ -360,22 +541,82 @@ export function EmailBuilder({ blocks, onChange }: { blocks: EmailBlock[]; onCha
   return (
     <div className="flex flex-col lg:flex-row gap-4" onClick={() => setSelectedId(null)}>
       {/* Block palette */}
-      <div className="lg:w-40 shrink-0" onClick={(e) => e.stopPropagation()}>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-ink4 mb-2">Add a block</p>
-        <div className="grid grid-cols-4 sm:grid-cols-7 lg:grid-cols-2 gap-1.5">
-          {BLOCK_DEFS.map(({ type, icon: Icon }) => (
+      <div className="lg:w-44 shrink-0" onClick={(e) => e.stopPropagation()}>
+        <div className="flex gap-1 border border-rule rounded-sm p-0.5 bg-g50 mb-2">
+          {(
+            [
+              ["blocks", "Blocks", Blocks],
+              ["saved", "Saved", Bookmark],
+            ] as const
+          ).map(([value, label, Icon]) => (
             <button
-              key={type}
+              key={value}
               type="button"
-              onClick={() => addBlock(type)}
-              className="flex flex-col items-center gap-1 border border-rule hover:border-gold hover:bg-g50 rounded-sm py-2.5 text-ink2 transition"
-              title={`Add ${BLOCK_LABELS[type]}`}
+              onClick={() => setPaletteTab(value)}
+              className={[
+                "flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-sm text-[11px] font-semibold uppercase tracking-wide transition",
+                paletteTab === value ? "bg-white text-ink shadow-sm" : "text-ink3 hover:text-ink",
+              ].join(" ")}
             >
-              <Icon size={16} />
-              <span className="text-[10px] font-medium leading-tight text-center">{BLOCK_LABELS[type]}</span>
+              <Icon size={12} /> {label}
             </button>
           ))}
         </div>
+
+        {paletteTab === "blocks" ? (
+          <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-2 gap-1.5">
+            {BLOCK_DEFS.map(({ type, icon: Icon }) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => addBlock(type)}
+                className="flex flex-col items-center gap-1 border border-rule hover:border-gold hover:bg-g50 rounded-sm py-2.5 text-ink2 transition"
+                title={`Add ${BLOCK_LABELS[type]}`}
+              >
+                <Icon size={16} />
+                <span className="text-[10px] font-medium leading-tight text-center">{BLOCK_LABELS[type]}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => void saveCurrentAsSection()}
+              disabled={savingSection || blocks.length === 0}
+              className="w-full inline-flex items-center justify-center gap-1.5 border border-rule hover:border-gold disabled:opacity-50 rounded-sm py-2 text-[11px] font-semibold uppercase tracking-wide text-ink2 transition"
+            >
+              <Save size={12} /> {savingSection ? "Saving…" : "Save this email"}
+            </button>
+            {sectionsError && <p className="text-[11px] text-red-600">{sectionsError}</p>}
+            {sections === null && !sectionsError && <p className="text-[11px] text-ink4">Loading…</p>}
+            {sections !== null && sections.length === 0 && (
+              <p className="text-[11px] text-ink4">Nothing saved yet — build an email, then "Save this email" to reuse it later.</p>
+            )}
+            {sections?.map((s) => (
+              <div key={s.id} className="border border-rule rounded-sm px-2 py-1.5 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => insertSection(s)}
+                  className="flex-1 min-w-0 text-left"
+                  title={`Insert "${s.name}"`}
+                >
+                  <p className="text-[11px] font-medium text-ink truncate">{s.name}</p>
+                  <p className="text-[10px] text-ink4">{s.blocks.length} block{s.blocks.length === 1 ? "" : "s"}</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void deleteSection(s)}
+                  className="p-1 text-ink4 hover:text-red-600 shrink-0"
+                  aria-label={`Delete "${s.name}"`}
+                  title="Delete"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Canvas */}

@@ -23,6 +23,10 @@ export type DividerBlock = { id: string; type: "divider"; color: string; thickne
 export type SpacerBlock = { id: string; type: "spacer"; height: number };
 export type SocialBlock = { id: string; type: "social"; align: BlockAlign };
 
+/** What a Columns block's cells may hold — kept to simple content so a column never needs its own nested columns. */
+export type NestedColumnBlock = HeadingBlock | ParagraphBlock | ButtonBlock;
+export type ColumnsBlock = { id: string; type: "columns"; columns: NestedColumnBlock[][] };
+
 export type EmailBlock =
   | HeadingBlock
   | ParagraphBlock
@@ -30,7 +34,8 @@ export type EmailBlock =
   | ButtonBlock
   | DividerBlock
   | SpacerBlock
-  | SocialBlock;
+  | SocialBlock
+  | ColumnsBlock;
 
 export type BlockType = EmailBlock["type"];
 
@@ -42,16 +47,23 @@ export const BLOCK_LABELS: Record<BlockType, string> = {
   divider: "Divider",
   spacer: "Spacer",
   social: "Social links",
+  columns: "Columns",
 };
 
 /** The org's social accounts — same links used on the homepage's "Follow Our Journey" band. */
 export const SOCIAL_LINKS = [
-  { label: "Facebook", href: "https://www.facebook.com/share/16BhHZR317/" },
-  { label: "Instagram", href: "https://www.instagram.com/creapafricainitiative" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/creap-africa-initiative/" },
-  { label: "X", href: "https://x.com/creapafrica" },
-  { label: "YouTube", href: "https://youtube.com/@creapafricainitiative" },
+  { label: "Facebook", href: "https://www.facebook.com/share/16BhHZR317/", icon: "facebook" },
+  { label: "Instagram", href: "https://www.instagram.com/creapafricainitiative", icon: "instagram" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/creap-africa-initiative/", icon: "linkedin" },
+  { label: "X", href: "https://x.com/creapafrica", icon: "x" },
+  { label: "YouTube", href: "https://youtube.com/@creapafricainitiative", icon: "youtube" },
 ];
+
+// Email HTML needs an absolute image URL regardless of which environment composed
+// it (an admin's localhost, a preview deploy, …), so this is hardcoded rather than
+// read from the request — unlike a page, a sent email has no "current origin".
+// The icons themselves live in public/email-icons/.
+const SITE_ORIGIN = "https://creapinitiative.org";
 
 function newId(): string {
   return typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2);
@@ -74,11 +86,28 @@ export function makeBlock(type: BlockType): EmailBlock {
       return { id, type, height: 24 };
     case "social":
       return { id, type, align: "center" };
+    case "columns":
+      return { id, type, columns: [[], []] };
   }
 }
 
 export function defaultBlocks(): EmailBlock[] {
   return [makeBlock("heading"), makeBlock("paragraph")];
+}
+
+/**
+ * Fresh ids for a block tree (including a Columns block's nested blocks),
+ * so inserting a saved section — or duplicating a block — twice in one
+ * email never produces two blocks sharing a React key.
+ */
+export function regenerateIds(blocks: EmailBlock[]): EmailBlock[] {
+  return blocks.map((b) => {
+    const id = newId();
+    if (b.type === "columns") {
+      return { ...b, id, columns: b.columns.map((col) => regenerateIds(col) as NestedColumnBlock[]) };
+    }
+    return { ...b, id } as EmailBlock;
+  });
 }
 
 function escapeHtml(s: string): string {
@@ -114,10 +143,24 @@ function blockToHtml(block: EmailBlock): string {
       return `<div style="height:${block.height}px;line-height:${block.height}px;font-size:1px;">&nbsp;</div>`;
 
     case "social":
-      return `<div style="margin:0 0 16px;text-align:${block.align};font-size:12px;">${SOCIAL_LINKS.map(
+      return `<div style="margin:0 0 16px;text-align:${block.align};">${SOCIAL_LINKS.map(
         (s) =>
-          `<a href="${s.href}" target="_blank" rel="noopener noreferrer" style="color:#8a6d1f;text-decoration:none;font-weight:600;margin:0 8px;">${s.label}</a>`,
+          `<a href="${s.href}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:0 6px;text-decoration:none;"><img src="${SITE_ORIGIN}/email-icons/${s.icon}.png" width="36" height="36" alt="${escapeHtml(s.label)}" style="display:block;border:0;border-radius:50%;" /></a>`,
       ).join("")}</div>`;
+
+    case "columns": {
+      // Side-by-side layout needs an actual HTML table in email — flexbox/grid/floats are unreliable across
+      // mail clients (Outlook desktop in particular), so this is the one block that departs from plain divs.
+      const n = block.columns.length || 1;
+      const widthPct = (100 / n).toFixed(2);
+      const cells = block.columns
+        .map(
+          (col, i) =>
+            `<td valign="top" style="width:${widthPct}%;padding:${i === 0 ? "0" : "0 0 0 16px"};">${col.map(blockToHtml).join("\n") || "&nbsp;"}</td>`,
+        )
+        .join("");
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px;"><tr>${cells}</tr></table>`;
+    }
   }
 }
 

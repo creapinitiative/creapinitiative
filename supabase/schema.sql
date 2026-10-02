@@ -247,3 +247,16 @@ select 'State Coordinator', 'state-coordinator', 'Your state, Nigeria', 'Open',
        'Lead CREAP''s work in your state — coordinating outreaches, partnerships and research engagement on the ground.',
        coalesce((select max(sort_order) + 1 from public.opportunities), 0)
 where not exists (select 1 from public.opportunities where category = 'state-coordinator');
+
+-- ── Migration: Saved email sections (Messaging → Email builder) ─────────
+-- A named, reusable chunk of email-builder blocks (e.g. a standard footer,
+-- a recurring call-to-action) an admin can drop into any future email
+-- instead of rebuilding it each time. `blocks` is the builder's own JSON —
+-- this table just stores and returns it (see src/lib/email-blocks.ts).
+create table if not exists public.email_sections (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  blocks jsonb not null,
+  created_at timestamptz not null default now()
+);
+alter table public.email_sections enable row level security;
