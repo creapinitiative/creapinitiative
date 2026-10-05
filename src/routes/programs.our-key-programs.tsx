@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { Earth, Handshake, Sprout, Trophy, Wheat, Download } from "lucide-react";
+import { KEY_PROGRAMS } from "@/lib/key-programs";
+import { Download, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/programs/our-key-programs")({
   head: () => ({
@@ -13,35 +14,14 @@ export const Route = createFileRoute("/programs/our-key-programs")({
   component: OurKeyProgramsPage,
 });
 
-const PROGRAMS = [
-  {
-    icon: Trophy,
-    title: "Community Peace Champions Fellowship",
-    body: "The Community Peace Champions Initiative is a grassroots programme that strengthens social cohesion across diverse Nigerian communities by equipping young leaders with peacebuilding skills. Through a structured fellowship, community dialogues, and locally driven action projects, participants foster inclusive solutions to conflict and division.",
-  },
-  {
-    icon: Earth,
-    title: "Youth Climate Adaptation Programme",
-    body: "The Youth Climate Adaptation Programme equips young people with the knowledge, skills, and tools to drive practical climate solutions in their communities. It features intensive training, real-world field exposure, mentorship, and action projects focused on resilience, sustainability, and advocacy.",
-  },
-  {
-    icon: Sprout,
-    title: "Greening the Future Initiative",
-    body: "This initiative promotes environmental sustainability and green livelihoods by engaging communities, schools, and institutions in tree planting, waste management, renewable energy awareness, and environmental advocacy.",
-  },
-  {
-    icon: Wheat,
-    title: "Youth Skill Development Fund (YSDF) Initiative",
-    body: "A structured intervention equipping young Nigerians for an AI-driven economy through practical training in digital skills, innovation, and enterprise. It combines hands-on learning, project incubation, and entrepreneurship support with community-level mentorship.",
-  },
-  {
-    icon: Handshake,
-    title: "CivicCREAP-Tech",
-    body: "An emerging platform designed to harness technology in driving civic participation, governance, and community development. Programme in development with additional content coming soon.",
-  },
-];
-
 function OurKeyProgramsPage() {
+  const { location } = useRouterState();
+
+  // This file is also the parent of the per-program detail route ($slug), so hand off to it.
+  if (location.pathname !== "/programs/our-key-programs") {
+    return <Outlet />;
+  }
+
   return (
     <>
       <PageHero
@@ -53,14 +33,14 @@ function OurKeyProgramsPage() {
       <section className="bg-g50 py-16 lg:py-24">
         <Reveal as="div" className="mx-auto max-w-[1300px] px-5 sm:px-8 md:px-12 lg:px-28">
           <div className="rounded-sm border border-rule bg-white overflow-hidden">
-            {PROGRAMS.map(({ icon: Icon, title, body }, index) => (
+            {KEY_PROGRAMS.map(({ slug, icon: Icon, title, body, detail }, index) => (
               <RevealItem
-                key={title}
+                key={slug}
                 as="article"
                 index={index}
                 className={[
                   "grid grid-cols-1 md:grid-cols-[92px_1fr_auto] gap-6 md:gap-8 items-start px-6 py-8 md:px-10 md:py-10",
-                  index !== PROGRAMS.length - 1 ? "border-b border-rule" : "",
+                  index !== KEY_PROGRAMS.length - 1 ? "border-b border-rule" : "",
                 ].join(" ")}
               >
                 <div className="w-14 h-14 rounded-sm bg-g100 text-g500 grid place-items-center mt-1">
@@ -70,12 +50,22 @@ function OurKeyProgramsPage() {
                   <h2 className="font-display text-3xl leading-tight mb-3">{title}</h2>
                   <p className="text-ink3 leading-relaxed max-w-4xl">{body}</p>
                 </div>
-                <a
-                  href="#"
-                  className="shrink-0 inline-flex items-center gap-2 border border-rule hover:border-g500 text-ink2 hover:text-g700 px-4 py-2 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition"
-                >
-                  Download Report <Download size={13} />
-                </a>
+                {detail ? (
+                  <Link
+                    to="/programs/our-key-programs/$slug"
+                    params={{ slug }}
+                    className="shrink-0 inline-flex items-center gap-2 border border-rule hover:border-gold text-ink2 hover:text-g700 px-4 py-2 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition"
+                  >
+                    View more <ArrowRight size={13} />
+                  </Link>
+                ) : (
+                  <a
+                    href="#"
+                    className="shrink-0 inline-flex items-center gap-2 border border-rule hover:border-g500 text-ink2 hover:text-g700 px-4 py-2 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition"
+                  >
+                    Download Report <Download size={13} />
+                  </a>
+                )}
               </RevealItem>
             ))}
           </div>

@@ -49,6 +49,7 @@ import { Route as DashboardBlogsRouteImport } from './routes/dashboard.blogs'
 import { Route as ApiPaystackWebhookRouteImport } from './routes/api.paystack-webhook'
 import { Route as ResourcesBlogsSlugRouteImport } from './routes/resources.blogs.$slug'
 import { Route as ProgramsUpcomingProgramsSlugRouteImport } from './routes/programs.upcoming-programs.$slug'
+import { Route as ProgramsOurKeyProgramsSlugRouteImport } from './routes/programs.our-key-programs.$slug'
 
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
@@ -255,6 +256,12 @@ const ProgramsUpcomingProgramsSlugRoute =
     path: '/$slug',
     getParentRoute: () => ProgramsUpcomingProgramsRoute,
   } as any)
+const ProgramsOurKeyProgramsSlugRoute =
+  ProgramsOurKeyProgramsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => ProgramsOurKeyProgramsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -283,7 +290,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/dashboard/toolkits-guides': typeof DashboardToolkitsGuidesRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
-  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRouteWithChildren
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
   '/reports/annual-reports': typeof ReportsAnnualReportsRoute
@@ -295,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/resources/press-statements': typeof ResourcesPressStatementsRoute
   '/resources/toolkits-guides': typeof ResourcesToolkitsGuidesRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/programs/our-key-programs/$slug': typeof ProgramsOurKeyProgramsSlugRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -324,7 +332,7 @@ export interface FileRoutesByTo {
   '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/dashboard/toolkits-guides': typeof DashboardToolkitsGuidesRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
-  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRouteWithChildren
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
   '/reports/annual-reports': typeof ReportsAnnualReportsRoute
@@ -336,6 +344,7 @@ export interface FileRoutesByTo {
   '/resources/press-statements': typeof ResourcesPressStatementsRoute
   '/resources/toolkits-guides': typeof ResourcesToolkitsGuidesRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/programs/our-key-programs/$slug': typeof ProgramsOurKeyProgramsSlugRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -367,7 +376,7 @@ export interface FileRoutesById {
   '/dashboard/submissions': typeof DashboardSubmissionsRoute
   '/dashboard/toolkits-guides': typeof DashboardToolkitsGuidesRoute
   '/programs/community-dialogue-programs': typeof ProgramsCommunityDialogueProgramsRoute
-  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRoute
+  '/programs/our-key-programs': typeof ProgramsOurKeyProgramsRouteWithChildren
   '/programs/special-programs': typeof ProgramsSpecialProgramsRoute
   '/programs/upcoming-programs': typeof ProgramsUpcomingProgramsRouteWithChildren
   '/reports/annual-reports': typeof ReportsAnnualReportsRoute
@@ -379,6 +388,7 @@ export interface FileRoutesById {
   '/resources/press-statements': typeof ResourcesPressStatementsRoute
   '/resources/toolkits-guides': typeof ResourcesToolkitsGuidesRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/programs/our-key-programs/$slug': typeof ProgramsOurKeyProgramsSlugRoute
   '/programs/upcoming-programs/$slug': typeof ProgramsUpcomingProgramsSlugRoute
   '/resources/blogs/$slug': typeof ResourcesBlogsSlugRoute
 }
@@ -423,6 +433,7 @@ export interface FileRouteTypes {
     | '/resources/press-statements'
     | '/resources/toolkits-guides'
     | '/dashboard/'
+    | '/programs/our-key-programs/$slug'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -464,6 +475,7 @@ export interface FileRouteTypes {
     | '/resources/press-statements'
     | '/resources/toolkits-guides'
     | '/dashboard'
+    | '/programs/our-key-programs/$slug'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   id:
@@ -506,6 +518,7 @@ export interface FileRouteTypes {
     | '/resources/press-statements'
     | '/resources/toolkits-guides'
     | '/dashboard/'
+    | '/programs/our-key-programs/$slug'
     | '/programs/upcoming-programs/$slug'
     | '/resources/blogs/$slug'
   fileRoutesById: FileRoutesById
@@ -807,6 +820,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsUpcomingProgramsSlugRouteImport
       parentRoute: typeof ProgramsUpcomingProgramsRoute
     }
+    '/programs/our-key-programs/$slug': {
+      id: '/programs/our-key-programs/$slug'
+      path: '/$slug'
+      fullPath: '/programs/our-key-programs/$slug'
+      preLoaderRoute: typeof ProgramsOurKeyProgramsSlugRouteImport
+      parentRoute: typeof ProgramsOurKeyProgramsRoute
+    }
   }
 }
 
@@ -848,6 +868,20 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
 )
 
+interface ProgramsOurKeyProgramsRouteChildren {
+  ProgramsOurKeyProgramsSlugRoute: typeof ProgramsOurKeyProgramsSlugRoute
+}
+
+const ProgramsOurKeyProgramsRouteChildren: ProgramsOurKeyProgramsRouteChildren =
+  {
+    ProgramsOurKeyProgramsSlugRoute: ProgramsOurKeyProgramsSlugRoute,
+  }
+
+const ProgramsOurKeyProgramsRouteWithChildren =
+  ProgramsOurKeyProgramsRoute._addFileChildren(
+    ProgramsOurKeyProgramsRouteChildren,
+  )
+
 interface ProgramsUpcomingProgramsRouteChildren {
   ProgramsUpcomingProgramsSlugRoute: typeof ProgramsUpcomingProgramsSlugRoute
 }
@@ -864,7 +898,7 @@ const ProgramsUpcomingProgramsRouteWithChildren =
 
 interface ProgramsRouteChildren {
   ProgramsCommunityDialogueProgramsRoute: typeof ProgramsCommunityDialogueProgramsRoute
-  ProgramsOurKeyProgramsRoute: typeof ProgramsOurKeyProgramsRoute
+  ProgramsOurKeyProgramsRoute: typeof ProgramsOurKeyProgramsRouteWithChildren
   ProgramsSpecialProgramsRoute: typeof ProgramsSpecialProgramsRoute
   ProgramsUpcomingProgramsRoute: typeof ProgramsUpcomingProgramsRouteWithChildren
 }
@@ -872,7 +906,7 @@ interface ProgramsRouteChildren {
 const ProgramsRouteChildren: ProgramsRouteChildren = {
   ProgramsCommunityDialogueProgramsRoute:
     ProgramsCommunityDialogueProgramsRoute,
-  ProgramsOurKeyProgramsRoute: ProgramsOurKeyProgramsRoute,
+  ProgramsOurKeyProgramsRoute: ProgramsOurKeyProgramsRouteWithChildren,
   ProgramsSpecialProgramsRoute: ProgramsSpecialProgramsRoute,
   ProgramsUpcomingProgramsRoute: ProgramsUpcomingProgramsRouteWithChildren,
 }
