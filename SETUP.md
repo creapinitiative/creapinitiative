@@ -28,8 +28,8 @@ Supabase.
 3. Add the SPF/DKIM DNS records Resend gives you at your domain's DNS
    provider, then wait for the domain to show "Verified".
 4. API Keys -> Create API Key -> copy it to `RESEND_API_KEY`.
-5. Set `RESEND_FROM_EMAIL` to an address on the verified domain, e.g.
-   `no-reply@creapinitiative.org`.
+5. Set `RESEND_FROM_EMAIL` to the sender name and an address on the verified domain,
+   e.g. `CREAP Africa Initiative <mail@creapinitiative.org>`.
 6. Set `ADMIN_NOTIFICATION_EMAIL` to the inbox that should receive a copy of
    every form submission (contact, get-involved, donate, newsletter).
 

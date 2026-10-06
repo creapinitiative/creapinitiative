@@ -154,7 +154,7 @@ function MessagingPage() {
 
       <div className="bg-white border border-rule rounded-sm p-5 sm:p-6 space-y-5">
         <p className="text-xs text-ink4">
-          Sending from <span className="font-medium text-ink2">Creap Initiative &lt;mail@creapinitiative.org&gt;</span>
+          Sending from <span className="font-medium text-ink2">CREAP Africa Initiative &lt;mail@creapinitiative.org&gt;</span>
         </p>
 
         <div>
