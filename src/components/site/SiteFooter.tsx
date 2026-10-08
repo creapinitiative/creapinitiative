@@ -148,7 +148,7 @@ export function SiteFooter() {
 
       <div className="border-t border-white/8">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 lg:px-28 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/45">
-          <p>© {new Date().getFullYear()} CREAP Africa Initiative. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CREAP Africa Initiative. All rights reserved.{" "}<span className="whitespace-nowrap">· Website by <a href="https://emkaydigitals.com" target="_blank" rel="noopener" className="underline-offset-2 hover:underline">Emkay Digitals</a></span></p>
           <p>Registered under the Companies and Allied Matters Act, 2020.</p>
         </div>
       </div>
