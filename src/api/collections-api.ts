@@ -61,7 +61,6 @@ export const listPolicyBriefs = createServerFn({ method: "GET" }).handler(async 
   const { data, error } = await supabase
     .from("policy_briefs")
     .select("*")
-    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data as PolicyBrief[];
@@ -121,7 +120,6 @@ export const listReports = createServerFn({ method: "GET" }).handler(async () =>
   const { data, error } = await supabase
     .from("reports")
     .select("*")
-    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data as Report[];
@@ -184,7 +182,6 @@ export const listReportsByCategory = createServerFn({ method: "GET" })
       .from("reports")
       .select("*")
       .eq("category", data.category)
-      .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
 
     if (error) throw new Error(error.message);
@@ -199,7 +196,6 @@ export const listBlogPosts = createServerFn({ method: "GET" }).handler(async () 
   const { data, error } = await supabase
     .from("blog_posts")
     .select("*")
-    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data as BlogPost[];
@@ -488,7 +484,6 @@ export const listToolkitsGuides = createServerFn({ method: "GET" }).handler(asyn
   const { data, error } = await supabase
     .from("toolkits_guides")
     .select("*")
-    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data as ToolkitGuide[];
@@ -553,7 +548,6 @@ export const listPressStatements = createServerFn({ method: "GET" }).handler(asy
   const { data, error } = await supabase
     .from("press_statements")
     .select("*")
-    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data as PressStatement[];

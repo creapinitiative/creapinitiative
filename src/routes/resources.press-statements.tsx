@@ -42,7 +42,10 @@ function PressStatementsPage() {
                 <Megaphone size={24} strokeWidth={1.6} />
               </div>
               <div className="flex-1">
-                <p className="text-[11px] tracking-[0.14em] uppercase text-ink4 mb-2">Press Statement · {item.date}</p>
+                <p className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-ink4 mb-2">
+                  Press Statement · {item.date}
+                  {idx === 0 && <span className="bg-g700 text-white font-semibold px-2 py-0.5 rounded-sm">Latest</span>}
+                </p>
                 <h2 className="font-display text-3xl leading-tight mb-2">{item.title}</h2>
                 <p className="text-ink3 leading-relaxed">{item.body}</p>
               </div>

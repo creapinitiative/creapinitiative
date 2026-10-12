@@ -3,7 +3,8 @@ import { ArrowRight, Leaf, Scale, Users, FileText, Download, CalendarDays, MapPi
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { AnimatedStat } from "@/components/site/AnimatedStat";
 import { Reveal, RevealItem } from "@/components/site/Reveal";
-import { upcomingProgramsApi, listActiveHeroSlides } from "@/api/collections-api";
+import { upcomingProgramsApi, listActiveHeroSlides, policyBriefsApi, reportsApi } from "@/api/collections-api";
+import type { Report } from "@/api/collections";
 import logoFmoyd from "@/assets/partners/federal-ministry-of-youth-development.jpg";
 import logoIpcr from "@/assets/partners/ipcr.jpg";
 import logoNoa from "@/assets/partners/noa.jpg";
@@ -26,8 +27,13 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [programs, slides] = await Promise.all([upcomingProgramsApi.list(), listActiveHeroSlides()]);
-    return { programs, slides };
+    const [programs, slides, briefs, reports] = await Promise.all([
+      upcomingProgramsApi.list(),
+      listActiveHeroSlides(),
+      policyBriefsApi.list(),
+      reportsApi.list(),
+    ]);
+    return { programs, slides, briefs, reports };
   },
   component: Home,
 });
@@ -67,24 +73,16 @@ const THEMES = [
 
 import { policyBriefCover } from "@/lib/policy-brief-covers";
 
-const PUBS = [
-  {
-    tag: "Policy Brief",
-    title: "Promoting Peace and Security in the Face of Emerging Global Threats",
-    body: "Examining peacebuilding strategies in the context of evolving global security challenges.",
-  },
-  {
-    tag: "Policy Brief",
-    title: "Balancing Innovation and Caution in Our Quest for Food Security",
-    body: "Evidence-based pathways to agricultural innovation that maintain ecological integrity.",
-    file: "/reports/policy-brief-food-security-2025.pdf",
-  },
-  {
-    tag: "Report",
-    title: "Climate-Smart Agriculture & AI for Sustainable Food Systems in Nigeria",
-    body: "Documents implementation of climate-smart agriculture leveraging AI tools.",
-  },
-];
+// Both briefs and reports are already sorted newest-first by the API; this just
+// interleaves the two collections and keeps the 3 most recent overall, so the
+// homepage always reflects whatever was most recently published in either one.
+const REPORT_PATH: Record<Report["category"], string> = {
+  project: "/reports/project-reports",
+  annual: "/reports/annual-reports",
+  financial: "/reports/financial-reports",
+};
+
+type DatedRow = { created_at?: string };
 
 const XIcon = ({ size = 19 }: { size?: number; strokeWidth?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -114,7 +112,32 @@ function isPastEvent(endDate?: string | null): boolean {
 }
 
 function Home() {
-  const { programs: ALL_PROGRAMS, slides: HERO_SLIDES } = Route.useLoaderData();
+  const { programs: ALL_PROGRAMS, slides: HERO_SLIDES, briefs, reports } = Route.useLoaderData();
+
+  const publications = [
+    ...briefs.map((b) => ({
+      key: `brief-${b.id}`,
+      tag: "Policy Brief",
+      title: b.title,
+      body: b.body,
+      image: b.image_url || policyBriefCover(b.title),
+      file: b.file_url,
+      to: "/resources/policy-briefs" as const,
+      createdAt: (b as DatedRow).created_at ?? "",
+    })),
+    ...reports.map((r) => ({
+      key: `report-${r.id}`,
+      tag: "Report",
+      title: r.title,
+      body: r.body,
+      image: r.image_url,
+      file: r.file_url,
+      to: REPORT_PATH[r.category],
+      createdAt: (r as DatedRow).created_at ?? "",
+    })),
+  ]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 3);
   const UPCOMING_PROGRAMS = ALL_PROGRAMS.filter((p) => !isPastEvent(p.event_end_date));
   const HAS_PAST_PROGRAMS = ALL_PROGRAMS.some((p) => isPastEvent(p.event_end_date));
 
@@ -377,11 +400,14 @@ function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-0 rounded-sm overflow-hidden bg-white shadow-[0_12px_26px_rgba(10,26,15,0.08)]">
-            {PUBS.map((p, idx) => (
-              <RevealItem key={p.title} as="article" index={idx} className="slide-border-top-smooth group bg-white overflow-hidden flex flex-col border-r border-rule last:border-r-0">
-                <div className="aspect-[4/3] bg-g100 relative overflow-hidden">
-                  {policyBriefCover(p.title) ? (
-                    <img src={policyBriefCover(p.title)} alt={p.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-top" />
+            {publications.length === 0 && (
+              <p className="col-span-3 text-ink3 text-center py-16">No publications yet — check back soon.</p>
+            )}
+            {publications.map((p, idx) => (
+              <RevealItem key={p.key} as="article" index={idx} className="slide-border-top-smooth group bg-white overflow-hidden flex flex-col border-r border-rule last:border-r-0">
+                <Link to={p.to} className="aspect-[4/3] bg-g100 relative overflow-hidden block">
+                  {p.image ? (
+                    <img src={p.image} alt={p.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover object-top" />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <FileText size={72} strokeWidth={1} className="text-g300 group-hover:text-gold transition-colors duration-500" />
@@ -390,16 +416,23 @@ function Home() {
                   <span className="absolute top-4 left-4 bg-goldb text-g700 text-[10px] tracking-[0.18em] uppercase font-semibold px-2.5 py-1 rounded-sm">
                     {p.tag}
                   </span>
-                </div>
+                  {idx === 0 && (
+                    <span className="absolute top-4 right-4 bg-g700 text-white text-[10px] tracking-[0.18em] uppercase font-semibold px-2.5 py-1 rounded-sm">
+                      Latest
+                    </span>
+                  )}
+                </Link>
                 <div className="p-6 lg:p-7 flex-1 flex flex-col">
-                  <h3 className="font-display text-[30px] leading-tight mb-3 flex-1">{p.title}</h3>
+                  <Link to={p.to}>
+                    <h3 className="font-display text-[30px] leading-tight mb-3 flex-1 hover:text-g700 transition">{p.title}</h3>
+                  </Link>
                   <p className="text-ink3 leading-relaxed mb-5">{p.body}</p>
                   <a
-                    href={p.file ?? "#"}
+                    href={p.file || p.to}
                     download={Boolean(p.file)}
                     className="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider font-semibold text-gold hover:text-g600 transition"
                   >
-                    View PDF <Download size={13} />
+                    {p.file ? "View PDF" : "Read more"} <Download size={13} />
                   </a>
                 </div>
               </RevealItem>

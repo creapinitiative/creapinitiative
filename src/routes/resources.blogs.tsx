@@ -54,6 +54,11 @@ function BlogsPage() {
                 <span className="absolute top-4 left-4 bg-gold text-g900 text-[11px] font-semibold tracking-[0.1em] uppercase px-2.5 py-1 rounded-sm">
                   {post.category}
                 </span>
+                {idx === 0 && (
+                  <span className="absolute top-4 right-4 bg-g700 text-white text-[11px] font-semibold tracking-[0.1em] uppercase px-2.5 py-1 rounded-sm">
+                    Latest
+                  </span>
+                )}
               </div>
 
               <div className="p-6 flex flex-col">

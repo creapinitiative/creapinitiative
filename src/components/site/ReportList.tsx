@@ -27,7 +27,10 @@ export function ReportList({ reports, label, emptyText }: { reports: Report[]; l
                 )}
               </div>
               <div className="flex-1 flex flex-col p-6">
-                <p className="text-[11px] tracking-[0.14em] uppercase text-ink4 mb-2">{label} · {report.date}</p>
+                <p className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-ink4 mb-2">
+                  {label} · {report.date}
+                  {idx === 0 && <span className="bg-g700 text-white font-semibold px-2 py-0.5 rounded-sm">Latest</span>}
+                </p>
                 <h2 className="font-display text-2xl leading-tight mb-1">{report.title}</h2>
                 {report.subtitle && <p className="text-gold italic font-display text-lg mb-2">{report.subtitle}</p>}
                 <p className="text-ink3 leading-relaxed mb-5">{report.body}</p>
