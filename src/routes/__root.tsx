@@ -1,3 +1,4 @@
+import CookieConsent from "@/components/CookieConsent";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -129,7 +130,7 @@ function RootComponent() {
       <SuccessPopupProvider>
         <SiteHeader />
         <main>
-          <Outlet />
+          <><Outlet /><CookieConsent /></>
         </main>
         <SiteFooter />
       </SuccessPopupProvider>
